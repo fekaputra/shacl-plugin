@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+	<extension id="ExampleViewComponent" point="org.protege.editor.core.application.ViewComponent">
+		<label value="Example View Component" />
+		<class value="edu.stanford.bmir.protege.examples.view.ExampleViewComponent" />
+		<category value="@org.protege.ontologycategory" />
+	</extension>
+</plugin>
