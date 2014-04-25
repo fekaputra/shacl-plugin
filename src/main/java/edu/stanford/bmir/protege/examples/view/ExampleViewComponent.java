@@ -1,15 +1,8 @@
 package edu.stanford.bmir.protege.examples.view;
 
 import java.awt.BorderLayout;
-
 import org.apache.log4j.Logger;
-
-import org.protege.editor.owl.model.hierarchy.AssertedClassHierarchyProvider;
-import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
-import org.protege.editor.owl.ui.tree.OWLObjectTree;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-
-import org.semanticweb.owlapi.model.OWLClass;
 
 public class ExampleViewComponent extends AbstractOWLViewComponent {
     private static final long serialVersionUID = -4515710047558710080L;
