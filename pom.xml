@@ -7,8 +7,8 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
-	<name>Example View Component</name>
-	<description>An example view component for the Protege Desktop ontology editor.</description>
+	<name>Protege Plugin Examples</name>
+	<description>Example plug-ins for the Protege Desktop ontology editor, e.g., views, menu items, etc.</description>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
