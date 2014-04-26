@@ -12,23 +12,17 @@ public class ToolsMenu2 extends ProtegeOWLAction {
 	private static final long serialVersionUID = -5859609615256451118L;
 	public static Logger LOGGER = Logger.getLogger(ToolsMenu2.class);
 
-
 	public void initialise() throws Exception {
-
 	}
-
 
 	public void dispose() throws Exception {
-
 	}
 
-
 	public void actionPerformed(ActionEvent event) {
-		StringBuffer message = new StringBuffer("This menu is a second menu under the tools menu\n");
+		StringBuffer message = new StringBuffer("This is the second example menu item under the Tools menu.\n");
 		message.append("The active ontology has ");
 		message.append(getOWLModelManager().getActiveOntology().getAxiomCount());
 		message.append(" axioms.");
 		JOptionPane.showMessageDialog(getOWLWorkspace(), message.toString());	
 	}
-
 }
