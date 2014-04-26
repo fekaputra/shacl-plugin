@@ -15,46 +15,45 @@
 	<!-- Menus -->
 	
 	<extension id="toolmenu1" point="org.protege.editor.core.application.EditorKitMenuAction">
-		<name value="Example Menu 1"/>
+		<name value="Example menu item (1)"/>
 		<path value="org.protege.editor.owl.menu.tools/SlotG-A"/>
-		<toolTip value="This menu appears in the tools menu"/>
+		<toolTip value="This example menu item appears in the Tools menu"/>
 		<class value="edu.stanford.bmir.protege.examples.menu.ToolsMenu1"/>
 		<editorKitId value="any"/>
 	</extension>
 
     <extension id="toolmenu2" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Example Menu 2"/>
+        <name value="Example menu item (2)"/>
         <path value="org.protege.editor.owl.menu.tools/SlotG-B"/>
-        <toolTip value="This menu appears in the tools menu just below another tools menu"/>
+        <toolTip value="This is another example menu item that appears in the Tools menu"/>
         <class value="edu.stanford.bmir.protege.examples.menu.ToolsMenu2"/>
         <editorKitId value="any"/>
     </extension>
 
 	<extension id="toolmenu3" point="org.protege.editor.core.application.EditorKitMenuAction">
-		<name value="Example Menu 3"/>
+		<name value="Example menu item (3)"/>
 		<path value="org.protege.editor.owl.menu.tools/SlotH-A"/>
-		<toolTip value="This menu appears in the tools menu in its onwn category"/>
+		<toolTip value="This example menu item appears in the Tools menu in a separate category"/>
 		<class value="edu.stanford.bmir.protege.examples.menu.ToolsMenu3"/>
 		<editorKitId value="any"/>
 	</extension>
 
     <extension id="topmenu" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Custom Top Level Menu"/>
+        <name value="Example Menu"/>
         <path value="/SlotG-A"/>
         <editorKitId value="any"/>
     </extension>
 
     <extension id="submenu" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="View"/>
+        <name value="Example menu item"/>
         <path value="protege.plugin.examples.topmenu/SlotCR-A"/>
-        <toolTip value="Custom SubMenu"/>
 	    <editorKitId value="OWLEditorKit"/>
     </extension> 
 
     <extension id="menu3" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Under Submenu Example"/>
+        <name value="Example submenu item"/>
         <path value="protege.plugin.examples.submenu/SlotA-A"/>
-        <toolTip value="This menu appears under a submenu"/>
+        <toolTip value="This is an example submenu item"/>
         <class value="edu.stanford.bmir.protege.examples.menu.UnderSubMenu"/>
         <editorKitId value="any"/>
     </extension>
