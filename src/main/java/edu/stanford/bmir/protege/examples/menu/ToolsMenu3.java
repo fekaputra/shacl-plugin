@@ -20,7 +20,7 @@ public class ToolsMenu3 extends ProtegeOWLAction {
 
 	public void actionPerformed(ActionEvent event) {
 		StringBuffer message = new StringBuffer(
-				"This example menu item is under the Tools menu, but displayed in a separate category from the above two.\n");
+				"This example menu item is under the Tools menu, but displayed in a separate category from the other example menu items.\n");
 		message.append("The active ontology has ");
 		message.append(getOWLModelManager().getActiveOntology().getClassesInSignature().size());
 		message.append(" classes.");
