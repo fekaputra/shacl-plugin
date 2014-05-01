@@ -3,7 +3,25 @@
 
 <plugin>
 
-	<!-- Views -->
+	<!-- Tabs -->
+	
+	<extension id="ExampleWorkspaceTab" point="org.protege.editor.core.application.WorkspaceTab">
+		<label value="Example Tab"/>
+		<class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
+		<index value="X"/>
+		<editorKitId value="OWLEditorKit"/>
+		<defaultViewConfigFileName value="viewconfig-exampletab.xml"/>
+   </extension>
+
+	<extension id="ExampleWorkspaceTab2" point="org.protege.editor.core.application.WorkspaceTab">
+		<label value="Example Tab (2)"/>
+		<class value="edu.stanford.bmir.protege.examples.tab.ExampleWorkspaceTab2"/>
+		<index value="Y"/>
+		<editorKitId value="OWLEditorKit"/>
+		<defaultViewConfigFileName value="viewconfig-exampletab2.xml"/>
+   </extension>
+
+	<!-- View -->
 
 	<extension id="ExampleViewComponent" point="org.protege.editor.core.application.ViewComponent">
 		<label value="Example view component" />
@@ -12,7 +30,7 @@
 		<category value="@org.protege.ontologycategory" />
 	</extension>
 	
-	<!-- Menus -->
+	<!-- Menu and menu items -->
 	
 	<extension id="toolmenu1" point="org.protege.editor.core.application.EditorKitMenuAction">
 		<name value="Example menu item (1)"/>
@@ -32,7 +50,7 @@
 
 	<extension id="toolmenu3" point="org.protege.editor.core.application.EditorKitMenuAction">
 		<name value="Example menu item (3)"/>
-		<path value="org.protege.editor.owl.menu.tools/SlotH-A"/>
+		<path value="org.protege.editor.owl.menu.tools/SlotJ-A"/>
 		<toolTip value="This example menu item appears in the Tools menu in a separate category"/>
 		<class value="edu.stanford.bmir.protege.examples.menu.ToolsMenu3"/>
 		<editorKitId value="any"/>
