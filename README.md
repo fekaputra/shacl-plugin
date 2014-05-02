@@ -30,7 +30,7 @@ Launch your Protege distribution.  Select About from the Help menu to verify suc
 
 ![Protege Desktop About box](http://jvendetti.github.io/img/protege%20about%20box.png)
 
-The examples bundles contains:
+The examples bundle contains:
 
 + Two custom tabs - "Example Tab" and "Example Tab (2)".  Enable either tab via the Window | Tabs menu.
 + One custom view - "Example view component".  If you enabled the Example Tab in the previous step, the Example view component will be visible on the right-hand side.  Alternatively, you can enable the view via Window | Views | Ontology views.
