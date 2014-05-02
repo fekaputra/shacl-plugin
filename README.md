@@ -24,12 +24,17 @@ To build and run the examples, you must have the following items installed:
 
 4. Copy the JAR file from the target directory to the "plugins" subdirectory of your Protege distribution.
  
-#### View example plug-ins in Protege
+#### View example plug-ins
 
-Launch your Protege distribution.  To verify successful installation of the protege.plugin.example bundle, check Protege's console window:
-
-![Protege Desktop console window](http://jvendetti.github.io/img/protege%20console.png)
-
-... or the About Box:
+Launch your Protege distribution.  Select About from the Help menu to verify successful installation:
 
 ![Protege Desktop About box](http://jvendetti.github.io/img/protege%20about%20box.png)
+
+The examples bundles contains:
+
++ Two custom tabs - "Example Tab" and "Example Tab (2)".  Enable either tab via the Window | Tabs menu.
++ One custom view - "Example view component".  If you enabled the Example Tab in the previous step, the Example view component will be visible on the right-hand side.  Alternatively, you can enable the view via Window | Views | Ontology views.
++ Several custom menu items -  "Example menu item (1)", "Example menu item (2)", and "Example menu item (3)".  The custom menu items appear under the Tools menu.
++ A custom top-level menu - "Example Menu".  The custom top-level menu appears in the main menu bar between the Server and Tools menus.  Select Example Menu to see several submenu items.
+ 
+
