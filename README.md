@@ -24,7 +24,7 @@ To build and run the examples, you must have the following items installed:
 
 4. Copy the JAR file from the target directory to the "plugins" subdirectory of your Protege distribution.
  
-#### View example plug-ins
+#### View example plug-ins in Protege
 
 Launch your Protege distribution.  Select About from the Help menu to verify successful installation:
 
@@ -37,4 +37,21 @@ The examples bundle contains:
 + Several custom menu items.  Expand the Tools menu to see the custom menu items.
 + A custom top-level menu - "Example Menu".  The custom top-level menu appears in the main menu bar between the Server and Tools menus.  Select Example Menu to see several submenu items.
  
+#### Example plug-in screenshots
+
+Example Tab and Example view component:
+
+![](http://jvendetti.github.io/img/protege/example-view-component.png)
+
+Example Tab (2):
+
+![](http://jvendetti.github.io/img/protege/example-tab.png)
+
+Example menu items:
+
+![](http://jvendetti.github.io/img/protege/example-menu-items.png)
+
+Example menu:
+
+![](http://jvendetti.github.io/img/protege/example-menu.png)
 
