@@ -28,7 +28,7 @@ To build and run the examples, you must have the following items installed:
 
 Launch your Protege distribution.  Select About from the Help menu to verify successful installation:
 
-![Protege Desktop About box](http://jvendetti.github.io/img/protege%20about%20box.png)
+![Protege Desktop About box](http://jvendetti.github.io/img/protege/protege%20about%20box.png)
 
 The examples bundle contains:
 
