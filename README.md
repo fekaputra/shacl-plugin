@@ -55,3 +55,7 @@ Example menu:
 
 ![](http://jvendetti.github.io/img/protege/example-menu.png)
 
+#### Questions
+
+If you have questions about developing Protege plug-ins, please navigate to the main Protege website and subscribe to the [Protege Developer Support mailing list](http://protege.stanford.edu/support.php#mailingListSupport).  After subscribing, send messages to protege-dev at lists.stanford.edu.
+
