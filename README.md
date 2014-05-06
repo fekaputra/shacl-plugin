@@ -34,7 +34,7 @@ The examples bundle contains:
 
 + Two custom tabs - "Example Tab" and "Example Tab (2)".  Enable either tab via the Window | Tabs menu.
 + One custom view - "Example view component".  If you enabled the Example Tab in the previous step, the Example view component will be visible on the right-hand side.  Alternatively, you can enable the view via Window | Views | Ontology views.
-+ Several custom menu items -  "Example menu item (1)", "Example menu item (2)", and "Example menu item (3)".  The custom menu items appear under the Tools menu.
++ Several custom menu items.  Expand the Tools menu to see the custom menu items.
 + A custom top-level menu - "Example Menu".  The custom top-level menu appears in the main menu bar between the Server and Tools menus.  Select Example Menu to see several submenu items.
  
 
