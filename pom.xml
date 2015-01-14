@@ -50,7 +50,7 @@
 							org.protege.editor.owl.*;version="4.3", <!-- equivalent to [4.3,infinity) -->
 							*
 						</Import-Package>
-						<Include-Resource>plugin.xml, {maven-resources}</Include-Resource>
+						<Include-Resource>{maven-resources}</Include-Resource>
 					</instructions>
 					<executions>
 						<execution>
