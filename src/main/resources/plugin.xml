@@ -64,13 +64,13 @@
 
     <extension id="submenu" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Example menu item"/>
-        <path value="protege.plugin.examples.topmenu/SlotCR-A"/>
+        <path value="${project.artifactId}.topmenu/SlotCR-A"/>
 	    <editorKitId value="OWLEditorKit"/>
     </extension> 
 
     <extension id="menu3" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Example submenu item"/>
-        <path value="protege.plugin.examples.submenu/SlotA-A"/>
+        <path value="${project.artifactId}.submenu/SlotA-A"/>
         <toolTip value="This is an example submenu item"/>
         <class value="edu.stanford.bmir.protege.examples.menu.UnderSubMenu"/>
         <editorKitId value="any"/>

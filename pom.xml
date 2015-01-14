@@ -23,6 +23,15 @@
 	</dependencies>
 
 	<build>
+
+		<resources>
+			<resource>
+				<!-- Use resource filtering to replace references to the artifactId in the plugin.xml file -->
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -50,7 +59,6 @@
 							org.protege.editor.owl.*;version="4.3", <!-- equivalent to [4.3,infinity) -->
 							*
 						</Import-Package>
-						<Include-Resource>{maven-resources}</Include-Resource>
 					</instructions>
 					<executions>
 						<execution>
