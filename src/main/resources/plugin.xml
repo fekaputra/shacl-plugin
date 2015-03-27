@@ -5,8 +5,16 @@
 
 	<!-- Tabs -->
 	
-	<extension id="ExampleWorkspaceTab" point="org.protege.editor.core.application.WorkspaceTab">
-		<label value="Example Tab"/>
+	<extension id="SHACLTab" point="org.protege.editor.core.application.WorkspaceTab">
+		<label value="SHACL"/>
+		<class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
+		<index value="Z"/>
+		<editorKitId value="OWLEditorKit"/>
+		<defaultViewConfigFileName value="viewconfig-SHACLtab.xml"/>
+   </extension>
+   
+   <extension id="ExampleWorkspaceTab" point="org.protege.editor.core.application.WorkspaceTab">
+		<label value="SHACL Tab"/>
 		<class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
 		<index value="X"/>
 		<editorKitId value="OWLEditorKit"/>
@@ -30,8 +38,23 @@
 		<category value="@org.protege.ontologycategory" />
 	</extension>
 	
-	<!-- Menu and menu items -->
+	<!-- ******ADDED ViEW******** -->
+	<extension id="LogViewComponent" point="org.protege.editor.core.application.ViewComponent">
+		<label value="SHACL Log" />
+		<class value="at.ac.tuwien.ame.shacl.ui.LogViewComponent" />
+		<headerColor value="@org.protege.ontologycolor"/>
+		<category value="@org.protege.ontologycategory" />
+	</extension>
 	
+	<extension id="QueryViewComponent" point="org.protege.editor.core.application.ViewComponent">
+		<label value="SHACL Query" />
+		<class value="at.ac.tuwien.ame.shacl.ui.QueryViewComponent" />
+		<headerColor value="@org.protege.ontologycolor"/>
+		<category value="@org.protege.ontologycategory" />
+	</extension>
+	
+	<!-- Menu and menu items -->
+	<!-- Don't need it so far -->
 	<extension id="toolmenu1" point="org.protege.editor.core.application.EditorKitMenuAction">
 		<name value="Example menu item (1)"/>
 		<path value="org.protege.editor.owl.menu.tools/SlotG-A"/>

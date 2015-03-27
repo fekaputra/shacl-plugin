@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <VSNode splits="0.25 0.75">
+        <HSNode splits="0.5 0.5">
+            <CNode>
+                <Component label="Class hierarchy">
+                	<Property id="pluginId" value="org.protege.editor.owl.OWLAssertedClassHierarchy"/>
+            	</Component>
+            </CNode>
+            <CNode>
+                <Component label="Individuals">
+                	<Property id="pluginId" value="org.protege.editor.owl.OWLMembersList"/>
+            	</Component>
+            </CNode>
+        </HSNode>
+        
+        <HSNode splits="0.7 0.3">
+            <CNode>
+	            <Component label="SHACL Query">
+	                <Property id="pluginId" value="protege.plugin.examples.QueryViewComponent"/>
+	            </Component>
+            </CNode>
+            <CNode>
+               	<Component label="SHACL Query Log">
+	                <Property id="pluginId" value="protege.plugin.examples.LogViewComponent"/>
+	            </Component>
+            </CNode>
+        </HSNode>
+    </VSNode>
+</layout>
