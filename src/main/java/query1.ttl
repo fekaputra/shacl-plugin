@@ -1,0 +1,32 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ex: <http://example.com/ns#> .
+@prefix schema: <http://schema.org/>.
+
+ex:Issue
+	a rdfs:Class ;
+	sh:property [
+		sh:predicate ex:assignedTo ;
+		rdfs:label "assigned to" ;
+		rdfs:comment "The assignee of an issue must be a person." ;
+		sh:maxCount 1 ;
+		sh:valueType schema:Person ;
+	] ;
+	sh:property [
+		sh:predicate ex:submittedBy ;
+		rdfs:label "submitted by" ;
+		rdfs:comment "The submitter of an issue must be a person who also has an email address." ;
+		sh:minCount 1 ;
+		sh:maxCount 1 ;
+		sh:valueType schema:Person ;
+		sh:shape ex:SubmitterShape ;
+	] .
+
+ex:SubmitterShape
+	a sh:Shape ;
+	rdfs:comment "A submitter must have at least one email address." ;
+	sh:property [
+		sh:predicate schema:email ;
+		sh:minCount 1 ;
+	] .

@@ -20,17 +20,23 @@
             <artifactId>org.protege.editor.owl</artifactId>
 			<version>4.3.0</version>
         </dependency>
-        <!-- <dependency>
+        <dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
 	    	<groupId>org.apache.jena</groupId>
 	    	<artifactId>jena-osgi</artifactId>
 	    	<version>2.13.0</version>
 	    	<type>bundle</type>
-		</dependency> -->
-		<!-- <dependency>
+		</dependency>
+		<!-- dependency>
 	    	<groupId>org.topbraid</groupId>
 	    	<artifactId>spin</artifactId>
 	    	<version>1.4.0</version>
-	    </dependency> -->
+	    </dependency-->
 	</dependencies>
 	
 	<!-- repositories>
@@ -38,7 +44,7 @@
 	        <id>org.topbraid</id>
 	        <url>http://topquadrant.com/repository/spin</url>
 	    </repository>
-	</repositories> -->
+	</repositories-->
 
 	<build>
 
@@ -75,8 +81,12 @@
 						<Import-Package>
 							org.apache.log4j.*;version="[1.2,2)", 
 							org.protege.editor.owl.*;version="4.3", <!-- equivalent to [4.3,infinity) -->
+							!com.hp.hpl.jena.rdf.model,
+							!com.hp.hpl.jena.shared,
+							!org.apache.jena.riot,
 							*
 						</Import-Package>
+                        
 					</instructions>
 					<executions>
 						<execution>

@@ -62,7 +62,7 @@ public class QueryPanel extends JPanel {
         execButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                // transformSpinToSparql(editorTextArea.getText());
+            	//transformSpinToSparql(editorTextArea.getText());
                 execute();
             }
         });
@@ -78,6 +78,7 @@ public class QueryPanel extends JPanel {
         Iterator<OWLAxiom> axiomsIt = axioms.iterator();
         while (axiomsIt.hasNext()) {
             OWLAxiom axiom = axiomsIt.next();
+            sb.append("\n");
             sb.append(axiom);
         }
         if (sb.toString().isEmpty()) {
@@ -85,24 +86,34 @@ public class QueryPanel extends JPanel {
         } else {
             editorTextArea.setText(sb.toString());
         }
+        
+        //FIXME throws NoClassDefFound error
+//    	try {
+//    		Model model=SHACLModelFactory.getBaseModel();
+//        	model.read(editorTextArea.getText(), "TURTLE");
+//    	} catch(RiotException e) {
+//    		editorTextArea.setText(e + "\n\n" + editorTextArea.getText());
+//    	}
+    	
+    	
     }
 
-    private void transformSpinToSparql(String spinString) {
+    /*private void transformSpinToSparql(String spinString) {
 
         // spin initialization
-        // SPINModuleRegistry.get().init();
+         SPINModuleRegistry.get().init();
 
-        // convert string into byteArray for initialization
-        // InputStream spinIS = new ByteArrayInputStream(spinString.getBytes(StandardCharsets.UTF_8));
+         //convert string into byteArray for initialization
+         InputStream spinIS = new ByteArrayInputStream(spinString.getBytes(StandardCharsets.UTF_8));
 
-        // jena model initialization
-        // Model model = ModelFactory.createDefaultModel();
-        // model.read(spinIS, null);
+         //jena model initialization
+         Model model = ModelFactory.createDefaultModel();
+         model.read(spinIS, null);
 
-        // write the result out
-        // RDFDataMgr.write(System.out, model, Lang.TURTLE);
+         //write the result out
+         RDFDataMgr.write(System.out, model, Lang.TURTLE);
 
-    }
+    }*/
 
     public void dispose() {
         modelManager.removeListener(modelListener);
