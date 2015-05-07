@@ -3,21 +3,43 @@ package at.ac.tuwien.ame.shacl.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import org.apache.jena.riot.Lang;
+import org.apache.jena.riot.RDFDataMgr;
 import org.apache.log4j.Logger;
+import org.coode.owlapi.rdf.model.RDFNode;
+import org.coode.owlapi.rdf.model.RDFTranslator;
+import org.coode.owlapi.rdf.model.RDFTriple;
+import org.coode.owlapi.turtle.TurtleOntologyFormat;
+import org.protege.editor.owl.ProtegeOWL;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.vocabulary.OWL;
 
 public class QueryPanel extends JPanel {
     private static final long serialVersionUID = -2739474730975140803L;
@@ -62,8 +84,8 @@ public class QueryPanel extends JPanel {
         execButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-            	//transformSpinToSparql(editorTextArea.getText());
-                execute();
+            	//validate(editorTextArea.getText());
+                execute2();
             }
         });
 
@@ -71,6 +93,23 @@ public class QueryPanel extends JPanel {
 
     }
 
+    private void execute2() {
+        OWLOntology ont = modelManager.getActiveOntology();
+
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        try {
+			manager.saveOntology(ont, new TurtleOntologyFormat(), new FileOutputStream(new File("ontology.ttl")));
+		
+			System.out.println("saved");
+	        Model model = ModelFactory.createOntologyModel();
+	        model.read("ontology.ttl");
+	        editorTextArea.setText(model.getGraph().toString());
+        } catch (OWLOntologyStorageException | FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
     private void execute() {
         StringBuffer sb = new StringBuffer();
         OWLOntology ont = modelManager.getActiveOntology();
@@ -94,8 +133,17 @@ public class QueryPanel extends JPanel {
 //    	} catch(RiotException e) {
 //    		editorTextArea.setText(e + "\n\n" + editorTextArea.getText());
 //    	}
+    }
+    
+    private void validate(String query) {
     	
-    	
+    	InputStream spinIS = new ByteArrayInputStream(query.getBytes(StandardCharsets.UTF_8));
+    	Model model = ModelFactory.createDefaultModel();
+        model.read(spinIS, null);
+        RDFDataMgr.write(System.out, model, Lang.TURTLE);
+        
+//		SHACLValidator validator = new SHACLValidator(model);
+//		RDFDataMgr.write(System.out, validator.validateGraph(), Lang.TURTLE);
     }
 
     /*private void transformSpinToSparql(String spinString) {
