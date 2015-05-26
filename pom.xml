@@ -29,7 +29,7 @@
         <dependency>
 	    	<groupId>org.apache.jena</groupId>
 	    	<artifactId>jena-osgi</artifactId>
-	    	<version>2.13.0-Protege</version>
+	    	<version>2.13.0</version>
 	    	<type>bundle</type>
 		</dependency>
 		<!-- dependency>
