@@ -54,11 +54,11 @@ import org.semanticweb.owlapi.util.OWLOntologyMerger;
  * @author elvio
  * @author andrea.nuzzolese
  */
-public class JenaToOwlConvert {
+public class JenaOwlConverter {
 
  private boolean available = true;
  private boolean availablemain = true;
- public JenaToOwlConvert(){}
+ public JenaOwlConverter(){}
 
 ////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////FUNCTIONS/////////////////////////////////////////

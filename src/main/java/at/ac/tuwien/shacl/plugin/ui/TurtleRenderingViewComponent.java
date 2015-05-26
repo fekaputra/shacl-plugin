@@ -18,13 +18,9 @@ public class TurtleRenderingViewComponent extends AbstractOntologyRenderingViewC
 
     @Override
     protected void renderOntology(OWLOntology ontology, Writer writer) throws Exception {
-    	//TurtleRenderer renderer = new TurtleRenderer(ontology, getOWLModelManager().getOWLOntologyManager(), writer, null);
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
     	manager.saveOntology(getOWLModelManager().getActiveOntology(), new TurtleOntologyFormat(), out);
     	writer.write(out.toString());
-    	//OWLXMLRenderer renderer = new OWLXMLRenderer(getOWLModelManager().getOWLOntologyManager());
-        //renderer.render(ontology, writer);
-        
     }
 }
