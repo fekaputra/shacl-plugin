@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,7 +14,6 @@ import java.util.Iterator;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
 import org.apache.log4j.Logger;
@@ -29,6 +29,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
 import at.ac.tuwien.shacl.plugin.syntax.JenaToOwlConvert;
+import at.ac.tuwien.shacl.plugin.syntax.SHACLModelFactory;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -75,6 +76,10 @@ public class QueryPanel extends JPanel {
         add(buttonPanel, BorderLayout.SOUTH);
 
         editorTextPane.setFont(new Font(Font.MONOSPACED, getFont().getStyle(), getFont().getSize()));
+        
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        SHACLModelFactory.getBaseModel().write(out, "TURTLE");
+        editorTextPane.setText(out.toString() + "\n###### add constraint definition######\n");
         
         execButton.addActionListener(new ActionListener() {
 
