@@ -1,6 +1,7 @@
 package at.ac.tuwien.shacl.plugin.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 
 import org.apache.log4j.Logger;
 import org.coode.owlapi.turtle.TurtleOntologyFormat;
@@ -35,7 +37,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 public class QueryPanel extends JPanel {
     private static final long serialVersionUID = -2739474730975140803L;
     private JButton execButton = new JButton("Execute");
-    private JTextArea editorTextArea = new JTextArea("I'm a text. Please scroll me.");
+    private JTextPane editorTextPane = new JTextPane();
     private OWLModelManager modelManager;
     private static final Logger log = Logger.getLogger(QueryPanel.class);
 
@@ -63,7 +65,7 @@ public class QueryPanel extends JPanel {
         modelManager.addListener(modelListener);
         // refreshButton.addActionListener(refreshAction);
         log.info("listener added");
-        JScrollPane scroll = new JScrollPane(editorTextArea);
+        JScrollPane scroll = new JScrollPane(editorTextPane);
 
         add(scroll, BorderLayout.CENTER);
 
@@ -72,6 +74,8 @@ public class QueryPanel extends JPanel {
         buttonPanel.add(execButton, BorderLayout.WEST);
         add(buttonPanel, BorderLayout.SOUTH);
 
+        editorTextPane.setFont(new Font(Font.MONOSPACED, getFont().getStyle(), getFont().getSize()));
+        
         execButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -94,7 +98,7 @@ public class QueryPanel extends JPanel {
 			System.out.println("saved");
 	        Model model = ModelFactory.createDefaultModel();
 	        model.read("ontology.ttl");
-	        editorTextArea.setText(model.getGraph().toString());
+	        editorTextPane.setText(model.getGraph().toString());
         } catch (OWLOntologyStorageException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -130,9 +134,9 @@ public class QueryPanel extends JPanel {
             sb.append(axiom);
         }
         if (sb.toString().isEmpty()) {
-            editorTextArea.setText("Empty Ontology");
+            editorTextPane.setText("Empty Ontology");
         } else {
-            editorTextArea.setText(sb.toString());
+            editorTextPane.setText(sb.toString());
         }
         
         //FIXME throws NoClassDefFound error
