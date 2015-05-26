@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-	<groupId>edu.stanford.protege</groupId>
-	<artifactId>protege.plugin.examples</artifactId>
+	<groupId>at.ac.tuwien.ame</groupId>
+	<artifactId>at.ac.tuwien.shacl.plugin</artifactId>
 	<version>1.0.2-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
-	<name>Protege Plugin Examples</name>
-	<description>Example plug-ins for the Protege Desktop ontology editor, e.g., views, menu items, etc.</description>
+	<name>SHACL Protege Plugin</name>
+	<description>SHACL Plugin for the Protege Desktop ontology editor</description>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,7 +29,7 @@
         <dependency>
 	    	<groupId>org.apache.jena</groupId>
 	    	<artifactId>jena-osgi</artifactId>
-	    	<version>2.13.0</version>
+	    	<version>2.13.0-Protege</version>
 	    	<type>bundle</type>
 		</dependency>
 		<!-- dependency>
@@ -39,13 +39,6 @@
 	    </dependency-->
 	</dependencies>
 	
-	<!-- repositories>
-	    <repository>
-	        <id>org.topbraid</id>
-	        <url>http://topquadrant.com/repository/spin</url>
-	    </repository>
-	</repositories-->
-
 	<build>
 
 		<resources>
@@ -60,7 +53,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.3</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
@@ -70,7 +63,7 @@
             <plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.4.0</version>
+				<version>2.5.3</version>
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
@@ -81,12 +74,10 @@
 						<Import-Package>
 							org.apache.log4j.*;version="[1.2,2)", 
 							org.protege.editor.owl.*;version="4.3", <!-- equivalent to [4.3,infinity) -->
-							!com.hp.hpl.jena.rdf.model,
-							!com.hp.hpl.jena.shared,
-							!org.apache.jena.riot,
 							*
 						</Import-Package>
-                        
+						
+						<_noee>true</_noee>
 					</instructions>
 					<executions>
 						<execution>
@@ -109,4 +100,5 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 </project>

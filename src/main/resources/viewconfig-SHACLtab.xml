@@ -16,14 +16,20 @@
         
         <HSNode splits="0.7 0.3">
             <CNode>
-	            <Component label="SHACL Query">
-	                <Property id="pluginId" value="protege.plugin.examples.QueryViewComponent"/>
+	            <Component label="SHACL Text Editor">
+	                <Property id="pluginId" value="at.ac.tuwien.shacl.plugin.QueryViewComponent"/>
+	            </Component>
+	            <Component label="SHACL Query Log">
+	                <Property id="pluginId" value="at.ac.tuwien.shacl.plugin.LogViewComponent"/>
 	            </Component>
             </CNode>
             <CNode>
-               	<Component label="SHACL Query Log">
-	                <Property id="pluginId" value="protege.plugin.examples.LogViewComponent"/>
-	            </Component>
+                <Component label="Turtle Rendering">
+                	<Property id="pluginId" value="at.ac.tuwien.shacl.plugin.TurtleRenderingViewComponent"/>
+            	</Component>
+                <Component label="Ontology Prefixes">
+                	<Property id="pluginId" value="org.protege.editor.owl.OWLOntologyPrefixesView"/>
+            	</Component>
             </CNode>
         </HSNode>
     </VSNode>
