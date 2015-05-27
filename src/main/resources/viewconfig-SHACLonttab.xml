@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <VSNode splits="0.25 0.75">
+        <HSNode splits="0.5 0.5">
+            <CNode>
+                <Component label="Class hierarchy">
+                	<Property id="pluginId" value="org.protege.editor.owl.OWLAssertedClassHierarchy"/>
+            	</Component>
+            </CNode>
+            <CNode>
+                <Component label="Individuals">
+                	<Property id="pluginId" value="org.protege.editor.owl.OWLMembersList"/>
+            	</Component>
+            </CNode>
+        </HSNode>
+        
+        <HSNode splits="0.7 0.3">
+            <CNode>
+	            <Component label="SHACL Text Editor">
+	                <Property id="pluginId" value="at.ac.tuwien.shacl.plugin.QueryViewComponent"/>
+	            </Component>
+	            <Component label="SHACL constraint violations">
+	                <Property id="pluginId" value="at.ac.tuwien.shacl.plugin.ShaclConstraintViolationViewComponent"/>
+	            </Component>
+            </CNode>
+            <CNode>
+                <Component label="Turtle Rendering">
+                	<Property id="pluginId" value="at.ac.tuwien.shacl.plugin.TurtleRenderingViewComponent"/>
+            	</Component>
+                <Component label="Ontology Prefixes">
+                	<Property id="pluginId" value="org.protege.editor.owl.OWLOntologyPrefixesView"/>
+            	</Component>
+            </CNode>
+        </HSNode>
+    </VSNode>
+</layout>

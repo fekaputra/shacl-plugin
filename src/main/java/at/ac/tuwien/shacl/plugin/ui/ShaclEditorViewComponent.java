@@ -5,20 +5,20 @@ import java.awt.BorderLayout;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 
-public class LogViewComponent extends AbstractOWLViewComponent {
+public class ShaclEditorViewComponent extends AbstractOWLViewComponent {
 	private static final long serialVersionUID = 3718949171901002345L;
 	private static final Logger log = Logger.getLogger(QueryViewComponent.class);
-	private LogPanel logPanel;
+	private ShaclEditorPanel editorPanel;
 
 	@Override
 	protected void initialiseOWLView() throws Exception {
 		setLayout(new BorderLayout());
-		logPanel = new LogPanel(getOWLModelManager());
-		add(logPanel, BorderLayout.CENTER);
+		editorPanel = new ShaclEditorPanel(getOWLModelManager());
+		add(editorPanel, BorderLayout.CENTER);
 	}
 	
 	@Override
 	protected void disposeOWLView() {
-		logPanel.dispose();
+		editorPanel.dispose();
 	}
 }
