@@ -5,10 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -16,21 +14,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
 import org.apache.log4j.Logger;
-import org.coode.owlapi.turtle.TurtleOntologyFormat;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
 import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
 import at.ac.tuwien.shacl.plugin.syntax.SHACLModelFactory;
 import at.ac.tuwien.shacl.validation.SHACLValidator;
 
-import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
@@ -95,21 +88,30 @@ public class QueryPanel extends JPanel {
         errorPane.setBackground(null);
         errorPane.setEditable(false);
         errorPane.setText("this is the error log");
+        
+        
     }
 
     private void execute() {
     	OWLOntology ont = modelManager.getActiveOntology();
 
     	JenaOwlConverter converter = new JenaOwlConverter();
-        Model jenamodel = converter.ModelOwlToJenaConvert2(ont, "TURTLE");
+    	
+        Model ontologyModel = converter.ModelOwlToJenaConvert2(ont, "TURTLE");
+        Model constraintModel = ModelFactory.createDefaultModel();
 
     	ByteArrayOutputStream out = new ByteArrayOutputStream();
-		jenamodel.write(out, "TURTLE");
-		editorPane.setText(out.toString());
-		
-		//FIXME these two lines make Protege throw an exception
-		SHACLValidator validator = new SHACLValidator(jenamodel);
+		ontologyModel.write(out, "TURTLE");
+
+        constraintModel.read(new ByteArrayInputStream(editorPane.getText().getBytes()), "", "TURTLE");
+        constraintModel.add(ontologyModel);
+
+		SHACLValidator validator = new SHACLValidator(constraintModel);
+		out = new ByteArrayOutputStream();
 		Model errorModel = validator.validateGraph();
+
+		errorModel.write(out, "TURTLE");
+		errorPane.setText(out.toString());
 		
 		log.info("done");
     }
