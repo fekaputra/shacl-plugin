@@ -7,7 +7,7 @@ import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 
 public class ShaclConstraintViolationViewComponent extends AbstractOWLViewComponent {
 	private static final long serialVersionUID = 3718949171901002345L;
-	private static final Logger log = Logger.getLogger(QueryViewComponent.class);
+	private static final Logger log = Logger.getLogger(ShaclConstraintViolationViewComponent.class);
 	private ShaclConstraintViolationPanel logPanel;
 
 	@Override

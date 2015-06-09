@@ -18,6 +18,7 @@ public class ToolsMenu3 extends ProtegeOWLAction {
 	public void dispose() throws Exception {
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent event) {
 		StringBuffer message = new StringBuffer(
 				"This example menu item is under the Tools menu, but displayed in a separate category from the other example menu items.\n");

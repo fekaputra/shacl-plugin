@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout>
-    <VSNode splits="0.25 0.75">
+    <VSNode splits="0.2 0.45 0.35">
         <HSNode splits="0.5 0.5">
             <CNode>
                 <Component label="Class hierarchy">
@@ -13,20 +13,25 @@
             	</Component>
             </CNode>
         </HSNode>
-        
-        <HSNode splits="0.7 0.3">
+        <HSNode splits="0.75 0.25">
             <CNode>
-	            <Component label="SHACL Text Editor">
-	                <Property id="pluginId" value="at.ac.tuwien.shacl.plugin.QueryViewComponent"/>
+	            <Component label="SHACL editor">
+	                <Property id="pluginId" value="at.ac.tuwien.shacl.plugin.ShaclEditorViewComponent"/>
 	            </Component>
+            </CNode>
+            <CNode>
 	            <Component label="SHACL constraint violations">
 	                <Property id="pluginId" value="at.ac.tuwien.shacl.plugin.ShaclConstraintViolationViewComponent"/>
 	            </Component>
             </CNode>
+        </HSNode>
+        <HSNode splits="0.75 0.25">
             <CNode>
                 <Component label="Turtle Rendering">
                 	<Property id="pluginId" value="at.ac.tuwien.shacl.plugin.TurtleRenderingViewComponent"/>
             	</Component>
+            </CNode>
+            <CNode>
                 <Component label="Ontology Prefixes">
                 	<Property id="pluginId" value="org.protege.editor.owl.OWLOntologyPrefixesView"/>
             	</Component>

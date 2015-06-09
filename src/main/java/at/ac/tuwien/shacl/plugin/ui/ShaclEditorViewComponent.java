@@ -7,7 +7,7 @@ import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 
 public class ShaclEditorViewComponent extends AbstractOWLViewComponent {
 	private static final long serialVersionUID = 3718949171901002345L;
-	private static final Logger log = Logger.getLogger(QueryViewComponent.class);
+	private static final Logger log = Logger.getLogger(ShaclEditorViewComponent.class);
 	private ShaclEditorPanel editorPanel;
 
 	@Override

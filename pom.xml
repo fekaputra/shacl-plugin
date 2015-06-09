@@ -36,8 +36,6 @@
 	    	<groupId>at.ac.tuwien.ame</groupId>
   			<artifactId>at.ac.tuwien.shacl</artifactId>
   			<version>0.0.1-SNAPSHOT</version>
-<!--             <systemPath>${project.basedir}/lib/at.ac.tuwien.shacl-0.0.1-SNAPSHOT.jar</systemPath> -->
-<!-- 			<scope>system</scope> -->
 		</dependency>
 	</dependencies>
 	

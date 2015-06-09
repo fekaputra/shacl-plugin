@@ -6,7 +6,7 @@
 	<!-- Tabs -->
 	
 	<extension id="SHACLOntologyTab" point="org.protege.editor.core.application.WorkspaceTab">
-		<label value="SHACL Ontology Constraints"/>
+		<label value="SHACL Editor"/>
 		<class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
 		<index value="Z"/>
 		<editorKitId value="OWLEditorKit"/>
@@ -14,7 +14,7 @@
    </extension>
    
    <extension id="SHACLTab" point="org.protege.editor.core.application.WorkspaceTab">
-		<label value="SHACL Constraint Editor"/>
+		<label value="Minimal SHACL Editor"/>
 		<class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
 		<index value="Z"/>
 		<editorKitId value="OWLEditorKit"/>
@@ -27,14 +27,6 @@
 		<index value="X"/>
 		<editorKitId value="OWLEditorKit"/>
 		<defaultViewConfigFileName value="viewconfig-exampletab.xml"/>
-   </extension>
-
-	<extension id="ExampleWorkspaceTab2" point="org.protege.editor.core.application.WorkspaceTab">
-		<label value="Example Tab (2)"/>
-		<class value="edu.stanford.bmir.protege.examples.tab.ExampleWorkspaceTab2"/>
-		<index value="Y"/>
-		<editorKitId value="OWLEditorKit"/>
-		<defaultViewConfigFileName value="viewconfig-exampletab2.xml"/>
    </extension>
 
 	<!-- View -->
@@ -52,13 +44,6 @@
 		<headerColor value="@org.protege.ontologycolor"/>
 	</extension>
 	
-	<extension id="QueryViewComponent" point="org.protege.editor.core.application.ViewComponent">
-		<label value="SHACL query" />
-		<class value="at.ac.tuwien.shacl.plugin.ui.QueryViewComponent" />
-		<headerColor value="@org.protege.ontologycolor"/>
-		<category value="@org.protege.ontologycategory" />
-	</extension>
-	
 	<extension id="TurtleRenderingViewComponent" point="org.protege.editor.core.application.ViewComponent">
 		<label value="Turtle rendering" />
 		<class value="at.ac.tuwien.shacl.plugin.ui.TurtleRenderingViewComponent" />
@@ -67,7 +52,7 @@
 	</extension>
 
 	<extension id="ShaclEditorViewComponent" point="org.protege.editor.core.application.ViewComponent">
-		<label value="SHACL constraints editor" />
+		<label value="SHACL editor" />
 		<class value="at.ac.tuwien.shacl.plugin.ui.ShaclEditorViewComponent" />
 		<headerColor value="@org.protege.ontologycolor"/>
 	</extension>

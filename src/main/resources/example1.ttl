@@ -1,0 +1,46 @@
+﻿@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ex:    <http://www.example.org/#> .
+
+###### example SHACL definition with rdf:type and sh:scopeClass shape selector ######
+ex:AllowedValuesExampleShape
+	a sh:Shape ;
+	sh:scopeClass ex:ExampleClass;
+	sh:property [
+		sh:predicate ex:someProperty ;
+		sh:allowedValues ( ex:Value1 ex:Value2 ex:Value3 ) ;
+	] .
+
+ex:ExampleClass
+	a rdfs:Class.
+
+ex:AllowedValuesExampleValidResource
+	a ex:ExampleClass;
+	ex:someProperty ex:Value1 .
+
+###### example SHACL definition with sh:ShapeClass and rdf:type shape selector ######
+###### this example will return a constraint violation ######
+ex:UniqueEmailShape
+	a sh:ShapeClass ;
+	sh:constraint [
+		sh:message "There cannot be two resources with the same email address." ;
+		sh:predicate ex:email ;
+		sh:sparql """
+			SELECT ?this (?this AS ?subject) (?email AS ?object)
+			WHERE {
+				?this ex:email ?email .
+				?other ex:email ?email .
+				FILTER (?this != ?other) .
+			}
+			"""
+	] .
+
+ex:Resource1
+	a ex:UniqueEmailShape ;
+	ex:email "abc@abc.com".
+
+ex:Resource2
+	a ex:UniqueEmailShape;
+	ex:email "abc@abc.com".

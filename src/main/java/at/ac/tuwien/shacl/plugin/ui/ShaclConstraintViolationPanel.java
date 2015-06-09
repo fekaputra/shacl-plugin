@@ -16,7 +16,7 @@ public class ShaclConstraintViolationPanel extends JPanel implements ShaclCallba
 
 	private static final long serialVersionUID = -7480637999509009997L;
 	private JTextArea textArea = new JTextArea();
-	private static final Logger log = Logger.getLogger(QueryPanel.class);
+	private static final Logger log = Logger.getLogger(ShaclConstraintViolationPanel.class);
     
     public ShaclConstraintViolationPanel(OWLModelManager modelManager) {
     	setLayout(new BorderLayout());
@@ -25,7 +25,7 @@ public class ShaclConstraintViolationPanel extends JPanel implements ShaclCallba
         textArea.setEnabled(true);
         JScrollPane scroll = new JScrollPane(textArea); 
         add(scroll, BorderLayout.CENTER);
-        ShaclCallbackNotifier.register(this);
+        ShaclCallbackNotifier.setListener(this);
     }
     
     public void dispose() {
