@@ -1,7 +1,5 @@
 package at.ac.tuwien.shacl.plugin.ui.util;
 
-import java.util.HashSet;
-import java.util.Set;
 
 public class  ShaclCallbackNotifier {
 	//private static Set<ShaclCallbackListener> listeners = new HashSet<ShaclCallbackListener>();

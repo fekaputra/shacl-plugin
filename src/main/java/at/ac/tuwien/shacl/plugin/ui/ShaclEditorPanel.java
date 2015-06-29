@@ -43,6 +43,17 @@ public class ShaclEditorPanel extends JPanel {
     private ActionListener execButtonAction = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			if(validator == null) {
+				//wait for validator thread to finish, so the validator is not null when used
+	            try {
+	    			thread.join();
+	    			
+	    			thread = null;
+	    		} catch (InterruptedException exc) {
+	    			exc.printStackTrace();
+	    		}
+			}
+			
             validateGraph();
         }
     };
@@ -88,13 +99,6 @@ public class ShaclEditorPanel extends JPanel {
     
     private void validateGraph() {
     	try {
-    		//wait for validator thread to finish, so the validator is not null
-            try {
-    			thread.join();
-    		} catch (InterruptedException e) {
-    			e.printStackTrace();
-    		}
-    		
 	    	JenaOwlConverter converter = new JenaOwlConverter();
 	
 			OWLOntology ont = modelManager.getActiveOntology();
@@ -107,7 +111,7 @@ public class ShaclEditorPanel extends JPanel {
 			Model errorModel = validator.validateGraph(constraintModel);
 
 			String message;
-			System.out.println("validation finished");
+			log.info("validation finished");
 			
 			if(errorModel.isEmpty()) {
 				message = "no constraint violations";
@@ -118,13 +122,13 @@ public class ShaclEditorPanel extends JPanel {
 			}
 			
 			ShaclCallbackNotifier.notify(message);
-    	} catch(RiotException | SHACLParsingException e) {
+    	} catch(RiotException e) {
     		ShaclCallbackNotifier.notify(e.getLocalizedMessage());
     		System.out.println(e.getLocalizedMessage());
-    		//ErrorDialog ed = new ErrorDialog();
-    		//ed.showDialog(e.getLocalizedMessage());
     	} catch(QueryException e) {
     		ShaclCallbackNotifier.notify("Encountered query error: "+e.getLocalizedMessage());
+    	} catch(Exception e) {
+    		ShaclCallbackNotifier.notify("Something went wrong. Please check the error log for more information.");
     	}
     }
     
@@ -134,7 +138,7 @@ public class ShaclEditorPanel extends JPanel {
     private class SHACLValidatorInitializer implements Runnable {
 		@Override
 		public void run() {
-			SHACLValidator validator = SHACLValidator.getValidator();
+			SHACLValidator validator = SHACLValidator.getDefaultValidator();
 			ShaclEditorPanel.this.validator = validator;
 		}
     }
