@@ -3,12 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<groupId>at.ac.tuwien.ame</groupId>
-	<artifactId>at.ac.tuwien.shacl.plugin</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<artifactId>shacl-plugin</artifactId>
+	<version>0.1.1-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
 	<name>SHACL Protege Plugin</name>
 	<description>SHACL Plugin for the Protege Desktop ontology editor</description>
+	<url>https://github.com/fekaputra/shacl-plugin/</url>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
