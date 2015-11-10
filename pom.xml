@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<groupId>at.ac.tuwien.ame</groupId>
-	<artifactId>shacl-plugin</artifactId>
+	<artifactId>at.ac.tuwien.shacl.plugin</artifactId>
 	<version>0.1.1-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
