@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.topbraid</groupId>
+	<artifactId>shacl</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>bundle</packaging>
+
+	<name>TopBraid SHACL API</name>
+	<url>http://topbraid.org/shacl/api</url>
+
+ 	<organization>
+		<name>TopQuadrant, Inc.</name>
+		<url>http://topquadrant.com</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>Apache License 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+	    	<artifactId>jena-osgi</artifactId>
+	    	<version>2.13.0-Protege</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+	<build>
+	  	<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		
+			<plugin>
+	        <groupId>org.apache.felix</groupId>
+	        <artifactId>maven-bundle-plugin</artifactId>
+	        <version>2.5.3</version>
+	        <extensions>true</extensions>
+	        <configuration>
+	          <instructions>
+	            <Import-Package>
+	            *
+	            </Import-Package>
+	          </instructions>
+	          <executions>
+	          <execution>
+	            <id>bundle-manifest</id>
+	            <phase>process-classes</phase>
+	            <goals>
+	              <goal>manifest</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+	        </configuration>
+	      </plugin>
+		</plugins>
+	  </build>
+</project>
