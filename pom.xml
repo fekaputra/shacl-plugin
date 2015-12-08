@@ -38,6 +38,17 @@
 			<artifactId>shacl</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>xml-resolver</groupId>
+			<artifactId>xml-resolver</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+			<version>1.4.01</version>
+		</dependency>
+				
 	</dependencies>
 	
 	<build>
@@ -77,6 +88,15 @@
 							org.protege.editor.owl.*;version="4.3", <!-- equivalent to [4.3,infinity) -->
 							*
 						</Import-Package>
+			            <Export-Package>
+			            	org.apache.xml.*,
+			            	sun.io,
+			            	org.apache.xerces.*,
+			            	org.topbraid.*
+			            </Export-Package>
+            			<Embed-Dependency>
+            				xml-apis
+            			</Embed-Dependency>
 						
 						<_noee>true</_noee>
 					</instructions>
