@@ -30,12 +30,11 @@
         <dependency>
 	    	<groupId>org.apache.jena</groupId>
 	    	<artifactId>jena-osgi</artifactId>
-	    	<version>2.13.0</version>
-	    	<type>bundle</type>
+	    	<version>2.13.0-Protege</version>
 		</dependency>
 		<dependency>
 	    	<groupId>at.ac.tuwien.ame</groupId>
-  			<artifactId>at.ac.tuwien.shacl</artifactId>
+  			<artifactId>shacl-engine</artifactId>
   			<version>0.3.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
@@ -77,7 +76,7 @@
 							org.protege.editor.owl.*;version="4.3", <!-- equivalent to [4.3,infinity) -->
 							*
 						</Import-Package>
-						
+						<Embed-Dependency>shacl-engine</Embed-Dependency>			
 						<_noee>true</_noee>
 					</instructions>
 					<executions>
