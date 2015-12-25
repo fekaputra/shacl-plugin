@@ -1,19 +1,16 @@
 package at.ac.tuwien.shacl.plugin.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.net.URI;
-import java.util.UUID;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-
+import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
+import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
+import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
+import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
+import com.hp.hpl.jena.graph.Graph;
+import com.hp.hpl.jena.graph.compose.MultiUnion;
+import com.hp.hpl.jena.query.Dataset;
+import com.hp.hpl.jena.query.QueryException;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.util.FileUtils;
 import org.apache.jena.riot.RiotException;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
@@ -24,17 +21,13 @@ import org.topbraid.shacl.vocabulary.SH;
 import org.topbraid.spin.arq.ARQFactory;
 import org.topbraid.spin.util.JenaUtil;
 
-import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
-import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
-import at.ac.tuwien.shacl.plugin.ui.util.ShaclCallbackNotifier;
-
-import com.hp.hpl.jena.graph.Graph;
-import com.hp.hpl.jena.graph.compose.MultiUnion;
-import com.hp.hpl.jena.query.Dataset;
-import com.hp.hpl.jena.query.QueryException;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.util.FileUtils;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
+import java.net.URI;
+import java.util.UUID;
 
 public class ShaclEditorPanel extends JPanel {
     private static final long serialVersionUID = -2739474730975140803L;
@@ -81,8 +74,8 @@ public class ShaclEditorPanel extends JPanel {
     
     private void init(OWLModelManager modelManager) {
     	//init shacl validator in its own thread, because it takes a while
-    	this.thread = new Thread(new SHACLValidatorInitializer());
-    	thread.start();
+    	//this.thread = new Thread(new SHACLValidatorInitializer());
+    	//thread.start();
     	
     	setLayout(new BorderLayout());
 
@@ -108,47 +101,21 @@ public class ShaclEditorPanel extends JPanel {
     
     private void validateGraph() {
     	try {
-//	    	JenaOwlConverter converter = new JenaOwlConverter();
-//	
-//			OWLOntology ont = modelManager.getActiveOntology();
-//	        Model ontologyModel = converter.ModelOwlToJenaConvert2(ont, "TURTLE");
-//	
-//	        Model constraintModel = ModelFactory.createDefaultModel();
-//	        constraintModel.read(new ByteArrayInputStream(editorPane.getText().getBytes()), "", "TURTLE");
-//	        constraintModel.add(ontologyModel);
-//
-//			Model errorModel = validator.validateGraph(constraintModel);
-
-			String message;
-			log.info("validation finished");
-			
 			JenaOwlConverter converter = new JenaOwlConverter();
-			
-			// Load the main data model
-			//Model dataModel = JenaUtil.createMemoryModel();
-			//dataModel.read(getClass().getResourceAsStream("/shaclsquare.ttl"), "urn:dummy", FileUtils.langTurtle);
-			
+
 			OWLOntology ont = modelManager.getActiveOntology();
 	        Model dataModel = converter.ModelOwlToJenaConvert2(ont, "TURTLE");
-//	
-	        //Model dataModel = ModelFactory.createDefaultModel();
-	        //dataModel.read(new ByteArrayInputStream(editorPane.getText().getBytes()), "", "TURTLE");
-	        //constraintModel.add(ontologyModel);
-			
+
 			// Load the shapes Model (here, includes the dataModel because that has templates in it)
 			Model shaclModel = JenaUtil.createDefaultModel();
 			shaclModel.read(new ByteArrayInputStream(editorPane.getText().getBytes()), SH.BASE_URI, FileUtils.langTurtle);
-			
-//			Model constraintModel = ModelFactory.createDefaultModel();
-//	        constraintModel.read(new ByteArrayInputStream(editorPane.getText().getBytes()), "", "TURTLE");
-//	        constraintModel.add(ontologyModel);
 			
 			MultiUnion unionGraph = new MultiUnion(new Graph[] {
 				shaclModel.getGraph(),
 				dataModel.getGraph()
 			});
 			Model shapesModel = ModelFactory.createModelForGraph(unionGraph);
-			
+
 			// Note that we don't perform validation of the shape definitions themselves.
 			// To do that, activate the following line to make sure that all required triples are present:
 			// dataModel = SHACLUtil.withDefaultValueTypeInferences(shapesModel);
@@ -163,25 +130,17 @@ public class ShaclEditorPanel extends JPanel {
 			dataset.addNamedModel(shapesGraphURI.toString(), shapesModel);
 			
 			// Run the validator and print results
-			Model errorModel = ModelConstraintValidator.get().validateModel(dataset, shapesGraphURI, null, false, null);
-			// System.out.println(ModelPrinter.get().print(results));
-			
-			if(errorModel.isEmpty()) {
-				message = "no constraint violations";
-			} else {
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				errorModel.write(out, "TURTLE");
-				message = out.toString();
-			}
-			
-			ShaclCallbackNotifier.notify(message);
+			//Model errorModel = ModelConstraintValidator.get().validateModel(dataset, shapesGraphURI, null, false, null);
+
+			ShaclValidationRegistry.getValidator().runValidation(dataset, shapesGraphURI);
+
+			log.info("validation finished");
     	} catch(RiotException e) {
-    		ShaclCallbackNotifier.notify(e.getLocalizedMessage());
-    		System.out.println(e.getLocalizedMessage());
+			ErrorNotifier.notify(e.getLocalizedMessage());
     	} catch(QueryException e) {
-    		ShaclCallbackNotifier.notify("Encountered query error: "+e.getLocalizedMessage());
+			ErrorNotifier.notify("Encountered query error: "+e.getLocalizedMessage());
     	} catch(Exception e) {
-    		ShaclCallbackNotifier.notify("Something went wrong. Please check the error log for more information.");
+			ErrorNotifier.notify("Something went wrong. Please check the error log for more information.");
     	}
     }
     

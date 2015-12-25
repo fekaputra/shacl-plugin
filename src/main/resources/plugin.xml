@@ -27,13 +27,13 @@
 		<class value="at.ac.tuwien.shacl.plugin.ui.ShaclConstraintViolationViewComponent" />
 		<headerColor value="@org.protege.ontologycolor"/>
 	</extension>
-	
-	<extension id="TurtleRenderingViewComponent" point="org.protege.editor.core.application.ViewComponent">
-		<label value="Turtle rendering" />
-		<class value="at.ac.tuwien.shacl.plugin.ui.TurtleRenderingViewComponent" />
-		<headerColor value="@org.protege.ontologycolor"/>
-		<category value="@org.protege.ontologycategory" />
-	</extension>
+
+	<!--<extension id="TurtleRenderingViewComponent" point="org.protege.editor.core.application.ViewComponent">-->
+		<!--<label value="Turtle rendering" />-->
+		<!--<class value="at.ac.tuwien.shacl.plugin.ui.TurtleRenderingViewComponent" />-->
+		<!--<headerColor value="@org.protege.ontologycolor"/>-->
+		<!--<category value="@org.protege.ontologycategory" />-->
+	<!--</extension>-->
 
 	<extension id="ShaclEditorViewComponent" point="org.protege.editor.core.application.ViewComponent">
 		<label value="SHACL editor" />
