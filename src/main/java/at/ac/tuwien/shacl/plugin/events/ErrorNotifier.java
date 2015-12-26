@@ -4,7 +4,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by xlin on 25.12.2015.
+ * Notifier for passing error events. Implementing the observable part of the observer pattern.
  */
 public class ErrorNotifier extends Observable {
     private static ErrorNotifier notifier = new ErrorNotifier();
