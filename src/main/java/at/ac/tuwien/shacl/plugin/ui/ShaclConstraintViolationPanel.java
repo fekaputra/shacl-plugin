@@ -8,7 +8,6 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDF;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.prefix.PrefixUtilities;
 import org.topbraid.shacl.vocabulary.SH;
 
 import javax.swing.*;
@@ -27,14 +26,22 @@ public class ShaclConstraintViolationPanel extends JPanel {
 	private static final long serialVersionUID = -7480637999509009997L;
 	private static final Logger log = Logger.getLogger(ShaclConstraintViolationPanel.class);
 
-    private OWLModelManager modelManager;
-
     /**
-     * Table showing the constraint violations.
+     * Table view showing the constraint violations.
      */
     private JTable table;
 
-    //TODO show URIs with prefixes -> issue: result model doesn't contain prefixes,fetch them from somewhere else
+    /**
+     * Get a qualified name for an URI, if it exists, otherwise just return the original string.
+     *
+     * @param model Model containing the prefixes
+     * @param string String to be checked for a qname
+     * @return qname if one exists, otherwise the original string
+     */
+    private String getQName(Model model, String string) {
+        return model.qnameFor(string) == null ? string : model.qnameFor(string);
+    }
+
     //TODO link table selection with events
     private Observer shaclObserver = new Observer() {
         /**
@@ -45,10 +52,6 @@ public class ShaclConstraintViolationPanel extends JPanel {
          */
         @Override
         public void update(Observable o, Object arg) {
-            System.out.println("axioms: "+modelManager.getActiveOntology().getAxiomCount());
-            //TODO doesn't work, prefixes always empty
-            System.out.println(modelManager.getOWLOntologyManager().getOntologyFormat(modelManager.getActiveOntology()).asPrefixOWLOntologyFormat().getPrefixNames());
-
             Model model = (Model) arg;
 
             //clear table
@@ -59,15 +62,15 @@ public class ShaclConstraintViolationPanel extends JPanel {
                 Vector<String> row = new Vector<>();
                 Resource subject = stmt.getSubject();
 
-                row.add(subject.getProperty(SH.message).getObject().toString());
-                row.add(subject.getProperty(SH.focusNode).getObject().toString());
-                row.add(subject.getProperty(SH.subject).getObject().toString());
-                row.add(subject.getProperty(SH.predicate).getObject().toString());
-                row.add(subject.getProperty(SH.object).getObject().toString());
-                row.add(subject.getProperty(SH.severity).getObject().toString());
-                row.add(subject.getProperty(SH.sourceConstraint).getObject().toString());
-                row.add(subject.getProperty(SH.sourceShape).getObject().toString());
-                row.add(subject.getProperty(SH.sourceTemplate).getObject().toString());
+                row.add(getQName(model, subject.getProperty(SH.message).getObject().toString()));
+                row.add(getQName(model, subject.getProperty(SH.focusNode).getObject().toString()));
+                row.add(getQName(model, subject.getProperty(SH.subject).getObject().toString()));
+                row.add(getQName(model, subject.getProperty(SH.predicate).getObject().toString()));
+                row.add(getQName(model, subject.getProperty(SH.object).getObject().toString()));
+                row.add(getQName(model, subject.getProperty(SH.severity).getObject().toString()));
+                row.add(getQName(model, subject.getProperty(SH.sourceConstraint).getObject().toString()));
+                row.add(getQName(model, subject.getProperty(SH.sourceShape).getObject().toString()));
+                row.add(getQName(model, subject.getProperty(SH.sourceTemplate).getObject().toString()));
 
                 ((DefaultTableModel)table.getModel()).addRow(row);
             }
@@ -82,8 +85,6 @@ public class ShaclConstraintViolationPanel extends JPanel {
     };
 
     public ShaclConstraintViolationPanel(OWLModelManager modelManager) {
-        this.modelManager = modelManager;
-
         String[] headers = {
                 "Message", "FocusNode", "Subject", "Object", "Predicate", "Severity", "SourceConstraint",
                 "SourceShape", "SourceTemplate"
@@ -110,7 +111,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
     }
 
     /**
-     * Initialize all services this class wants to subscribe.
+     *  Register to all services this class wants to subscribe.
      */
     private void initObservers() {
         //register to events from shacl validation

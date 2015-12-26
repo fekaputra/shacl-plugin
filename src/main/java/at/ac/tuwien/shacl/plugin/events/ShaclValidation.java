@@ -66,6 +66,9 @@ public class ShaclValidation extends Observable {
 
         Model results = ModelConstraintValidator.get().validateModel(dataset1, shapesGraphURI, null, false, null);
 
+        //add prefixes to results, so that views can display qualified names instead of URIs for better usability
+        results.setNsPrefixes(shapesModel.getNsPrefixMap());
+
         System.out.println("validation finished...");
         this.setChanged();
         this.notifyObservers(results);
