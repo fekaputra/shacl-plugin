@@ -25,22 +25,22 @@
 	            </Component>
             </CNode>
         </HSNode>
-        <CNode>
-            <Component label="Ontology Prefixes">
-                <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyPrefixesView"/>
-            </Component>
-        </CNode>
-        <!--<HSNode splits="0.75 0.25">-->
-            <!--<CNode>-->
-                <!--<Component label="Turtle Rendering">-->
-                	<!--<Property id="pluginId" value="at.ac.tuwien.shacl.plugin.TurtleRenderingViewComponent"/>-->
-            	<!--</Component>-->
-            <!--</CNode>-->
-            <!--<CNode>-->
-                <!--<Component label="Ontology Prefixes">-->
-                    <!--<Property id="pluginId" value="org.protege.editor.owl.OWLOntologyPrefixesView"/>-->
-                <!--</Component>-->
-            <!--</CNode>-->
-        <!--</HSNode>-->
+        <!--<CNode>-->
+            <!--<Component label="Ontology Prefixes">-->
+                <!--<Property id="pluginId" value="org.protege.editor.owl.OWLOntologyPrefixesView"/>-->
+            <!--</Component>-->
+        <!--</CNode>-->
+        <HSNode splits="0.50 0.50">
+            <CNode>
+                <Component label="Constraints">
+                	<Property id="pluginId" value="at.ac.tuwien.shacl.plugin.ShaclConstraintPickerViewComponent"/>
+            	</Component>
+            </CNode>
+            <CNode>
+                <Component label="Ontology prefixes">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyPrefixesView"/>
+                </Component>
+            </CNode>
+        </HSNode>
     </VSNode>
 </layout>

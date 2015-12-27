@@ -40,5 +40,11 @@
 		<class value="at.ac.tuwien.shacl.plugin.ui.ShaclEditorViewComponent" />
 		<headerColor value="@org.protege.ontologycolor"/>
 	</extension>
+
+	<extension id="ShaclConstraintPickerViewComponent" point="org.protege.editor.core.application.ViewComponent">
+		<label value="Constraints" />
+		<class value="at.ac.tuwien.shacl.plugin.ui.ShaclConstraintPickerViewComponent" />
+		<headerColor value="@org.protege.ontologycolor"/>
+	</extension>
     
 </plugin>
