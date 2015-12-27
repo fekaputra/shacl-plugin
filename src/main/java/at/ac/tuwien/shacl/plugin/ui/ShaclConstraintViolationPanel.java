@@ -6,7 +6,6 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDF;
-import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.topbraid.shacl.vocabulary.SH;
 
@@ -22,10 +21,6 @@ import java.util.Vector;
  * Panel for the constraint violations.
  */
 public class ShaclConstraintViolationPanel extends JPanel {
-
-	private static final long serialVersionUID = -7480637999509009997L;
-	private static final Logger log = Logger.getLogger(ShaclConstraintViolationPanel.class);
-
     /**
      * Table view showing the constraint violations.
      */
@@ -85,6 +80,8 @@ public class ShaclConstraintViolationPanel extends JPanel {
     };
 
     public ShaclConstraintViolationPanel(OWLModelManager modelManager) {
+        System.out.println(modelManager.getActiveOntology().getAxioms());
+
         String[] headers = {
                 "Message", "FocusNode", "Subject", "Object", "Predicate", "Severity", "SourceConstraint",
                 "SourceShape", "SourceTemplate"
@@ -100,14 +97,14 @@ public class ShaclConstraintViolationPanel extends JPanel {
             }
         };
 
-        this.initObservers();
-
     	setLayout(new BorderLayout());
 
         table.setAutoscrolls(true);
 
         JScrollPane scroll = new JScrollPane(table);
         add(scroll, BorderLayout.CENTER);
+
+        this.initObservers();
     }
 
     /**

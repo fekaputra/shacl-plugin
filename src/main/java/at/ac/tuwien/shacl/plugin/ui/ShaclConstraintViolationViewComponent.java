@@ -7,26 +7,23 @@ import org.protege.editor.owl.ui.view.AbstractActiveOntologyViewComponent;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 import org.semanticweb.owlapi.model.OWLOntology;
 
-public class ShaclConstraintViolationViewComponent extends AbstractActiveOntologyViewComponent {
+/**
+ * Link to the plugin.xml for the constraint violation table.
+ */
+public class ShaclConstraintViolationViewComponent extends AbstractOWLViewComponent {
 	private static final long serialVersionUID = 3718949171901002345L;
-	private static final Logger log = Logger.getLogger(ShaclConstraintViolationViewComponent.class);
-	private ShaclConstraintViolationPanel logPanel;
+	private ShaclConstraintViolationPanel violationsPanel;
 
 	@Override
-	protected void initialiseOntologyView() throws Exception {
-		setLayout(new BorderLayout());
-		logPanel = new ShaclConstraintViolationPanel(getOWLModelManager());
+	protected void initialiseOWLView() throws Exception {
+		violationsPanel = new ShaclConstraintViolationPanel(getOWLModelManager());
 
-		add(logPanel, BorderLayout.CENTER);
+		this.setLayout(new BorderLayout());
+		this.add(violationsPanel, BorderLayout.CENTER);
 	}
 
 	@Override
-	protected void disposeOntologyView() {
-		logPanel.dispose();
-	}
-
-	@Override
-	protected void updateView(OWLOntology activeOntology) throws Exception {
-
+	protected void disposeOWLView() {
+		violationsPanel.dispose();
 	}
 }
