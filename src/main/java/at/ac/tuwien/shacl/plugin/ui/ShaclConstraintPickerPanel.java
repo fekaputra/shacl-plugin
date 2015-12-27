@@ -1,7 +1,6 @@
 package at.ac.tuwien.shacl.plugin.ui;
 
 import at.ac.tuwien.shacl.plugin.events.DefaultListPublisher;
-import org.apache.log4j.Logger;
 import org.protege.editor.owl.ui.OWLIcons;
 
 import javax.swing.*;
@@ -29,13 +28,12 @@ public class ShaclConstraintPickerPanel extends JPanel {
         list = new JList<>(publisherModel.getModel());
         JScrollPane scroll = new JScrollPane(list);
 
-        this.setLayout(new BorderLayout());
-
         JToolBar toolbar = new JToolBar();
         toolbar.add(new AddConstraintAction("Add constraint", OWLIcons.getIcon("individual.add.png")));
         toolbar.add(new DeleteConstraintAction("Delete constraint", OWLIcons.getIcon("individual.delete.png")));
         toolbar.add(new ImportConstraintFileAction("Import constraint", OWLIcons.getIcon("DefinedOWLClass.gif")));
 
+        this.setLayout(new BorderLayout());
         this.add(toolbar, BorderLayout.NORTH);
         this.add(scroll, BorderLayout.CENTER);
     }
@@ -93,6 +91,8 @@ public class ShaclConstraintPickerPanel extends JPanel {
 
     /**
      * Defines the import constraint action and its behavior, when user clicks on it.
+     *
+     * //TODO move import functionality to add constraint dialog
      */
     private class ImportConstraintFileAction extends AbstractAction {
         public ImportConstraintFileAction(String name, Icon icon) {

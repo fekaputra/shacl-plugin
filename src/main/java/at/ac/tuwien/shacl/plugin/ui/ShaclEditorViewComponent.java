@@ -5,9 +5,11 @@ import java.awt.BorderLayout;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 
+/**
+ * Links the SHACL text editor view with the plugin.xml file.
+ */
 public class ShaclEditorViewComponent extends AbstractOWLViewComponent {
 	private static final long serialVersionUID = 3718949171901002345L;
-	private static final Logger log = Logger.getLogger(ShaclEditorViewComponent.class);
 	private ShaclEditorPanel editorPanel;
 
 	@Override

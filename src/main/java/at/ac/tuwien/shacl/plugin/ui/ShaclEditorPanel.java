@@ -34,12 +34,9 @@ public class ShaclEditorPanel extends JPanel {
     
     private JButton execButton = new JButton("Validate");
     private JTextPane editorPane = new JTextPane();
-    
-    private static final Logger log = Logger.getLogger(ShaclEditorPanel.class);
-    
+
     private OWLModelManager modelManager;
-    
-//    private SHACLValidator validator;
+
     private Thread thread;
 
     private ActionListener execButtonAction = new ActionListener() {
@@ -77,7 +74,7 @@ public class ShaclEditorPanel extends JPanel {
     	//this.thread = new Thread(new SHACLValidatorInitializer());
     	//thread.start();
     	
-    	setLayout(new BorderLayout());
+    	this.setLayout(new BorderLayout());
 
         Font font = new Font(Font.MONOSPACED, getFont().getStyle(), getFont().getSize());
 
@@ -106,53 +103,30 @@ public class ShaclEditorPanel extends JPanel {
 			OWLOntology ont = modelManager.getActiveOntology();
 	        Model dataModel = converter.ModelOwlToJenaConvert2(ont, "TURTLE");
 
-			// Load the shapes Model (here, includes the dataModel because that has templates in it)
-			Model shaclModel = JenaUtil.createDefaultModel();
-			shaclModel.read(new ByteArrayInputStream(editorPane.getText().getBytes()), SH.BASE_URI, FileUtils.langTurtle);
-			
-			MultiUnion unionGraph = new MultiUnion(new Graph[] {
-				shaclModel.getGraph(),
-				dataModel.getGraph()
-			});
-			Model shapesModel = ModelFactory.createModelForGraph(unionGraph);
+            // Load the main data model
+            Model shapesModel = JenaUtil.createDefaultModel();
+            shapesModel.read(new ByteArrayInputStream(editorPane.getText().getBytes()), "urn:dummy", FileUtils.langTurtle);
 
-			// Note that we don't perform validation of the shape definitions themselves.
-			// To do that, activate the following line to make sure that all required triples are present:
-			// dataModel = SHACLUtil.withDefaultValueTypeInferences(shapesModel);
-
-			// Make sure all sh:Functions are registered
-			SHACLFunctions.registerFunctions(shapesModel);
-			
-			// Create Dataset that contains both the main query model and the shapes model
-			// (here, using a temporary URI for the shapes graph)
-			URI shapesGraphURI = URI.create("urn:x-shacl-shapes-graph:" + UUID.randomUUID().toString());
-			Dataset dataset = ARQFactory.get().getDataset(dataModel);
-			dataset.addNamedModel(shapesGraphURI.toString(), shapesModel);
-			
-			// Run the validator and print results
-			//Model errorModel = ModelConstraintValidator.get().validateModel(dataset, shapesGraphURI, null, false, null);
-
-			ShaclValidationRegistry.getValidator().runValidation(dataset, shapesGraphURI);
-
-			log.info("validation finished");
-    	} catch(RiotException e) {
+			ShaclValidationRegistry.getValidator().runValidation(dataModel, shapesModel);
+        } catch(RiotException e) {
 			ErrorNotifier.notify(e.getLocalizedMessage());
     	} catch(QueryException e) {
 			ErrorNotifier.notify("Encountered query error: "+e.getLocalizedMessage());
     	} catch(Exception e) {
-			ErrorNotifier.notify("Something went wrong. Please check the error log for more information.");
+            e.printStackTrace();
+            ErrorNotifier.notify("Something went wrong. Please check the error log for more information.");
     	}
     }
     
     public void dispose() {
     }
     
-    private class SHACLValidatorInitializer implements Runnable {
-		@Override
-		public void run() {
-			ModelConstraintValidator.get();
-//			SHACLValidator validator = SHACLValidator.getDefaultValidator();
-//			ShaclEditorPanel.this.validator = validator;
-		}
-    }
+//    private class SHACLValidatorInitializer implements Runnable {
+//		@Override
+//		public void run() {
+//			ModelConstraintValidator.get();
+////			SHACLValidator validator = SHACLValidator.getDefaultValidator();
+////			ShaclEditorPanel.this.validator = validator;
+//		}
+//    }
 }

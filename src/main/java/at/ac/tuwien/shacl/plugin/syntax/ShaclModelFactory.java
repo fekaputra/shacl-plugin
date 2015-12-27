@@ -1,15 +1,17 @@
 package at.ac.tuwien.shacl.plugin.syntax;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
+import at.ac.tuwien.shacl.plugin.util.RdfModelReader;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 
 public class ShaclModelFactory {
+	private static Model shaclModel;
+
+	static {
+		shaclModel = RdfModelReader.getModelFromFile("/shacl.ttl");
+	}
+
 	public static Model getBaseModel() {
 		Model model=ModelFactory.createDefaultModel();
 		model.setNsPrefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
@@ -22,32 +24,14 @@ public class ShaclModelFactory {
 	}
 
 	public static Model getExampleModel() {
-    	InputStream in = ShaclModelFactory.class.getResourceAsStream("/example1.ttl");
-    	Model model = ModelFactory.createDefaultModel();
-    	model.read(in, "", "TURTLE");
-    	return model;
+    	return RdfModelReader.getModelFromFile("/example2.ttl");
 	}
-	
+
+	public static Model getShaclModel() {
+		return shaclModel;
+	}
+
 	public static String getExampleModelAsString() {
-		StringBuilder sb = null;
-		
-		try {
-			InputStream in = ShaclModelFactory.class.getResourceAsStream("/example1.ttl");
-			InputStreamReader is = new InputStreamReader(in);
-			sb=new StringBuilder();
-			BufferedReader br = new BufferedReader(is);
-			String read = br.readLine();
-			String newLine = System.getProperty("line.separator");
-			
-			while(read != null) {
-			    sb.append(read);
-			    sb.append(newLine);
-			    read =br.readLine();
-			}
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		
-		return sb.toString();
+		return RdfModelReader.getModelFromFileAsString("/example2.ttl");
 	}
 }
