@@ -1,5 +1,6 @@
 package at.ac.tuwien.shacl.plugin.ui;
 
+import at.ac.tuwien.shacl.plugin.events.DefaultListPublisher;
 import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -58,6 +59,8 @@ public class ShaclConstraintViolationPanel extends JPanel {
         @Override
         public void update(Observable o, Object arg) {
             Model model = (Model) arg;
+
+            model.write(System.out, "TURTLE");
 
             //clear table
             ((DefaultTableModel) table.getModel()).setRowCount(0);
@@ -133,5 +136,9 @@ public class ShaclConstraintViolationPanel extends JPanel {
     public void dispose() {
         ShaclValidationRegistry.removeObserver(shaclObserver);
         ErrorNotifier.unregister(errorObserver);
+    }
+
+    public DefaultTableModel getTableModel() {
+        return ((DefaultTableModel) table.getModel());
     }
 }

@@ -32,6 +32,8 @@ public class ShaclValidation extends Observable {
 //    }
 
     //TODO replae test data with real-time evaluation
+    //TODO merge shapesModel and dataModel to one model for dataset -> right now has some issue
+    //depending on whether the shapes model and data model are separate models or not.
     public void runValidation(Model shapesModel, Model dataModel) throws InterruptedException, FileNotFoundException {
 //        // Load the main data model
 //        Model shapesModel = JenaUtil.createMemoryModel();
@@ -46,8 +48,8 @@ public class ShaclValidation extends Observable {
                 shapesModel.getGraph()
         });
         Model model = ModelFactory.createModelForGraph(unionGraph);
-        System.out.println("model is...");
-        model.write(new FileOutputStream(new File("ouput.ttl")), "TURTLE");
+
+//        model.write(new FileOutputStream(new File("ouput.ttl")), "TURTLE");
 
         // Note that we don't perform validation of the shape definitions themselves.
         // To do that, activate the following line to make sure that all required triples are present:
@@ -59,20 +61,20 @@ public class ShaclValidation extends Observable {
         // Create Dataset that contains both the main query model and the shapes model
         // (here, using a temporary URI for the shapes graph)
         URI shapesGraphURI = URI.create("urn:x-shacl-shapes-graph:" + UUID.randomUUID().toString());
-        Dataset dataset1 = ARQFactory.get().getDataset(dataModel);
-        dataset1.addNamedModel(shapesGraphURI.toString(), model);
+        Dataset dataset = ARQFactory.get().getDataset(dataModel);
+        dataset.addNamedModel(shapesGraphURI.toString(), model);
 
-        Model results = ModelConstraintValidator.get().validateModel(dataset1, shapesGraphURI, null, false, null);
+        Model results = ModelConstraintValidator.get().validateModel(dataset, shapesGraphURI, null, false, null);
 
         //add prefixes to results, so that views can display qualified names instead of URIs for better usability
         results.setNsPrefixes(model.getNsPrefixMap());
 
-        System.out.println(model.getNsPrefixMap());
-        System.out.println("results prefixes: "+results.getNsPrefixMap());
-        System.out.println("base: "+model.getNsPrefixURI(""));
-        System.out.println("results base: "+model.getNsPrefixURI(""));
-
-        System.out.println("validation finished...");
+//        System.out.println(model.getNsPrefixMap());
+//        System.out.println("results prefixes: "+results.getNsPrefixMap());
+//        System.out.println("base: "+model.getNsPrefixURI(""));
+//        System.out.println("results base: "+model.getNsPrefixURI(""));
+//
+//        System.out.println("validation finished...");
         this.setChanged();
         this.notifyObservers(results);
     }
