@@ -1,0 +1,36 @@
+# The following example illustrates the use of sh:OrConstraint in a shape to verify that 
+# matching nodes have at least one value of ex:exampleProperty1 or at least one value of # ex:exampleProperty2.
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ex: <http://example.com/ns#> .
+@prefix schema: <http://schema.org/#>.
+@prefix sh: <http://www.w3.org/ns/shacl#>.
+
+ex:OrConstraintExampleShape
+	a sh:Shape ;
+	sh:constraint [
+		a sh:OrConstraint ;
+		sh:shapes (
+			ex:OrShape1 ex:OrShape2
+		)
+	] .
+
+ex:OrShape1
+	a sh:Shape ;
+	sh:property [
+					sh:predicate ex:exampleProperty1 ;
+					sh:minCount 1 ;
+				].
+	
+ex:OrShape2
+	a sh:Shape;	
+				sh:property [
+					sh:predicate ex:exampleProperty2 ;
+					sh:minCount 2 ;
+				].
+
+ex:OrConstraintExampleInvalidResource
+	sh:nodeShape ex:OrConstraintExampleShape;
+	ex:exampleProperty2 ex:someValue .

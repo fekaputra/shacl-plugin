@@ -1,0 +1,23 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ex: <http://example.com/ns#> .
+@prefix schema: <http://schema.org/#>.
+@prefix sh: <http://www.w3.org/ns/shacl#>.
+
+ex:ValueClassExampleShape
+	a sh:Shape ;
+	sh:property [
+		sh:predicate ex:someProperty ;
+		sh:valueClass ex:ClassA ;
+	] .
+	
+ex:InstanceOfClassA
+	a ex:ClassA .
+
+ex:InstanceOfClassB
+	a ex:ClassB .
+
+ex:ValueTypeExampleInvalidResource
+	sh:nodeShape ex:ValueClassExampleShape;
+	ex:someProperty ex:InstanceOfClassB .

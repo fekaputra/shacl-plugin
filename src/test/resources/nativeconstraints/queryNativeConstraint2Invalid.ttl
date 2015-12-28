@@ -1,0 +1,29 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ex: <http://example.com/ns#> .
+@prefix schema: <http://schema.org/#>.
+@prefix sh: <http://www.w3.org/ns/shacl#>.
+
+ex:UniqueEmailShape
+	a sh:Shape ;
+	sh:constraint [
+		sh:message "There cannot be two resources with the same email address." ;
+		sh:predicate schema:email ;
+		sh:sparql """
+			SELECT ?this (?this AS ?subject) (?email AS ?object)
+			WHERE {
+				?this schema:email ?email .
+				?other schema:email ?email .
+				FILTER (?this != ?other) .
+			}
+			"""
+	] .
+
+ex:Resource1
+	sh:nodeShape ex:UniqueEmailShape;
+	schema:email "abc@abc.com".
+
+ex:Resource2
+	sh:nodeShape ex:UniqueEmailShape;
+	schema:email "abc@abc.com".

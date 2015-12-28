@@ -1,0 +1,37 @@
+[ a       <http://www.w3.org/ns/shacl#ValidationResult> ;
+  <http://www.w3.org/ns/shacl#focusNode>
+          <http://topbraid.org/examples/shaclsquare#InvalidSquare> ;
+  <http://www.w3.org/ns/shacl#message>
+          "Width and height of a Square must be equal"^^<http://www.w3.org/2001/XMLSchema#string> ;
+  <http://www.w3.org/ns/shacl#object>
+          9 ;
+  <http://www.w3.org/ns/shacl#severity>
+          <http://www.w3.org/ns/shacl#Violation> ;
+  <http://www.w3.org/ns/shacl#sourceConstraint>
+          []  ;
+  <http://www.w3.org/ns/shacl#sourceShape>
+          <http://topbraid.org/examples/shaclsquare#Square> ;
+  <http://www.w3.org/ns/shacl#subject>
+          <http://topbraid.org/examples/shaclsquare#InvalidSquare>
+] .
+
+[ a       <http://www.w3.org/ns/shacl#ValidationResult> ;
+  <http://www.w3.org/ns/shacl#focusNode>
+          <http://topbraid.org/examples/shaclsquare#InvalidSquare> ;
+  <http://www.w3.org/ns/shacl#message>
+          "Value does not fulfill the constraints of shape 3b155d1b5a12b619f33440fea50bd2a8"^^<http://www.w3.org/2001/XMLSchema#string> ;
+  <http://www.w3.org/ns/shacl#object>
+          <http://topbraid.org/examples/shaclsquare#PersonWithoutEmail> ;
+  <http://www.w3.org/ns/shacl#predicate>
+          <http://topbraid.org/examples/shaclsquare#creator> ;
+  <http://www.w3.org/ns/shacl#severity>
+          <http://www.w3.org/ns/shacl#Violation> ;
+  <http://www.w3.org/ns/shacl#sourceConstraint>
+          []  ;
+  <http://www.w3.org/ns/shacl#sourceShape>
+          <http://topbraid.org/examples/shaclsquare#Rectangle> ;
+  <http://www.w3.org/ns/shacl#sourceTemplate>
+          <http://www.w3.org/ns/shacl#AbstractValueShapePropertyConstraint> ;
+  <http://www.w3.org/ns/shacl#subject>
+          <http://topbraid.org/examples/shaclsquare#InvalidSquare>
+] .

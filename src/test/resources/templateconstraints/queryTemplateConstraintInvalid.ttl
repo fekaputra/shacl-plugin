@@ -1,0 +1,46 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ex: <http://example.com/ns#> .
+@prefix sh: <http://www.w3.org/ns/shacl#>.
+
+ex:AllowedValuesTestTemplateConstraint
+	a sh:ConstraintTemplate ;
+	rdfs:subClassOf sh:TemplateConstraint ;
+	rdfs:label "Testing template" ;
+	rdfs:comment "Test template" ;
+	sh:argument [
+		sh:predicate sh:allowVal ;
+		sh:valueClass rdf:List ;
+		rdfs:label "allowed values" ;
+		rdfs:comment "The rdf:List containing the allowed values of the property." ;
+	] ;
+	sh:argument [
+		sh:predicate sh:pred ;
+		sh:valueClass rdf:Property ;
+		rdfs:label "allowed values" ;
+		rdfs:comment "The rdf:List containing the allowed values of the property." ;
+	] ;
+	sh:message "Value is not one of the allowed values" ;
+	sh:sparql """
+		SELECT ?this (?this AS ?subject) ?pred ?object
+		WHERE {
+			?this ?pred ?object .
+			FILTER NOT EXISTS {
+					?allowVal (rdf:rest*)/rdf:first ?object .
+			}
+		}
+		""" ;
+.
+
+ex:GeneralTemplateConstraintExampleShape
+	a sh:Shape ;
+	sh:constraint [
+		a ex:AllowedValuesTestTemplateConstraint;
+		sh:pred ex:property;
+		sh:allowVal ( ex:Value1 );
+	] .
+	
+ex:InvalidConstraintExample
+	sh:nodeShape ex:GeneralTemplateConstraintExampleShape;
+	ex:property ex:Value3 .

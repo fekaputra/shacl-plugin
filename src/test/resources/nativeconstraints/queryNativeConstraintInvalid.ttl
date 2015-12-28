@@ -1,0 +1,30 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ex: <http://example.com/ns#> .
+@prefix schema: <http://schema.org/#>.
+@prefix sh: <http://www.w3.org/ns/shacl#>.
+
+ex:ExampleLabelShape
+	a sh:Shape ;
+	sh:constraint ex:ExampleLabelConstraint ;
+.
+
+ex:ExampleLabelConstraint
+	a sh:NativeConstraint ;
+	sh:message "Deutsch is verboten"@de ;
+	sh:predicate rdfs:label ;
+	sh:severity sh:Warning ;
+	sh:sparql """
+		SELECT (?this AS ?root) ?this ?object
+		WHERE {
+			?this rdfs:label ?object .
+			FILTER (lang(?object) = "de") .
+		}
+		""" .
+
+ex:Resource1
+	sh:nodeShape ex:ExampleLabelShape;
+	rdfs:label "Eins"@de ;
+	rdfs:label "Zwei"@de ;
+	rdfs:label "Trois"@fr .
