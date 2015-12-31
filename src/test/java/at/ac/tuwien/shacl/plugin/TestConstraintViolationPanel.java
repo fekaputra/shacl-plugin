@@ -8,8 +8,7 @@ import org.junit.Test;
 
 import java.io.FileNotFoundException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * Tests the constraint violation panel.
@@ -31,5 +30,27 @@ public class TestConstraintViolationPanel {
         assertEquals(2, panel.getTableModel().getRowCount());
         assertNotNull(panel.getTableModel().getValueAt(0, 8));
         assertNotNull(panel.getTableModel().getValueAt(1, 8));
+    }
+
+    @Test
+    public void testBehaviorAfterInit() throws FileNotFoundException, InterruptedException {
+        ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel(null);
+
+        ShaclValidationRegistry.getValidator().runValidation(ModelFactory.createDefaultModel(), TestUtil.getShapesAndDataModel());
+
+        assertFalse(panel.getTable().isCellEditable(1, 8));
+    }
+
+    @Test
+    public void testDispose() throws FileNotFoundException, InterruptedException {
+        ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel(null);
+        ShaclValidationRegistry.getValidator().runValidation(ModelFactory.createDefaultModel(), TestUtil.getShapesAndDataModel());
+        assertEquals(2, panel.getTableModel().getRowCount());
+
+        panel.getTableModel().setRowCount(0);
+        panel.dispose();
+        ShaclValidationRegistry.getValidator().runValidation(ModelFactory.createDefaultModel(), TestUtil.getShapesAndDataModel());
+
+        assertEquals(0, panel.getTableModel().getRowCount());
     }
 }

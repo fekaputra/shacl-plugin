@@ -1,5 +1,6 @@
 package at.ac.tuwien.shacl.plugin;
 
+import at.ac.tuwien.shacl.plugin.events.ShaclValidation;
 import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
 import com.hp.hpl.jena.graph.Graph;
 import com.hp.hpl.jena.graph.compose.MultiUnion;
@@ -15,6 +16,7 @@ import org.topbraid.shacl.vocabulary.SH;
 import org.topbraid.spin.arq.ARQFactory;
 import org.topbraid.spin.util.JenaUtil;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.UUID;
@@ -24,7 +26,18 @@ import static org.junit.Assert.assertEquals;
 /**
  * Tests the Shacl engine.
  */
-public class TestShaclEngine {
+public class TestShaclValidation {
+	@Test
+	public void testWineConstraint() throws FileNotFoundException, InterruptedException {
+		Model dataModel = JenaUtil.createDefaultModel();
+		dataModel.read(getClass().getResourceAsStream("/wine/wineShape.ttl"), "", FileUtils.langTurtle);
+
+		Model shapesModel = JenaUtil.createDefaultModel();
+		shapesModel.read(getClass().getResourceAsStream("/wine/wine.rdf"), "", FileUtils.langXML);
+
+		ShaclValidation validation = new ShaclValidation();
+		validation.runValidation(shapesModel, dataModel);
+	}
 
 	@Test
 	public void testSHACLSquare() throws InterruptedException {
