@@ -6,11 +6,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 
 public class ShaclModelFactory {
-	private static Model shaclModel;
-
-	static {
-		shaclModel = RdfModelReader.getModelFromFile("/shacl.ttl");
-	}
+	private static Model shaclModel = RdfModelReader.getModelFromFile("/shacl.ttl");
 
 	public static Model getBaseModel() {
 		Model model=ModelFactory.createDefaultModel();

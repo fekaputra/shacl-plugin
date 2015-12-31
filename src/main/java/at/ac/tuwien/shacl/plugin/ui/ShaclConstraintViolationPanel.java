@@ -1,10 +1,8 @@
 package at.ac.tuwien.shacl.plugin.ui;
 
-import at.ac.tuwien.shacl.plugin.events.DefaultListPublisher;
 import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDF;
@@ -92,7 +90,15 @@ public class ShaclConstraintViolationPanel extends JPanel {
         }
     };
 
+    /**
+     *
+     * @param modelManager
+     */
     public ShaclConstraintViolationPanel(OWLModelManager modelManager) {
+        this.init();
+    }
+
+    protected void init(){
         //System.out.println(modelManager.getActiveOntology().getAxioms());
 
         String[] headers = {
@@ -140,5 +146,9 @@ public class ShaclConstraintViolationPanel extends JPanel {
 
     public DefaultTableModel getTableModel() {
         return ((DefaultTableModel) table.getModel());
+    }
+
+    public JTable getTable() {
+        return this.table;
     }
 }

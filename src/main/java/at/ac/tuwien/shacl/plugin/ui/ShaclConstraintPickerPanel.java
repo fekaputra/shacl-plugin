@@ -1,41 +1,37 @@
 package at.ac.tuwien.shacl.plugin.ui;
 
-import at.ac.tuwien.shacl.plugin.events.DefaultListPublisher;
+import at.ac.tuwien.shacl.plugin.ui.template.ListPanelTemplate;
 import org.protege.editor.owl.ui.OWLIcons;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 /**
  * Prototype implementation of the constraint picker view.
  *
  * //TODO use class with real data.
  */
-public class ShaclConstraintPickerPanel extends JPanel {
-    private JList<String> list;
-    private DefaultListPublisher<String> publisherModel;
-
+public class ShaclConstraintPickerPanel extends ListPanelTemplate {
     private JFileChooser fileChooser = new JFileChooser();
 
     public ShaclConstraintPickerPanel() {
+        super();
+        super.init();
+
         fileChooser.setMultiSelectionEnabled(true);
+    }
 
-        publisherModel = new DefaultListPublisher<>();
-        list = new JList<>(publisherModel.getModel());
-        JScrollPane scroll = new JScrollPane(list);
+    @Override
+    protected Iterable<Action> getActions() {
+        List<Action> actions = new ArrayList<>();
 
-        JToolBar toolbar = new JToolBar();
-        toolbar.add(new AddConstraintAction("Add constraint", OWLIcons.getIcon("individual.add.png")));
-        toolbar.add(new DeleteConstraintAction("Delete constraint", OWLIcons.getIcon("individual.delete.png")));
-        toolbar.add(new ImportConstraintFileAction("Import constraint", OWLIcons.getIcon("DefinedOWLClass.gif")));
+        actions.add(new AddConstraintAction("Add constraint", OWLIcons.getIcon("individual.add.png")));
+        actions.add(new DeleteConstraintAction("Delete constraint", OWLIcons.getIcon("individual.delete.png")));
+        actions.add(new ImportConstraintFileAction("Import constraint", OWLIcons.getIcon("DefinedOWLClass.gif")));
 
-        this.setLayout(new BorderLayout());
-        this.add(toolbar, BorderLayout.NORTH);
-        this.add(scroll, BorderLayout.CENTER);
+        return actions;
     }
 
     /**
@@ -52,7 +48,7 @@ public class ShaclConstraintPickerPanel extends JPanel {
             //generate random value and add them to list
             String[] data = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven"};
             String selected = data[(int) (Math.random()*10)];
-            publisherModel.addElement(selected);
+            getListPublisher().addElement(selected);
         }
     }
 
@@ -65,17 +61,17 @@ public class ShaclConstraintPickerPanel extends JPanel {
         public DeleteConstraintAction(String name, Icon icon) {
             super(name, icon);
             putValue(AbstractAction.SHORT_DESCRIPTION, "Delete constraint definition");
-            publisherModel.addObserver(this);
-            if(publisherModel.getSize() == 0) {
+            getListPublisher().addObserver(this);
+            if(getListPublisher().getSize() == 0) {
                 this.setEnabled(false);
             }
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            int index = list.getSelectedIndex();
+            int index = getList().getSelectedIndex();
             if(index != -1) {
-                publisherModel.remove(index);
+                getListPublisher().remove(index);
             }
         }
 
@@ -102,13 +98,13 @@ public class ShaclConstraintPickerPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            int returnVal = fileChooser.showOpenDialog(list);
+            int returnVal = fileChooser.showOpenDialog(getList());
 
             if(returnVal == JFileChooser.APPROVE_OPTION) {
                 File[] files = fileChooser.getSelectedFiles();
 
                 for(File file : files) {
-                    publisherModel.addElement(file.getName());
+                    getListPublisher().addElement(file.getName());
                 }
             }
         }

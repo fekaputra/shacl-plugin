@@ -1,0 +1,38 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix vin:      <http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+
+vin:StEmilionShape
+	a sh:ShapeClass ;
+	sh:scopeClass vin:StEmilion;
+	sh:property [
+		rdfs:comment "Every StEmillion must be made by ChateauChevalBlanc" ;
+		sh:predicate vin:hasMaker;
+		sh:hasValue vin:ChateauChevalBlanc ;
+	] ;
+	sh:property [
+		rdfs:comment "every individual must be of rdf:type owl:NamedIndividual or :StEmillion and has exactly two two objects through rdf:type";
+		sh:predicate rdf:type;
+		sh:allowedValues (vin:InvalidValue1);
+		sh:maxCount 0;
+		sh:minCount 0;
+		sh:hasValue vin:vkj;
+	] ;
+.
+
+vin:HasMakerShape
+	a sh:ShapeClass ;
+	sh:scopeClass vin:Region ;
+	sh:constraint [
+		sh:message "There cannot be indivuals of Region who have a hasMaker predicate" ;
+		sh:predicate vin:locatedIn ;
+		sh:sparql """
+			SELECT ?this
+			WHERE {
+				?this vin:hasMaker ?object.
+			}
+			"""
+	] .

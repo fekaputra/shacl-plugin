@@ -13,6 +13,7 @@ public class ShaclConstraintPickerViewComponent extends AbstractOWLViewComponent
     protected void initialiseOWLView() throws Exception {
         this.setLayout(new BorderLayout());
         this.add(new ShaclConstraintPickerPanel(), BorderLayout.CENTER);
+        //JOptionPane.showMessageDialog(this, "just a test message");
     }
 
     @Override

@@ -32,7 +32,6 @@ public class ShaclValidation extends Observable {
 //    }
 
     //TODO replae test data with real-time evaluation
-    //TODO merge shapesModel and dataModel to one model for dataset -> right now has some issue
     //depending on whether the shapes model and data model are separate models or not.
     public void runValidation(Model shapesModel, Model dataModel) throws InterruptedException, FileNotFoundException {
 //        // Load the main data model
@@ -40,16 +39,18 @@ public class ShaclValidation extends Observable {
 //        shapesModel.read(getClass().getResourceAsStream("/example2.ttl"), "urn:dummy", FileUtils.langTurtle);
 //
 //        Model dataModel = JenaUtil.createMemoryModel();
-//        dataModel.read(getClass().getResourceAsStream("/wine.ttl"), FileUtils.langXML);
+//        dataModel.read(getClass().getResourceAsStream("/wine.rdf"), FileUtils.langXML);
+
+        dataModel.add(shapesModel);
 
         MultiUnion unionGraph = new MultiUnion(new Graph[] {
                 ShaclModelFactory.getShaclModel().getGraph(),
                 dataModel.getGraph(),
-                shapesModel.getGraph()
+                //shapesModel.getGraph()
         });
         Model model = ModelFactory.createModelForGraph(unionGraph);
 
-//        model.write(new FileOutputStream(new File("ouput.ttl")), "TURTLE");
+        model.write(new FileOutputStream(new File("ouput.ttl")), "TURTLE");
 
         // Note that we don't perform validation of the shape definitions themselves.
         // To do that, activate the following line to make sure that all required triples are present:
@@ -67,7 +68,12 @@ public class ShaclValidation extends Observable {
         Model results = ModelConstraintValidator.get().validateModel(dataset, shapesGraphURI, null, false, null);
 
         //add prefixes to results, so that views can display qualified names instead of URIs for better usability
+        System.out.println("++++++++++++++++++");
         results.setNsPrefixes(model.getNsPrefixMap());
+
+        System.out.println("++++++++++++++++++");
+
+        results.write(System.out, "TURTLE");
 
 //        System.out.println(model.getNsPrefixMap());
 //        System.out.println("results prefixes: "+results.getNsPrefixMap());
