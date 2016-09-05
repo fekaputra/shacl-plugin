@@ -1,6 +1,6 @@
 # SHACL4P Plugin - SHACL Constraint Validation plugin for Protege
 
-Contact: fajar.ekaputra@tuwien.ac.at
+Contact: fajar.ekaputra [at] tuwien.ac.at
 
 The plugin is tried and tested using Protege 5.0.0-beta-17 on Mac OSX (El Capitan).
 Developed using TopBraid SHACL Engine [1] and Apache Jena-OSGi [2]. 
