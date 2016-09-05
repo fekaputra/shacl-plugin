@@ -1,26 +1,35 @@
 package at.ac.tuwien.shacl.plugin.ui;
 
-import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
-import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.vocabulary.RDF;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.topbraid.shacl.vocabulary.SH;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.vocabulary.RDF;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.topbraid.shacl.vocabulary.SH;
+
+import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
+import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
 
 /**
  * Panel for the constraint violations.
  */
 public class ShaclConstraintViolationPanel extends JPanel {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1093799641840761261L;
+
     /**
      * Table view showing the constraint violations.
      */
@@ -34,7 +43,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
      * @return qname if one exists, otherwise the original string of the object
      */
     private String getQName(Model model, Statement stmt) {
-        if(stmt != null && stmt.getObject() != null) {
+        if (stmt != null && stmt.getObject() != null) {
             String string = stmt.getObject().toString();
             return model.qnameFor(string) == null ? string : model.qnameFor(string);
         } else {
@@ -42,10 +51,10 @@ public class ShaclConstraintViolationPanel extends JPanel {
         }
     }
 
-    //TODO link table selection with events
+    // TODO link table selection with events
     /**
-     * Defines behavior when object gets notified about a SHACL validation result. Shows the constraint
-     * violations of the result Jena model in the table view.
+     * Defines behavior when object gets notified about a SHACL validation result. Shows the constraint violations of
+     * the result Jena model in the table view.
      */
     private Observer shaclObserver = new Observer() {
         /**
@@ -58,27 +67,21 @@ public class ShaclConstraintViolationPanel extends JPanel {
         public void update(Observable o, Object arg) {
             Model model = (Model) arg;
 
-            model.write(System.out, "TURTLE");
-
-            //clear table
+            // clear table
             ((DefaultTableModel) table.getModel()).setRowCount(0);
 
-            //update table with data from jena model
-            for(Statement stmt : model.listStatements(null, RDF.type, SH.ValidationResult).toList()) {
+            // update table with data from jena model
+            for (Statement stmt : model.listStatements(null, RDF.type, SH.ValidationResult).toList()) {
                 Vector<String> row = new Vector<>();
                 Resource subject = stmt.getSubject();
 
                 row.add(getQName(model, subject.getProperty(SH.message)));
                 row.add(getQName(model, subject.getProperty(SH.focusNode)));
-                row.add(getQName(model, subject.getProperty(SH.subject)));
-                row.add(getQName(model, subject.getProperty(SH.predicate)));
-                row.add(getQName(model, subject.getProperty(SH.object)));
-                row.add(getQName(model, subject.getProperty(SH.severity)));
-                row.add(getQName(model, subject.getProperty(SH.sourceConstraint)));
+                row.add(getQName(model, subject.getProperty(SH.path)));
                 row.add(getQName(model, subject.getProperty(SH.sourceShape)));
-                row.add(getQName(model, subject.getProperty(SH.sourceTemplate)));
+                row.add(getQName(model, subject.getProperty(SH.severity)));
 
-                ((DefaultTableModel)table.getModel()).addRow(row);
+                ((DefaultTableModel) table.getModel()).addRow(row);
             }
         }
     };
@@ -86,7 +89,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
     private Observer errorObserver = new Observer() {
         @Override
         public void update(Observable o, Object arg) {
-            //textArea.setText(arg.toString());
+            // textArea.setText(arg.toString());
         }
     };
 
@@ -98,18 +101,19 @@ public class ShaclConstraintViolationPanel extends JPanel {
         this.init();
     }
 
-    protected void init(){
-        //System.out.println(modelManager.getActiveOntology().getAxioms());
+    protected void init() {
+        // System.out.println(modelManager.getActiveOntology().getAxioms());
 
-        String[] headers = {
-                "Message", "FocusNode", "Subject", "Object", "Predicate", "Severity", "SourceConstraint",
-                "SourceShape", "SourceTemplate"
-        };
-
+        String[] headers = { "Message", "FocusNode", "Path", "SourceShape", "Severity" };
         String[][] data = {};
 
         TableModel tableModel = new DefaultTableModel(data, headers);
         table = new JTable(tableModel) {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -126,13 +130,13 @@ public class ShaclConstraintViolationPanel extends JPanel {
     }
 
     /**
-     *  Register to all services this class wants to subscribe.
+     * Register to all services this class wants to subscribe.
      */
     private void initObservers() {
-        //register to events from shacl validation
+        // register to events from shacl validation
         ShaclValidationRegistry.addObserver(shaclObserver);
 
-        //register to error events emitted by this project
+        // register to error events emitted by this project
         ErrorNotifier.register(errorObserver);
     }
 

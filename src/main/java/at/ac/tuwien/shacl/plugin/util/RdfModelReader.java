@@ -1,13 +1,14 @@
 package at.ac.tuwien.shacl.plugin.util;
 
-import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+
+import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
 
 /**
  * Reads RDF models from files.
@@ -27,8 +28,8 @@ public class RdfModelReader {
      * Get a Jena model from an RDF file in an RDF serialization language.
      *
      * @param path path to the RDF file
-     * @param language a string containing an RDF serialization language; see the Jena
-     *                 model.read method for a list of supported languages
+     * @param language a string containing an RDF serialization language; see the Jena model.read method for a list of
+     *        supported languages
      * @return Jena model containing the RDF data
      */
     public static Model getModelFromFile(String path, String language) {
@@ -39,8 +40,8 @@ public class RdfModelReader {
     }
 
     /**
-     * Get a model as string by reading it line by line. This is an alternative to Jena model.read, allowing
-     * comments to be kept intact.
+     * Get a model as string by reading it line by line. This is an alternative to Jena model.read, allowing comments to
+     * be kept intact.
      *
      * @return an RDF model as a string
      */
@@ -50,17 +51,17 @@ public class RdfModelReader {
         try {
             InputStream in = ShaclModelFactory.class.getResourceAsStream(path);
             InputStreamReader is = new InputStreamReader(in);
-            sb=new StringBuilder();
+            sb = new StringBuilder();
             BufferedReader br = new BufferedReader(is);
             String read = br.readLine();
             String newLine = System.getProperty("line.separator");
 
-            while(read != null) {
+            while (read != null) {
                 sb.append(read);
                 sb.append(newLine);
-                read =br.readLine();
+                read = br.readLine();
             }
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

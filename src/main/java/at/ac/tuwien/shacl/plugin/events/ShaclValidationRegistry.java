@@ -4,7 +4,8 @@ import java.util.Observer;
 
 /**
  * Wrapper wrapping ShaclValidation into one instance.
- * //TODO eventually implement mediator pattern, so we can add multiple language validators.
+ * 
+ * TODO eventually implement mediator pattern, so we can add multiple language validators.
  */
 public class ShaclValidationRegistry {
     private static ShaclValidation validation = new ShaclValidation();
