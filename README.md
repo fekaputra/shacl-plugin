@@ -8,7 +8,7 @@ Developed using TopBraid SHACL Engine [1] and Apache Jena-OSGi [2].
 ----
 
 Instruction to use: 
-(1) Copy all jar files within /lib into your Protege /plugins folder
+(1) Copy all jar files within /lib/binary into your Protege /plugins folder
 (2) Open Protege
 (3) Open Window -> Tabs -> SHACL Editor
 (4) Enjoy! 
