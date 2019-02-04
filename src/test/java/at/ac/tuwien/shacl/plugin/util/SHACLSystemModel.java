@@ -6,8 +6,8 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.util.FileUtils;
 import org.topbraid.shacl.arq.SHACLFunctions;
 import org.topbraid.shacl.vocabulary.SH;
-import org.topbraid.spin.util.JenaUtil;
-import org.topbraid.spin.util.SystemTriples;
+import org.topbraid.jenax.util.JenaUtil;
+import org.topbraid.jenax.util.SystemTriples;
 
 public class SHACLSystemModel {
 

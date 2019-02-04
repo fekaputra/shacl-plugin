@@ -7,14 +7,15 @@ import java.util.UUID;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.util.FileUtils;
 import org.topbraid.shacl.arq.SHACLFunctions;
-import org.topbraid.shacl.constraints.ModelConstraintValidator;
+import org.topbraid.shacl.validation.ValidationUtil;
 import org.topbraid.shacl.util.ModelPrinter;
 import org.topbraid.shacl.vocabulary.SH;
-import org.topbraid.spin.arq.ARQFactory;
-import org.topbraid.spin.util.JenaUtil;
-import org.topbraid.spin.util.SystemTriples;
+import org.topbraid.jenax.util.ARQFactory;
+import org.topbraid.jenax.util.JenaUtil;
+import org.topbraid.jenax.util.SystemTriples;
 
 public class ValidationExample {
 
@@ -43,7 +44,7 @@ public class ValidationExample {
         dataset.addNamedModel(shapesGraphURI.toString(), ruleModel);
 
         // Run the validator
-        Model results = ModelConstraintValidator.get().validateModel(dataset, shapesGraphURI, null, true, null, null);
+        Resource results = ValidationUtil.validateModel(dataModel, ruleModel, true);
 
         // print stuff
         System.out.println("--- ************* ---");
@@ -53,7 +54,8 @@ public class ValidationExample {
 
         // Print violations
         System.out.println("--- ************* ---");
-        System.out.println(ModelPrinter.get().print(results));
+//        System.out.println(ModelPrinter.get().print(results));
+        System.out.println(results);
     }
 
     public static Model getSHACLModel() {

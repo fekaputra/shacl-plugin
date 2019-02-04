@@ -17,7 +17,7 @@ import org.apache.jena.riot.RiotException;
 import org.apache.jena.util.FileUtils;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.topbraid.spin.util.JenaUtil;
+import org.topbraid.jenax.util.JenaUtil;
 
 import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;

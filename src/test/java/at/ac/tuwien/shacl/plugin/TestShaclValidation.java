@@ -9,12 +9,13 @@ import org.apache.jena.graph.compose.MultiUnion;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.util.FileUtils;
 import org.junit.Test;
 import org.topbraid.shacl.arq.SHACLFunctions;
-import org.topbraid.shacl.constraints.ModelConstraintValidator;
-import org.topbraid.spin.arq.ARQFactory;
-import org.topbraid.spin.util.JenaUtil;
+import org.topbraid.shacl.validation.ValidationUtil;
+import org.topbraid.jenax.util.ARQFactory;
+import org.topbraid.jenax.util.JenaUtil;
 
 import at.ac.tuwien.shacl.plugin.events.ShaclValidation;
 import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
@@ -61,10 +62,13 @@ public class TestShaclValidation {
         dataset.addNamedModel(shapesGraphURI.toString(), shapesModel);
 
         // Run the validator and print results
-        Model results =
-            ModelConstraintValidator.get().validateModel(dataset, shapesGraphURI, null, false, null, null);
+//        Model results =
+//                ModelConstraintValidator.get().validateModel(dataset, shapesGraphURI, null, false, null, null);
+        Resource results =
+                ValidationUtil.validateModel(dataModel, shapesModel, false);
         // System.out.println(ModelPrinter.get().print(results));
-        results.write(System.out, "TURTLE");
+//        results.write(System.out, "TURTLE");
+        System.out.println(results);
         // Expecting 2 constraint violations (9 triples each)
         // assertEquals(18, results.size());
     }
