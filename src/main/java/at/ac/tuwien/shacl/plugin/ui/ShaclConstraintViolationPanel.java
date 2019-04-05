@@ -65,7 +65,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
          */
         @Override
         public void update(Observable o, Object arg) {
-            Model model = (Model) arg;
+            Model model = ((Resource) arg).getModel();
 
             // clear table
             ((DefaultTableModel) table.getModel()).setRowCount(0);
