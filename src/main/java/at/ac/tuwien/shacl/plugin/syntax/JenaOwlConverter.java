@@ -3,13 +3,9 @@ package at.ac.tuwien.shacl.plugin.syntax;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-import org.coode.owlapi.turtle.TurtleOntologyFormat;
-import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
-import org.semanticweb.owlapi.model.OWLOntologyID;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
+import org.semanticweb.owlapi.formats.TurtleDocumentFormat;
+import org.semanticweb.owlapi.model.*;
 
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -58,11 +54,11 @@ public class JenaOwlConverter {
             if (format.equals("TURTLE") || format.equals("RDF/XML")) {
 
                 if (format.equals("TURTLE"))
-                    owlmanager.setOntologyFormat(owlmodel, new TurtleOntologyFormat());
+                    owlmanager.setOntologyFormat(owlmodel, new TurtleDocumentFormat());
                 if (format.equals("RDF/XML"))
-                    owlmanager.setOntologyFormat(owlmodel, new RDFXMLOntologyFormat());
+                    owlmanager.setOntologyFormat(owlmodel, new RDFXMLDocumentFormat());
 
-                OWLOntologyFormat owlformat = owlmanager.getOntologyFormat(owlmodel);
+                OWLDocumentFormat owlformat = owlmanager.getOntologyFormat(owlmodel);
 
                 owlmanager.saveOntology(owlmodel, owlformat, out);
 
