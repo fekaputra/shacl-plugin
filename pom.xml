@@ -125,7 +125,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
+				<version>3.8.0</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -135,7 +135,7 @@
             <plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.5.3</version>
+				<version>4.1.0</version>
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
@@ -186,7 +186,7 @@
             
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.9</version>
+				<version>2.10</version>
 				<configuration>
 					<pde>true</pde>
 				</configuration>
