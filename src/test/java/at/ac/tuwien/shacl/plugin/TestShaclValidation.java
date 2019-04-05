@@ -67,8 +67,7 @@ public class TestShaclValidation {
         Resource results =
                 ValidationUtil.validateModel(dataModel, shapesModel, false);
         // System.out.println(ModelPrinter.get().print(results));
-//        results.write(System.out, "TURTLE");
-        System.out.println(results);
+        results.getModel().write(System.out, "TURTLE");
         // Expecting 2 constraint violations (9 triples each)
         // assertEquals(18, results.size());
     }

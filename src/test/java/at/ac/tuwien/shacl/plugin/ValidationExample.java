@@ -54,8 +54,7 @@ public class ValidationExample {
 
         // Print violations
         System.out.println("--- ************* ---");
-//        System.out.println(ModelPrinter.get().print(results));
-        System.out.println(results);
+        System.out.println(ModelPrinter.get().print(results.getModel()));
     }
 
     public static Model getSHACLModel() {

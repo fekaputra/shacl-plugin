@@ -53,8 +53,7 @@ public class ShaclValidation extends Observable {
 
         // Print violations
         System.out.println("--- ************* ---");
-//        System.out.println(ModelPrinter.get().print(results));
-        System.out.println(results);
+        System.out.println(ModelPrinter.get().print(results.getModel()));
 
         this.setChanged();
         this.notifyObservers(results);
