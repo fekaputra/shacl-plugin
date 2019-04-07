@@ -16,99 +16,92 @@
 	</properties>
   	
 	<dependencies>
-        <dependency>
-			<groupId>edu.stanford.protege</groupId>
-            <artifactId>protege-editor-owl</artifactId>
-			<version>5.5.0</version>
-        </dependency>
-        <dependency>
+
+		<!-- directly used dependencies -->
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+            <artifactId>protege-editor-owl</artifactId>
+			<version>5.5.0</version>
+			<scope>provided</scope>
+        </dependency>
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>owlapi-osgidistribution</artifactId>
+			<version>4.5.10</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.topbraid</groupId>
 			<artifactId>shacl</artifactId>
 			<version>1.1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>xml-resolver</groupId>
-			<artifactId>xml-resolver</artifactId>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-arq</artifactId>
+			<version>3.10.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-core</artifactId>
+			<version>3.10.0</version>
+		</dependency>
+
+
+		<!-- transitive dependencies, that need to be included in bundle -->
+
+		<!-- required for owlapi-osgidistribution -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
 			<version>1.2</version>
 		</dependency>
 		<dependency>
-			<groupId>xml-apis</groupId>
-			<artifactId>xml-apis</artifactId>
-			<version>1.4.01</version>
-		</dependency>
-		
-		<!-- requirement for apache jena-osgi -->
-		<!-- <dependency>
-		    <groupId>com.github.andrewoma.dexx</groupId>
-		    <artifactId>collection</artifactId>
-		    <version>0.6</version>
-		</dependency>		
-		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-csv</artifactId>
-		    <version>1.4</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient-osgi</artifactId>
+			<version>4.5.2</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-lang3</artifactId>
-		    <version>3.4</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore-osgi</artifactId>
+			<version>4.4.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.9.8</version>
 		</dependency>
 		<dependency>
-		    <groupId>commons-logging</groupId>
-		    <artifactId>commons-logging</artifactId>
-		    <version>1.2</version>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.9.8</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpclient-osgi</artifactId>
-		    <version>4.5.2</version>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.8</version>
 		</dependency>
+
 		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpcore-osgi</artifactId>
-		    <version>4.4.5</version>
+			<groupId>com.github.jsonld-java</groupId>
+			<artifactId>jsonld-java</artifactId>
+			<version>0.12.0</version>
 		</dependency>
-		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-annotations</artifactId>
-		    <version>2.8.1</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-core</artifactId>
-		    <version>2.8.1</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		    <version>2.8.1</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.github.jsonld-java</groupId>
-		    <artifactId>jsonld-java</artifactId>
-		    <version>0.8.3</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.apache.servicemix.bundles</groupId>
-		    <artifactId>org.apache.servicemix.bundles.libthrift</artifactId>
-		    <version>0.9.3_1</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.apache.servicemix.bundles</groupId>
-		    <artifactId>org.apache.servicemix.bundles.xerces</artifactId>
-		    <version>2.11.0_1</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.osgi</groupId>
-		    <artifactId>org.osgi.service.cm</artifactId>
-		    <version>1.5.0</version>
-		</dependency> -->				
 	</dependencies>
 	
 	<build>
@@ -139,37 +132,58 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-Activator>org.protege.editor.owl.ProtegeOWL</Bundle-Activator>
 						<Bundle-ClassPath>.</Bundle-ClassPath>
 						<Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
-						<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
+						<Export-Package>
+							at.ac.tuwien.shacl.plugin.*
+						</Export-Package>
 						<Import-Package>
-							org.apache.log4j.*;version="[1.2,2)", 
-							org.protege.editor.owl.*;version="4.3", <!-- equivalent to [4.3,infinity) -->
-							*
+							<!-- JDK provided packages from java.desktop module -->
+							javax.swing.*,
+
+							<!-- JDK provided packages from java.xml module -->
+							javax.xml.*,
+							org.xml.sax.*,
+							org.w3c.dom.*,
+
+							<!-- directly used packages from dependencies -->
+							org.apache.log4j.*;version="[1.2,2)",
+							org.slf4j.*,
+
+							org.protege.editor.owl.*;version="[5.5.0,6)",
+
+							org.semanticweb.owlapi.*;version="[4.5,5)",
+							org.apache.jena.*;version="[3.10.0,4)",
+
+							<!-- transitive -->
+							org.apache.commons.io.*,
+
+							<!-- possibly not used -->
+							*;resolution:=optional
 						</Import-Package>
-			            <Export-Package>
-			            	org.topbraid.*, 
-			            	javax.xml.transform, 
-			            	org.w3c.dom
-			            </Export-Package>
             			<Embed-Dependency>
-            				xml-apis<!-- , 
-			            	collection,
-							commons-csv,
-							commons-lang3,
-							commons-logging,
+							<!-- directly used dependencies -->
+							log4j,
+							shacl,
+							jena-core,
+							jena-arq,
+
+							<!-- transitive dependencies from provided dependencies that are not provided by them -->
 							httpclient-osgi,
 							httpcore-osgi,
 							jackson-annotations,
 							jackson-core,
 							jackson-databind,
 							jsonld-java,
-							libthrift,
-							org.apache.servicemix.bundles.xerces,
-							org.osgi.service.cm,
-							xml-resolver -->
+							commons-codec,
+							commons-logging,
+							commons-io,
+
+							<!-- embed all transitive dependencies -->
+
+							*;scope=compile|runtime
             			</Embed-Dependency>
+						<Embed-Transitive>true</Embed-Transitive>
 						<_noee>true</_noee>
 					</instructions>
 					<executions>
