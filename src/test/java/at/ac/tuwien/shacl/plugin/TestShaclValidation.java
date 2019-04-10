@@ -1,7 +1,9 @@
 package at.ac.tuwien.shacl.plugin;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
+import at.ac.tuwien.shacl.plugin.util.TestUtil;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.util.FileUtils;
@@ -14,20 +16,22 @@ import org.topbraid.jenax.util.JenaUtil;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
-import at.ac.tuwien.shacl.plugin.events.ShaclValidation;
-
-
 /**
  * Tests the Shacl engine.
  */
 public class TestShaclValidation {
     @Test
-    public void testWineConstraint() throws FileNotFoundException, InterruptedException {
+    public void testWineConstraint() throws IOException {
         Model dataModel = JenaUtil.createDefaultModel();
-        dataModel.read(getClass().getResourceAsStream("/wine/wineShape.ttl"), "", FileUtils.langTurtle);
-
         Model shapesModel = JenaUtil.createDefaultModel();
-        shapesModel.read(getClass().getResourceAsStream("/wine/wine.rdf"), "", FileUtils.langXML);
+
+        try (InputStream dataIn = getClass().getResourceAsStream("/wine/wine.rdf");
+             InputStream shapesIn = getClass().getResourceAsStream("/wine/wineShape.ttl");
+        ) {
+            dataModel.read(dataIn, "", FileUtils.langXML);
+            shapesModel.read(shapesIn, "", FileUtils.langTurtle);
+        }
+
 
         // Run the validator and print results
         Resource results =
@@ -39,16 +43,11 @@ public class TestShaclValidation {
     }
 
     @Test
-    public void testExample3() throws InterruptedException {
+    public void testExample3() throws IOException {
 
         // Load the main data model
-        Model dataModel = JenaUtil.createDefaultModel();
-        dataModel.read(ShaclValidation.class.getClassLoader().getResourceAsStream("example3-data.ttl"), "urn:dummy",
-                FileUtils.langTurtle);
-
-        Model shapesModel = JenaUtil.createDefaultModel();
-        shapesModel.read(ShaclValidation.class.getClassLoader().getResourceAsStream("example3.ttl"), "urn:dummy",
-                FileUtils.langTurtle);
+        Model dataModel   = TestUtil.getDataModel();
+        Model shapesModel = TestUtil.getShapesModel();
 
         // Run the validator and print results
         Resource results =

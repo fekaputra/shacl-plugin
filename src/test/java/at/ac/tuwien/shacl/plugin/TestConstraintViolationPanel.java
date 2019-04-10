@@ -1,6 +1,6 @@
 package at.ac.tuwien.shacl.plugin;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.apache.jena.rdf.model.Model;
 
@@ -20,11 +20,10 @@ public class TestConstraintViolationPanel {
     /**
      * Test, if table is indeed updated with new data after a SHACL validation.
      *
-     * @throws FileNotFoundException
-     * @throws InterruptedException
+     * @throws IOException
      */
     @Test
-    public void testTableUpdateAfterValidation() throws FileNotFoundException, InterruptedException {
+    public void testTableUpdateAfterValidation() throws IOException {
         ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel(null);
         assertEquals(0, panel.getTableModel().getRowCount());
 
@@ -40,7 +39,7 @@ public class TestConstraintViolationPanel {
     }
 
     @Test
-    public void testBehaviorAfterInit() throws FileNotFoundException, InterruptedException {
+    public void testBehaviorAfterInit() throws IOException {
         ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel(null);
 
         Model dataModel   = TestUtil.getDataModel();
@@ -52,7 +51,7 @@ public class TestConstraintViolationPanel {
     }
 
     @Test
-    public void testDispose() throws FileNotFoundException, InterruptedException {
+    public void testDispose() throws IOException {
         ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel(null);
 
         Model dataModel   = TestUtil.getDataModel();

@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -67,7 +68,12 @@ public class ShaclEditorPanel extends JPanel {
         add(scroll, BorderLayout.CENTER);
 
         editorPane.setFont(font);
-        editorPane.setText(ShaclModelFactory.getExampleModelAsString() + "\n ###### add SHACL vocabulary ###### \n");
+        try {
+            editorPane.setText(ShaclModelFactory.getExampleModelAsString() + "\n ###### add SHACL vocabulary ###### \n");
+        } catch (IOException e) {
+            e.printStackTrace();
+            editorPane.setText("error loading Example Model");
+        }
 
         // add "Execute" button related functionality
         JPanel buttonPanel = new JPanel();

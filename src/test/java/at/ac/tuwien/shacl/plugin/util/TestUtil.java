@@ -1,9 +1,12 @@
 package at.ac.tuwien.shacl.plugin.util;
 
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.util.FileUtils;
 
-import org.topbraid.jenax.util.JenaUtil;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 import at.ac.tuwien.shacl.plugin.events.ShaclValidation;
 
@@ -12,20 +15,25 @@ import at.ac.tuwien.shacl.plugin.events.ShaclValidation;
  */
 public class TestUtil {
 
-    public static Model getDataModel() {
-        Model dataModel = JenaUtil.createDefaultModel();
-        dataModel.read(ShaclValidation.class.getClassLoader().getResourceAsStream("example3-data.ttl"), "urn:dummy",
-                FileUtils.langTurtle);
+    private static final URL example3Url     = ShaclValidation.class.getClassLoader().getResource("example3.ttl");
+    private static final URL example3DataUrl = ShaclValidation.class.getClassLoader().getResource("example3-data.ttl");
 
-        return dataModel;
+    public static Model getDataModel() throws IOException {
+        try (InputStream in = example3DataUrl.openStream()) {
+            Model dataModel = ModelFactory.createDefaultModel();
+            dataModel.read(in, "urn:dummy", FileUtils.langTurtle);
+
+            return dataModel;
+        }
     }
 
-    public static Model getShapesModel() {
-        Model shapesModel = JenaUtil.createDefaultModel();
-        shapesModel.read(ShaclValidation.class.getClassLoader().getResourceAsStream("example3.ttl"), "urn:dummy",
-                FileUtils.langTurtle);
+    public static Model getShapesModel() throws IOException {
+        try (InputStream in = example3Url.openStream()) {
+            Model shapesModel = ModelFactory.createDefaultModel();
+            shapesModel.read(in, "urn:dummy", FileUtils.langTurtle);
 
-        return shapesModel;
+            return shapesModel;
+        }
     }
 
 }

@@ -20,7 +20,7 @@ public class RdfModelReader {
      * @param path path to the Turtle file
      * @return a Jena model containing RDF data
      */
-    public static Model getModelFromFile(String path) {
+    public static Model getModelFromFile(String path) throws IOException {
         return getModelFromFile(path, "TURTLE");
     }
 
@@ -32,11 +32,12 @@ public class RdfModelReader {
      *        supported languages
      * @return Jena model containing the RDF data
      */
-    public static Model getModelFromFile(String path, String language) {
-        InputStream in = ShaclModelFactory.class.getResourceAsStream(path);
-        Model model = ModelFactory.createDefaultModel();
-        model.read(in, "", language);
-        return model;
+    public static Model getModelFromFile(String path, String language) throws IOException {
+        try (InputStream in = ShaclModelFactory.class.getResourceAsStream(path)) {
+            Model model = ModelFactory.createDefaultModel();
+            model.read(in, "", language);
+            return model;
+        }
     }
 
     /**
@@ -45,14 +46,12 @@ public class RdfModelReader {
      *
      * @return an RDF model as a string
      */
-    public static String getModelFromFileAsString(String path) {
-        StringBuilder sb = null;
-
-        try {
-            InputStream in = ShaclModelFactory.class.getResourceAsStream(path);
-            InputStreamReader is = new InputStreamReader(in);
-            sb = new StringBuilder();
-            BufferedReader br = new BufferedReader(is);
+    public static String getModelFromFileAsString(String path) throws IOException {
+        try (InputStream in = ShaclModelFactory.class.getResourceAsStream(path);
+             InputStreamReader is = new InputStreamReader(in);
+             BufferedReader br = new BufferedReader(is);
+        ) {
+            StringBuilder sb = new StringBuilder();
             String read = br.readLine();
             String newLine = System.getProperty("line.separator");
 
@@ -61,10 +60,8 @@ public class RdfModelReader {
                 sb.append(newLine);
                 read = br.readLine();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        return sb.toString();
+            return sb.toString();
+        }
     }
 }

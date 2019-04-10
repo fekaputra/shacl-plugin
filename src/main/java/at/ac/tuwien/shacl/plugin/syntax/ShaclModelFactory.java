@@ -5,6 +5,8 @@ import org.apache.jena.rdf.model.ModelFactory;
 
 import at.ac.tuwien.shacl.plugin.util.RdfModelReader;
 
+import java.io.IOException;
+
 public class ShaclModelFactory {
 
     public static Model getBaseModel() {
@@ -20,11 +22,11 @@ public class ShaclModelFactory {
         return model;
     }
 
-    public static Model getExampleModel() {
+    public static Model getExampleModel() throws IOException {
         return RdfModelReader.getModelFromFile("/example3.ttl");
     }
 
-    public static String getExampleModelAsString() {
+    public static String getExampleModelAsString() throws IOException {
         return RdfModelReader.getModelFromFileAsString("/example3.ttl");
     }
 }
