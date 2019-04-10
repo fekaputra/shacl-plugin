@@ -70,16 +70,23 @@ public class ShaclConstraintViolationPanel extends JPanel {
             // clear table
             ((DefaultTableModel) table.getModel()).setRowCount(0);
 
+            //Resource report = model.listStatements(null, RDF.type, SH.ValidationReport).toList().get(0).getSubject();
+            //boolean conforms = report.getProperty(SH.conforms).getObject().asLiteral().getBoolean();
+            // TODO: indicate whether it conforms or not
+
             // update table with data from jena model
             for (Statement stmt : model.listStatements(null, RDF.type, SH.ValidationResult).toList()) {
                 Vector<String> row = new Vector<>();
                 Resource subject = stmt.getSubject();
 
-                row.add(getQName(model, subject.getProperty(SH.message)));
+                row.add(getQName(model, subject.getProperty(SH.resultMessage)));
                 row.add(getQName(model, subject.getProperty(SH.focusNode)));
-                row.add(getQName(model, subject.getProperty(SH.path)));
+                row.add(getQName(model, subject.getProperty(SH.resultPath)));
                 row.add(getQName(model, subject.getProperty(SH.sourceShape)));
-                row.add(getQName(model, subject.getProperty(SH.severity)));
+                row.add(getQName(model, subject.getProperty(SH.resultSeverity)));
+
+                // TODO: display value
+                //row.add(getQName(model, subject.getProperty(SH.value)));
 
                 ((DefaultTableModel) table.getModel()).addRow(row);
             }
