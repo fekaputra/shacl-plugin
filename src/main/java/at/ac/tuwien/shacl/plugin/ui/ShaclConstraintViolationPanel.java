@@ -79,14 +79,12 @@ public class ShaclConstraintViolationPanel extends JPanel {
                 Vector<String> row = new Vector<>();
                 Resource subject = stmt.getSubject();
 
+                row.add(getQName(model, subject.getProperty(SH.resultSeverity)));
+                row.add(getQName(model, subject.getProperty(SH.sourceShape)));
                 row.add(getQName(model, subject.getProperty(SH.resultMessage)));
                 row.add(getQName(model, subject.getProperty(SH.focusNode)));
                 row.add(getQName(model, subject.getProperty(SH.resultPath)));
-                row.add(getQName(model, subject.getProperty(SH.sourceShape)));
-                row.add(getQName(model, subject.getProperty(SH.resultSeverity)));
-
-                // TODO: display value
-                //row.add(getQName(model, subject.getProperty(SH.value)));
+                row.add(getQName(model, subject.getProperty(SH.value)));
 
                 ((DefaultTableModel) table.getModel()).addRow(row);
             }
@@ -111,7 +109,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
     protected void init() {
         // System.out.println(modelManager.getActiveOntology().getAxioms());
 
-        String[] headers = { "Message", "FocusNode", "Path", "SourceShape", "Severity" };
+        String[] headers = { "Severity", "SourceShape", "Message", "FocusNode", "Path", "Value" };
         String[][] data = {};
 
         TableModel tableModel = new DefaultTableModel(data, headers);
