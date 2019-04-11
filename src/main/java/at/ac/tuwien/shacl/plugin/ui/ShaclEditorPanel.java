@@ -75,6 +75,8 @@ public class ShaclEditorPanel extends JPanel {
             editorPane.setText("error loading Example Model");
         }
 
+        // TODO: add undo/redo functionality, maybe like https://stackoverflow.com/a/12030993/2565743
+
         // add "Execute" button related functionality
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BorderLayout());
