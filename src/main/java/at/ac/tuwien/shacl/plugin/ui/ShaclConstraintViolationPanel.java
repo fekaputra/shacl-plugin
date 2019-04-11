@@ -61,11 +61,14 @@ public class ShaclConstraintViolationPanel extends JPanel {
 
         // TODO: indicate whether it conforms or not
 
+        List<ShaclValidationResult> validationResults = new ArrayList<>(report.validationResults);
+        validationResults.sort(null);
+
         // update table with result data
-        for (ShaclValidationResult res : report.validationResults) {
+        for (ShaclValidationResult res : validationResults) {
             Vector<String> row = new Vector<>();
 
-            row.add(res.resultSeverity);
+            row.add(res.resultSeverity.toString());
             row.add(res.sourceShape);
             row.add(res.resultMessage);
             row.add(res.focusNode);
