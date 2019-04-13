@@ -32,8 +32,8 @@ public class TestConstraintViolationPanel {
                 TestUtil.getShapesAndDataModel());
 
         assertEquals(2, panel.getTableModel().getRowCount());
-        assertNotNull(panel.getTableModel().getValueAt(0, 8));
-        assertNotNull(panel.getTableModel().getValueAt(1, 8));
+        assertNotNull(panel.getTableModel().getValueAt(0, 0));
+        assertNotNull(panel.getTableModel().getValueAt(1, 0));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class TestConstraintViolationPanel {
         ShaclValidationRegistry.getValidator().runValidation2(ModelFactory.createDefaultModel(),
                 TestUtil.getShapesAndDataModel());
 
-        assertFalse(panel.getTable().isCellEditable(1, 8));
+        assertFalse(panel.getTable().isCellEditable(0, 0));
     }
 
     @Test
