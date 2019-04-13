@@ -24,7 +24,7 @@ import org.topbraid.jenax.util.SystemTriples;
  */
 public class ShaclValidation extends Observable {
 
-    public void runValidation2(Model shaclModel, Model dataModel) throws InterruptedException, FileNotFoundException {
+    public void runValidation2(Model shaclModel, Model dataModel) throws InterruptedException {
 
         // Load the shapes Model (here, includes the dataModel because that has shape definitions too)
         // MultiUnion unionGraph = new MultiUnion(new Graph[] { shaclModel.getGraph(), dataModel.getGraph() });
@@ -44,12 +44,6 @@ public class ShaclValidation extends Observable {
         // Run the validator
 //        Model results = ValidationUtil.validateModel(dataset, shapesGraphURI, true);
         Resource results = ValidationUtil.validateModel(dataModel, completeShaclModel, true);
-
-        // print stuff
-        System.out.println("--- ************* ---");
-        shaclModel.write(new FileOutputStream("shacl.ttl"), "TURTLE");
-        System.out.println("--- ************* ---");
-        dataModel.write(new FileOutputStream("data.ttl"), "TURTLE");
 
         // Print violations
         System.out.println("--- ************* ---");
