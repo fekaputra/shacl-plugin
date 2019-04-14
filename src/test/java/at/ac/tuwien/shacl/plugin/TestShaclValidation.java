@@ -1,24 +1,21 @@
 package at.ac.tuwien.shacl.plugin;
 
 import java.io.FileNotFoundException;
-import java.net.URI;
-import java.util.UUID;
 
-import org.apache.jena.graph.Graph;
-import org.apache.jena.graph.compose.MultiUnion;
-import org.apache.jena.query.Dataset;
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.util.FileUtils;
-import org.junit.Test;
-import org.topbraid.shacl.arq.SHACLFunctions;
+
+import org.apache.jena.vocabulary.RDF;
 import org.topbraid.shacl.validation.ValidationUtil;
-import org.topbraid.jenax.util.ARQFactory;
+import org.topbraid.shacl.vocabulary.SH;
 import org.topbraid.jenax.util.JenaUtil;
 
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+
 import at.ac.tuwien.shacl.plugin.events.ShaclValidation;
-import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
+
 
 /**
  * Tests the Shacl engine.
@@ -32,43 +29,34 @@ public class TestShaclValidation {
         Model shapesModel = JenaUtil.createDefaultModel();
         shapesModel.read(getClass().getResourceAsStream("/wine/wine.rdf"), "", FileUtils.langXML);
 
-        ShaclValidation validation = new ShaclValidation();
-        validation.runValidation2(shapesModel, dataModel);
+        // Run the validator and print results
+        Resource results =
+                ValidationUtil.validateModel(dataModel, shapesModel, false);
+
+        results.getModel().write(System.out, "TURTLE");
+
+        // TODO: test anything? Should it conform or not?
     }
 
     @Test
-    public void testSHACLSquare() throws InterruptedException {
+    public void testExample3() throws InterruptedException {
 
         // Load the main data model
         Model dataModel = JenaUtil.createDefaultModel();
-        dataModel.read(getClass().getResourceAsStream("/topbraid/shaclsquare.ttl"), "urn:dummy",
+        dataModel.read(ShaclValidation.class.getClassLoader().getResourceAsStream("example3-data.ttl"), "urn:dummy",
                 FileUtils.langTurtle);
 
-        MultiUnion unionGraph =
-            new MultiUnion(new Graph[] { ShaclModelFactory.getShaclModel().getGraph(), dataModel.getGraph() });
-        Model shapesModel = ModelFactory.createModelForGraph(unionGraph);
-
-        // Note that we don't perform validation of the shape definitions themselves.
-        // To do that, activate the following line to make sure that all required triples are present:
-        // dataModel = SHACLUtil.withDefaultValueTypeInferences(shapesModel);
-
-        // Make sure all sh:Functions are registered
-        SHACLFunctions.registerFunctions(shapesModel);
-
-        // Create Dataset that contains both the main query model and the shapes model
-        // (here, using a temporary URI for the shapes graph)
-        URI shapesGraphURI = URI.create("urn:x-shacl-shapes-graph:" + UUID.randomUUID().toString());
-        Dataset dataset = ARQFactory.get().getDataset(dataModel);
-        dataset.addNamedModel(shapesGraphURI.toString(), shapesModel);
+        Model shapesModel = JenaUtil.createDefaultModel();
+        shapesModel.read(ShaclValidation.class.getClassLoader().getResourceAsStream("example3.ttl"), "urn:dummy",
+                FileUtils.langTurtle);
 
         // Run the validator and print results
-//        Model results =
-//                ModelConstraintValidator.get().validateModel(dataset, shapesGraphURI, null, false, null, null);
         Resource results =
                 ValidationUtil.validateModel(dataModel, shapesModel, false);
-        // System.out.println(ModelPrinter.get().print(results));
+
         results.getModel().write(System.out, "TURTLE");
-        // Expecting 2 constraint violations (9 triples each)
-        // assertEquals(18, results.size());
+
+        // Expecting 3 constraint violations
+        assertEquals(3, results.getModel().listStatements(null, RDF.type, SH.ValidationResult).toList().size());
     }
 }
