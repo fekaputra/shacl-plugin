@@ -1,13 +1,13 @@
 package at.ac.tuwien.shacl.plugin;
 
+import java.io.FileNotFoundException;
+
+import org.apache.jena.rdf.model.Model;
+
+import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-
-import java.io.FileNotFoundException;
-
-import org.apache.jena.rdf.model.ModelFactory;
-import org.junit.Test;
 
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
 import at.ac.tuwien.shacl.plugin.ui.ShaclConstraintViolationPanel;
@@ -28,20 +28,25 @@ public class TestConstraintViolationPanel {
         ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel(null);
         assertEquals(0, panel.getTableModel().getRowCount());
 
-        ShaclValidationRegistry.getValidator().runValidation2(ModelFactory.createDefaultModel(),
-                TestUtil.getShapesAndDataModel());
+        Model dataModel   = TestUtil.getDataModel();
+        Model shapesModel = TestUtil.getShapesModel();
 
-        assertEquals(2, panel.getTableModel().getRowCount());
+        ShaclValidationRegistry.getValidator().runValidation2(shapesModel, dataModel);
+
+        assertEquals(3, panel.getTableModel().getRowCount());
         assertNotNull(panel.getTableModel().getValueAt(0, 0));
         assertNotNull(panel.getTableModel().getValueAt(1, 0));
+        assertNotNull(panel.getTableModel().getValueAt(2, 0));
     }
 
     @Test
     public void testBehaviorAfterInit() throws FileNotFoundException, InterruptedException {
         ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel(null);
 
-        ShaclValidationRegistry.getValidator().runValidation2(ModelFactory.createDefaultModel(),
-                TestUtil.getShapesAndDataModel());
+        Model dataModel   = TestUtil.getDataModel();
+        Model shapesModel = TestUtil.getShapesModel();
+
+        ShaclValidationRegistry.getValidator().runValidation2(shapesModel, dataModel);
 
         assertFalse(panel.getTable().isCellEditable(0, 0));
     }
@@ -49,14 +54,21 @@ public class TestConstraintViolationPanel {
     @Test
     public void testDispose() throws FileNotFoundException, InterruptedException {
         ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel(null);
-        ShaclValidationRegistry.getValidator().runValidation2(ModelFactory.createDefaultModel(),
-                TestUtil.getShapesAndDataModel());
-        assertEquals(2, panel.getTableModel().getRowCount());
+
+        Model dataModel   = TestUtil.getDataModel();
+        Model shapesModel = TestUtil.getShapesModel();
+
+        ShaclValidationRegistry.getValidator().runValidation2(shapesModel, dataModel);
+
+        assertEquals(3, panel.getTableModel().getRowCount());
 
         panel.getTableModel().setRowCount(0);
         panel.dispose();
-        ShaclValidationRegistry.getValidator().runValidation2(ModelFactory.createDefaultModel(),
-                TestUtil.getShapesAndDataModel());
+
+        Model dataModel2   = TestUtil.getDataModel();
+        Model shapesModel2 = TestUtil.getShapesModel();
+
+        ShaclValidationRegistry.getValidator().runValidation2(shapesModel2, dataModel2);
 
         assertEquals(0, panel.getTableModel().getRowCount());
     }
