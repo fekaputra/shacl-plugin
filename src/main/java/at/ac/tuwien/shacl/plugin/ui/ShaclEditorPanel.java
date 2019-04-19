@@ -24,6 +24,7 @@ import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
 import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
 import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
+import at.ac.tuwien.shacl.plugin.util.InferredOntologyLoader;
 
 public class ShaclEditorPanel extends JPanel {
     private static final long serialVersionUID = -2739474730975140803L;
@@ -90,7 +91,7 @@ public class ShaclEditorPanel extends JPanel {
         try {
             JenaOwlConverter converter = new JenaOwlConverter();
 
-            OWLOntology ont = modelManager.getActiveOntology();
+            OWLOntology ont = InferredOntologyLoader.loadInferredOntology(this, modelManager);
             Model dataModel = converter.ModelOwlToJenaConvert(ont, "TURTLE");
 
             // Load the main data model
