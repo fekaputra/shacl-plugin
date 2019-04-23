@@ -2,8 +2,10 @@
 
 Contact: **fajar.ekaputra [at] tuwien.ac.at**
 
-The plugin is tried and tested using Protege 5.5.0 on Debian 10 (Buster) with OpenJDK 11 and Windows 10 (1809) with the bundled JRE 8.
-Developed using TopBraid SHACL Engine 1.1.0 [2] and Apache Jena 3.10.0 [3].
+The plugin is tried and tested using Protege 5.5.0 on Debian 10 (Buster) with OpenJDK 11, Windows 10 (1809) with the bundled JRE 8, and Mac OSX Mojave with JDK 8.
+Developed using TopBraid SHACL Engine 1.1.0 [2] and Apache Jena 3.10.0 [3].   
+
+Special thanks to André Wolski (@locke) for his efforts on cleaning up the old code and making the plugin works again. 
 
 ----
 
