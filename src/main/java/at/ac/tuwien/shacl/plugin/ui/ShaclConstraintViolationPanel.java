@@ -1,9 +1,7 @@
 package at.ac.tuwien.shacl.plugin.ui;
 
 import java.awt.BorderLayout;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Vector;
+import java.util.*;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -11,15 +9,12 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.Statement;
-import org.apache.jena.vocabulary.RDF;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.topbraid.shacl.vocabulary.SH;
 
 import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
+import at.ac.tuwien.shacl.plugin.util.ShaclValidationReport;
+import at.ac.tuwien.shacl.plugin.util.ShaclValidationResult;
 
 /**
  * Panel for the constraint violations.
@@ -35,22 +30,6 @@ public class ShaclConstraintViolationPanel extends JPanel {
      */
     private JTable table;
 
-    /**
-     * Get a qualified name for an URI, if it exists, otherwise just return the original string.
-     *
-     * @param model Model containing the prefixes
-     * @param stmt Statement to be checked for a qname
-     * @return qname if one exists, otherwise the original string of the object
-     */
-    private String getQName(Model model, Statement stmt) {
-        if (stmt != null && stmt.getObject() != null) {
-            String string = stmt.getObject().toString();
-            return model.qnameFor(string) == null ? string : model.qnameFor(string);
-        } else {
-            return "";
-        }
-    }
-
     // TODO link table selection with events
     /**
      * Defines behavior when object gets notified about a SHACL validation result. Shows the constraint violations of
@@ -65,24 +44,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
          */
         @Override
         public void update(Observable o, Object arg) {
-            Model model = (Model) arg;
-
-            // clear table
-            ((DefaultTableModel) table.getModel()).setRowCount(0);
-
-            // update table with data from jena model
-            for (Statement stmt : model.listStatements(null, RDF.type, SH.ValidationResult).toList()) {
-                Vector<String> row = new Vector<>();
-                Resource subject = stmt.getSubject();
-
-                row.add(getQName(model, subject.getProperty(SH.message)));
-                row.add(getQName(model, subject.getProperty(SH.focusNode)));
-                row.add(getQName(model, subject.getProperty(SH.path)));
-                row.add(getQName(model, subject.getProperty(SH.sourceShape)));
-                row.add(getQName(model, subject.getProperty(SH.severity)));
-
-                ((DefaultTableModel) table.getModel()).addRow(row);
-            }
+            updateTable((ShaclValidationReport) arg);
         }
     };
 
@@ -92,6 +54,30 @@ public class ShaclConstraintViolationPanel extends JPanel {
             // textArea.setText(arg.toString());
         }
     };
+
+    private void updateTable(ShaclValidationReport report) {
+        // clear table
+        ((DefaultTableModel) table.getModel()).setRowCount(0);
+
+        // TODO: indicate whether it conforms or not
+
+        List<ShaclValidationResult> validationResults = new ArrayList<>(report.validationResults);
+        validationResults.sort(null);
+
+        // update table with result data
+        for (ShaclValidationResult res : validationResults) {
+            Vector<String> row = new Vector<>();
+
+            row.add(res.resultSeverity.toString());
+            row.add(res.sourceShape);
+            row.add(res.resultMessage);
+            row.add(res.focusNode);
+            row.add(res.resultPath);
+            row.add(res.value);
+
+            ((DefaultTableModel) table.getModel()).addRow(row);
+        }
+    }
 
     /**
      *
@@ -104,7 +90,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
     protected void init() {
         // System.out.println(modelManager.getActiveOntology().getAxioms());
 
-        String[] headers = { "Message", "FocusNode", "Path", "SourceShape", "Severity" };
+        String[] headers = { "Severity", "SourceShape", "Message", "FocusNode", "Path", "Value" };
         String[][] data = {};
 
         TableModel tableModel = new DefaultTableModel(data, headers);

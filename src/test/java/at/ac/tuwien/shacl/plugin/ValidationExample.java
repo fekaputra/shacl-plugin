@@ -1,20 +1,10 @@
 package at.ac.tuwien.shacl.plugin;
 
-import java.io.InputStream;
-import java.net.URI;
-import java.util.UUID;
-
-import org.apache.jena.query.Dataset;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.util.FileUtils;
-import org.topbraid.shacl.arq.SHACLFunctions;
-import org.topbraid.shacl.constraints.ModelConstraintValidator;
+import org.apache.jena.rdf.model.Resource;
 import org.topbraid.shacl.util.ModelPrinter;
-import org.topbraid.shacl.vocabulary.SH;
-import org.topbraid.spin.arq.ARQFactory;
-import org.topbraid.spin.util.JenaUtil;
-import org.topbraid.spin.util.SystemTriples;
+import org.topbraid.shacl.validation.ValidationUtil;
 
 public class ValidationExample {
 
@@ -24,26 +14,13 @@ public class ValidationExample {
      */
     public static void main(String[] args) throws Exception {
 
-        // Load the shapes Model (here, includes the dataModel because that has shape definitions too)
-        // MultiUnion unionGraph = new MultiUnion(new Graph[] { shaclModel.getGraph(), dataModel.getGraph() });
         Model ruleModel = ModelFactory.createDefaultModel();
         Model dataModel = ModelFactory.createDefaultModel();
-        ruleModel.read("src/test/resources/shacl.ttl", "TURTLE");
-        dataModel.read("src/test/resources/data.ttl", "TURTLE");
-
-        // Make sure all sh:Functions are registered
-
-        ruleModel.add(getSHACLModel());
-        SHACLFunctions.registerFunctions(ruleModel);
-
-        // Create Dataset that contains both the main query model and the shapes model
-        // (here, using a temporary URI for the shapes graph)
-        URI shapesGraphURI = URI.create("urn:x-shacl-shapes-graph:" + UUID.randomUUID().toString());
-        Dataset dataset = ARQFactory.get().getDataset(dataModel);
-        dataset.addNamedModel(shapesGraphURI.toString(), ruleModel);
+        ruleModel.read("src/main/resources/example3.ttl", "TURTLE");
+        dataModel.read("src/main/resources/example3-data.ttl", "TURTLE");
 
         // Run the validator
-        Model results = ModelConstraintValidator.get().validateModel(dataset, shapesGraphURI, null, true, null, null);
+        Resource results = ValidationUtil.validateModel(dataModel, ruleModel, true);
 
         // print stuff
         System.out.println("--- ************* ---");
@@ -53,22 +30,6 @@ public class ValidationExample {
 
         // Print violations
         System.out.println("--- ************* ---");
-        System.out.println(ModelPrinter.get().print(results));
-    }
-
-    public static Model getSHACLModel() {
-        Model shaclModel = null;
-        if (shaclModel == null) {
-            InputStream shaclTTL = ValidationExample.class.getResourceAsStream("/etc/shacl.ttl");
-            InputStream dashTTL = ValidationExample.class.getResourceAsStream("/etc/dash.ttl");
-
-            shaclModel = JenaUtil.createDefaultModel();
-            shaclModel.read(shaclTTL, SH.BASE_URI, FileUtils.langTurtle);
-            shaclModel.read(dashTTL, SH.BASE_URI, FileUtils.langTurtle);
-            shaclModel.add(SystemTriples.getVocabularyModel());
-
-            SHACLFunctions.registerFunctions(shaclModel);
-        }
-        return shaclModel;
+        System.out.println(ModelPrinter.get().print(results.getModel()));
     }
 }

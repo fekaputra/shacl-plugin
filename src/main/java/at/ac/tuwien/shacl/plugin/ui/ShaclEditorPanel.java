@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -17,7 +18,7 @@ import org.apache.jena.riot.RiotException;
 import org.apache.jena.util.FileUtils;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.topbraid.spin.util.JenaUtil;
+import org.topbraid.jenax.util.JenaUtil;
 
 import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
@@ -67,7 +68,14 @@ public class ShaclEditorPanel extends JPanel {
         add(scroll, BorderLayout.CENTER);
 
         editorPane.setFont(font);
-        editorPane.setText(ShaclModelFactory.getExampleModelAsString() + "\n ###### add SHACL vocabulary ###### \n");
+        try {
+            editorPane.setText(ShaclModelFactory.getExampleModelAsString() + "\n ###### add SHACL vocabulary ###### \n");
+        } catch (IOException e) {
+            e.printStackTrace();
+            editorPane.setText("error loading Example Model");
+        }
+
+        // TODO: add undo/redo functionality, maybe like https://stackoverflow.com/a/12030993/2565743
 
         // add "Execute" button related functionality
         JPanel buttonPanel = new JPanel();
