@@ -25,17 +25,17 @@
 	            </Component>
             </CNode>
         </HSNode>
-        <HSNode splits="0.40 0.40 0.20">
+        <HSNode splits="0.50 0.50">
             <CNode>
                 <Component label="Constraints">
                 	<Property id="pluginId" value="at.ac.tuwien.shacl.plugin.ShaclConstraintPickerViewComponent"/>
             	</Component>
             </CNode>
-            <CNode>
-                <Component label="Constraint Tree">
-                    <Property id="pluginId" value="at.ac.tuwien.shacl.plugin.ShaclConstraintTreeViewComponent"/>
-                </Component>
-            </CNode>
+            <!--<CNode>-->
+                <!--<Component label="Constraint Tree">-->
+                    <!--<Property id="pluginId" value="at.ac.tuwien.shacl.plugin.ShaclConstraintTreeViewComponent"/>-->
+                <!--</Component>-->
+            <!--</CNode>-->
             <CNode>
                 <Component label="Ontology prefixes">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyPrefixesView"/>
