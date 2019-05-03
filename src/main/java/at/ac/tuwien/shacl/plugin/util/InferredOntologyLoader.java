@@ -32,22 +32,26 @@ public class InferredOntologyLoader {
 
             // Reasoner available, use inferred axioms
 
-            // NOTE: we cannot use modelManager.getOWLOntologyManager()
-            // as this would mess up the loaded ontologies in Protégé
-            OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-            OWLDataFactory fac = manager.getOWLDataFactory();
-
-            // copy all axioms from the ontology and include all axioms from all imported ontologies
-            OWLOntology infOnt = manager.createOntology(ont.getAxioms(Imports.INCLUDED));
-
-            // copy all axioms that the reasoner inferred
-            InferredOntologyGenerator iog = new InferredOntologyGenerator(reasoner);
-            iog.fillOntology(fac, infOnt);
-
-            return infOnt;
+            return loadInferredOntologyFromReasoner(ont, reasoner);
         }
         else {
             return ont;
         }
+    }
+
+    public static OWLOntology loadInferredOntologyFromReasoner(OWLOntology ont, OWLReasoner reasoner) throws OWLOntologyCreationException {
+        // NOTE: we cannot use modelManager.getOWLOntologyManager()
+        // as this would mess up the loaded ontologies in Protégé
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLDataFactory fac = manager.getOWLDataFactory();
+
+        // copy all axioms from the ontology and include all axioms from all imported ontologies
+        OWLOntology infOnt = manager.createOntology(ont.getAxioms(Imports.INCLUDED));
+
+        // copy all axioms that the reasoner inferred
+        InferredOntologyGenerator iog = new InferredOntologyGenerator(reasoner);
+        iog.fillOntology(fac, infOnt);
+
+        return infOnt;
     }
 }
