@@ -3,17 +3,16 @@
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix ex:    <http://www.example.org/#> .
-@prefix shema: <http://schema.org/> .
 
 ex:Alice
-	a shema:Person ;
-	ex:ssn "987-65-432A" .
+    a ex:Person ;
+    ex:ssn "987-65-432A" .
 
 ex:Bob
-	a shema:Person ;
-	ex:ssn "123-45-6789" ;
-	ex:ssn "124-35-6789" .
+    a ex:Person ;
+    ex:ssn "123-45-6789" ;
+    ex:ssn "124-35-6789" .
 
 ex:Calvin
-	a shema:Person ;
-	ex:birthDate "1956-06-25T10:00:00+01:00"^^xsd:dateTime .
+    a ex:Person ;
+    ex:birthDate "1956-06-25T10:00:00+01:00"^^xsd:dateTime .
