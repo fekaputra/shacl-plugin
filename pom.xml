@@ -32,6 +32,28 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- -->
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>pellet-owlapi-ignazio1977</artifactId>
+			<version>2.4.0-ignazio1977</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>pellet-core-ignazio1977</artifactId>
+			<version>2.4.0-ignazio1977</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>pellet-modularity-ignazio1977</artifactId>
+			<version>2.4.0-ignazio1977</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- -->
+
+
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
             <artifactId>protege-editor-owl</artifactId>
