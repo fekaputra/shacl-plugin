@@ -13,6 +13,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 
 import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
+import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
 import at.ac.tuwien.shacl.plugin.util.ShaclValidationReport;
 import at.ac.tuwien.shacl.plugin.util.ShaclValidationResult;
 
@@ -69,11 +70,11 @@ public class ShaclConstraintViolationPanel extends JPanel {
             Vector<String> row = new Vector<>();
 
             row.add(res.resultSeverity.toString());
-            row.add(res.sourceShape);
-            row.add(res.resultMessage);
-            row.add(res.focusNode);
-            row.add(res.resultPath);
-            row.add(res.value);
+            row.add(JenaOwlConverter.getQName(res.model, res.sourceShape));
+            row.add(JenaOwlConverter.getQName(res.model, res.resultMessage));
+            row.add(JenaOwlConverter.getQName(res.model, res.focusNode));
+            row.add(JenaOwlConverter.getQName(res.model, res.resultPath));
+            row.add(JenaOwlConverter.getQName(res.model, res.value));
 
             ((DefaultTableModel) table.getModel()).addRow(row);
         }
