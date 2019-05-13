@@ -2,6 +2,8 @@ package at.ac.tuwien.shacl.plugin.ui;
 
 import java.awt.BorderLayout;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -10,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 
@@ -68,7 +71,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
         @Override
         public void selectionChanged() throws Exception {
             lastSelection = owlWorkspace.getOWLSelectionModel().getSelectedEntity();
-            // TODO: updateTable
+            updateTable();
         }
     };
 
@@ -81,7 +84,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
         if (lastReport == null || lastReport.validationResults.isEmpty())
             return;
 
-        List<ShaclValidationResult> validationResults = new ArrayList<>(lastReport.validationResults);
+        List<ShaclValidationResult> validationResults = filterResults(lastReport, lastSelection);
 
         validationResults.sort(null); // NOTE: null -> uses ShaclValidationResult.compareTo
 
@@ -90,6 +93,29 @@ public class ShaclConstraintViolationPanel extends JPanel {
             Vector<String> row = toRow(res);
 
             ((DefaultTableModel) table.getModel()).addRow(row);
+        }
+    }
+
+    private List<ShaclValidationResult> filterResults(ShaclValidationReport report, OWLEntity selection) {
+        if (selection == null) {
+            return new ArrayList<>(report.validationResults);
+        }
+        else {
+            Stream<ShaclValidationResult> results = report.validationResults.stream();
+
+            if (selection.isOWLNamedIndividual()) {
+                OWLNamedIndividual selectedIndividual = selection.asOWLNamedIndividual();
+                String selectedIndividualIRI = selectedIndividual.getIRI().toString();
+
+                results = results
+                        .filter(row -> row.focusNode != null && row.focusNode.isURIResource())
+                        .filter(row -> row.focusNode.asResource().getURI().equals(selectedIndividualIRI));
+            }
+            else {
+                // TODO: handle selected class -> get all individuals of it
+            }
+
+            return results.collect(Collectors.toList());
         }
     }
 
