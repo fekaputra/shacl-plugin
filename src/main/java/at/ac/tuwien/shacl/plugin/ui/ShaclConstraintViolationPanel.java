@@ -30,6 +30,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
 
     private final OWLWorkspace owlWorkspace;
 
+    private ShaclValidationReport lastReport = null;
     private OWLEntity lastSelection = null;
 
     /**
@@ -51,7 +52,8 @@ public class ShaclConstraintViolationPanel extends JPanel {
          */
         @Override
         public void update(Observable o, Object arg) {
-            updateTable((ShaclValidationReport) arg);
+            lastReport = (ShaclValidationReport) arg;
+            updateTable();
         }
     };
 
@@ -70,14 +72,18 @@ public class ShaclConstraintViolationPanel extends JPanel {
         }
     };
 
-    private void updateTable(ShaclValidationReport report) {
+    private void updateTable() {
         // clear table
         ((DefaultTableModel) table.getModel()).setRowCount(0);
 
         // TODO: indicate whether it conforms or not
 
-        List<ShaclValidationResult> validationResults = new ArrayList<>(report.validationResults);
-        validationResults.sort(null);
+        if (lastReport == null || lastReport.validationResults.isEmpty())
+            return;
+
+        List<ShaclValidationResult> validationResults = new ArrayList<>(lastReport.validationResults);
+
+        validationResults.sort(null); // NOTE: null -> uses ShaclValidationResult.compareTo
 
         // update table with result data
         for (ShaclValidationResult res : validationResults) {
