@@ -71,7 +71,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
 
             row.add(res.resultSeverity.toString());
             row.add(JenaOwlConverter.getQName(res.model, res.sourceShape));
-            row.add(JenaOwlConverter.getQName(res.model, res.resultMessage));
+            row.add(res.resultMessage == null ? null : res.resultMessage.toString());
             row.add(JenaOwlConverter.getQName(res.model, res.focusNode));
             row.add(JenaOwlConverter.getQName(res.model, res.resultPath));
             row.add(JenaOwlConverter.getQName(res.model, res.value));
