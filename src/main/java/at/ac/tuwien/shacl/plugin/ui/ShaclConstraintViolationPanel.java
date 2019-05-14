@@ -9,8 +9,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import org.protege.editor.owl.model.OWLModelManager;
-
 import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
 import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
@@ -86,17 +84,11 @@ public class ShaclConstraintViolationPanel extends JPanel {
         return row;
     }
 
-    /**
-     *
-     * @param modelManager
-     */
-    public ShaclConstraintViolationPanel(OWLModelManager modelManager) {
+    public ShaclConstraintViolationPanel() {
         this.init();
     }
 
     protected void init() {
-        // System.out.println(modelManager.getActiveOntology().getAxioms());
-
         String[] headers = { "Severity", "SourceShape", "Message", "FocusNode", "Path", "Value" };
         String[][] data = {};
 

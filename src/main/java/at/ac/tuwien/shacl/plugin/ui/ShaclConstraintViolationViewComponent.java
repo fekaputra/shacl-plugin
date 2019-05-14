@@ -16,7 +16,7 @@ public class ShaclConstraintViolationViewComponent extends AbstractOWLViewCompon
 
 	@Override
 	protected void initialiseOWLView() throws Exception {
-		violationsPanel = new ShaclConstraintViolationPanel(getOWLModelManager());
+		violationsPanel = new ShaclConstraintViolationPanel();
 
 		this.setLayout(new BorderLayout());
 		this.add(violationsPanel, BorderLayout.CENTER);
