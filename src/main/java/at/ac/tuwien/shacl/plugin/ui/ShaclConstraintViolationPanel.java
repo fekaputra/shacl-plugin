@@ -9,6 +9,10 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.protege.editor.owl.model.OWLWorkspace;
+import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
+
 import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
 import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
@@ -24,6 +28,10 @@ public class ShaclConstraintViolationPanel extends JPanel {
      */
     private static final long serialVersionUID = 1093799641840761261L;
 
+    private final OWLWorkspace owlWorkspace;
+
+    private OWLEntity lastSelection = null;
+
     /**
      * Table view showing the constraint violations.
      */
@@ -34,7 +42,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
      * Defines behavior when object gets notified about a SHACL validation result. Shows the constraint violations of
      * the result Jena model in the table view.
      */
-    private Observer shaclObserver = new Observer() {
+    private final Observer shaclObserver = new Observer() {
         /**
          * Called, when the SHACL validator was executed, and the results were returned.
          *
@@ -47,10 +55,18 @@ public class ShaclConstraintViolationPanel extends JPanel {
         }
     };
 
-    private Observer errorObserver = new Observer() {
+    private final Observer errorObserver = new Observer() {
         @Override
         public void update(Observable o, Object arg) {
             // textArea.setText(arg.toString());
+        }
+    };
+
+    private final OWLSelectionModelListener selectionObserver = new OWLSelectionModelListener() {
+        @Override
+        public void selectionChanged() throws Exception {
+            lastSelection = owlWorkspace.getOWLSelectionModel().getSelectedEntity();
+            // TODO: updateTable
         }
     };
 
@@ -85,6 +101,11 @@ public class ShaclConstraintViolationPanel extends JPanel {
     }
 
     public ShaclConstraintViolationPanel() {
+        this(null);
+    }
+
+    public ShaclConstraintViolationPanel(OWLWorkspace owlWorkspace) {
+        this.owlWorkspace = owlWorkspace;
         this.init();
     }
 
@@ -123,6 +144,11 @@ public class ShaclConstraintViolationPanel extends JPanel {
 
         // register to error events emitted by this project
         ErrorNotifier.register(errorObserver);
+
+        // register to selection changes in Protégé
+        if (owlWorkspace != null) {
+            owlWorkspace.getOWLSelectionModel().addListener(selectionObserver);
+        }
     }
 
     /**
@@ -131,6 +157,10 @@ public class ShaclConstraintViolationPanel extends JPanel {
     public void dispose() {
         ShaclValidationRegistry.removeObserver(shaclObserver);
         ErrorNotifier.unregister(errorObserver);
+
+        if (owlWorkspace != null) {
+            owlWorkspace.getOWLSelectionModel().removeListener(selectionObserver);
+        }
     }
 
     public DefaultTableModel getTableModel() {
