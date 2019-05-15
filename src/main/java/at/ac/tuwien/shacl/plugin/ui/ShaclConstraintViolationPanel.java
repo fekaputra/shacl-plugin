@@ -67,17 +67,23 @@ public class ShaclConstraintViolationPanel extends JPanel {
 
         // update table with result data
         for (ShaclValidationResult res : validationResults) {
-            Vector<String> row = new Vector<>();
-
-            row.add(res.resultSeverity.toString());
-            row.add(JenaOwlConverter.getQName(res.model, res.sourceShape));
-            row.add(res.resultMessage == null ? null : res.resultMessage.toString());
-            row.add(JenaOwlConverter.getQName(res.model, res.focusNode));
-            row.add(JenaOwlConverter.getQName(res.model, res.resultPath));
-            row.add(JenaOwlConverter.getQName(res.model, res.value));
+            Vector<String> row = toRow(res);
 
             ((DefaultTableModel) table.getModel()).addRow(row);
         }
+    }
+
+    private static Vector<String> toRow(ShaclValidationResult res) {
+        Vector<String> row = new Vector<>();
+
+        row.add(res.resultSeverity.toString());
+        row.add(JenaOwlConverter.getQName(res.model, res.sourceShape));
+        row.add(res.resultMessage == null ? null : res.resultMessage.toString());
+        row.add(JenaOwlConverter.getQName(res.model, res.focusNode));
+        row.add(JenaOwlConverter.getQName(res.model, res.resultPath));
+        row.add(JenaOwlConverter.getQName(res.model, res.value));
+
+        return row;
     }
 
     /**
