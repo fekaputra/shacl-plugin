@@ -2,6 +2,7 @@ package at.ac.tuwien.shacl.plugin.ui;
 
 import java.awt.BorderLayout;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -11,10 +12,15 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
+import org.protege.editor.owl.model.inference.OWLReasonerManager;
+import org.protege.editor.owl.model.inference.ReasonerStatus;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
+
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.reasoner.NodeSet;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
@@ -111,11 +117,50 @@ public class ShaclConstraintViolationPanel extends JPanel {
                         .filter(row -> row.focusNode != null && row.focusNode.isURIResource())
                         .filter(row -> row.focusNode.asResource().getURI().equals(selectedIndividualIRI));
             }
+            else if (selection.isOWLClass()) {
+                OWLClass selectedClass = selection.asOWLClass();
+
+                // don't filter if owl:Thing is selected
+                if (!selectedClass.isTopEntity()) {
+                    Set<String> instanceIRIs = getInstanceIRIs(selectedClass);
+
+                    results = results
+                            .filter(row -> row.focusNode != null && row.focusNode.isURIResource())
+                            .filter(row -> instanceIRIs.contains(row.focusNode.asResource().getURI()));
+                }
+            }
             else {
-                // TODO: handle selected class -> get all individuals of it
+                // TODO: filter on row.resultPath for object / data properties
+                // NOTE: (currently) not needed, as those can not be selected in the current tab layout
             }
 
             return results.collect(Collectors.toList());
+        }
+    }
+
+    private Set<String> getInstanceIRIs(OWLClass selectedClass) {
+        OWLModelManager modelManager = owlWorkspace.getOWLModelManager();
+        OWLReasonerManager reasonerManager = modelManager.getOWLReasonerManager();
+        OWLReasoner reasoner = modelManager.getReasoner();
+
+        /*
+        ReasonerUtilities.warnUserIfReasonerIsNotConfigured should not be called again,
+        the user should already be aware that no reasoner is active
+        after the message from the "Validate" button.
+        */
+
+        if (reasoner != null &&
+            (reasonerManager.getReasonerStatus() == ReasonerStatus.INITIALIZED ||
+             reasonerManager.getReasonerStatus() == ReasonerStatus.OUT_OF_SYNC)) {
+            // direct = false -> retrieve all instances, not only direct instances
+            NodeSet<OWLNamedIndividual> instances = reasoner.getInstances(selectedClass, false);
+
+            return instances.getFlattened().stream()
+                    .map(i -> i.getIRI().toString())
+                    .collect(Collectors.toSet());
+        }
+        else {
+            return Collections.emptySet();
         }
     }
 
