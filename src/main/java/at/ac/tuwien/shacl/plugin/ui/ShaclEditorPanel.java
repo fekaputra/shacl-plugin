@@ -25,12 +25,13 @@ import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
 import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
 import at.ac.tuwien.shacl.plugin.util.InferredOntologyLoader;
 import at.ac.tuwien.shacl.plugin.util.RdfModelReader;
+import at.ac.tuwien.shacl.plugin.ui.editor.UndoAbleJTextPane;
 
 public class ShaclEditorPanel extends JPanel {
     private static final long serialVersionUID = -2739474730975140803L;
 
     private JButton execButton = new JButton("Validate");
-    private JTextPane editorPane = new JTextPane();
+    private final JTextPane editorPane = new UndoAbleJTextPane();
     private OWLModelManager modelManager;
 
     private ActionListener execButtonAction = new ActionListener() {
@@ -75,8 +76,6 @@ public class ShaclEditorPanel extends JPanel {
             e.printStackTrace();
             editorPane.setText("error loading Example Model");
         }
-
-        // TODO: add undo/redo functionality, maybe like https://stackoverflow.com/a/12030993/2565743
 
         // add "Execute" button related functionality
         JPanel buttonPanel = new JPanel();
