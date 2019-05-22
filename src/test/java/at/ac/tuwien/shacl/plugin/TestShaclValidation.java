@@ -2,19 +2,22 @@ package at.ac.tuwien.shacl.plugin;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.*;
 
-import at.ac.tuwien.shacl.plugin.util.TestUtil;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.util.FileUtils;
 
-import org.apache.jena.vocabulary.RDF;
-import org.topbraid.shacl.validation.ValidationUtil;
-import org.topbraid.shacl.vocabulary.SH;
 import org.topbraid.jenax.util.JenaUtil;
+import org.topbraid.shacl.validation.ValidationUtil;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+
+import at.ac.tuwien.shacl.plugin.util.ShaclValidationReport;
+import at.ac.tuwien.shacl.plugin.util.ShaclValidationResult;
+import at.ac.tuwien.shacl.plugin.util.TestUtil;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the Shacl engine.
@@ -55,7 +58,18 @@ public class TestShaclValidation {
 
         results.getModel().write(System.out, "TURTLE");
 
-        // Expecting 3 constraint violations
-        assertEquals(3, results.getModel().listStatements(null, RDF.type, SH.ValidationResult).toList().size());
+        ShaclValidationReport report = new ShaclValidationReport(results);
+
+        assertFalse("Model should not conform", report.conforms);
+        assertEquals("There should be three violations", 3, report.validationResults.size());
+
+        Set<String> violationMessages = new HashSet<>(3);
+        for (ShaclValidationResult res : report.validationResults) {
+            violationMessages.add(res.resultMessage.toString());
+        }
+
+        Set<String> expectedMessages = new HashSet<>(Arrays.asList("More than 1^^http://www.w3.org/2001/XMLSchema#integer values", "Predicate http://www.example.org/#birthDate is not allowed (closed shape)", "Value does not match pattern \\\"^\\d{3}-\\d{2}-\\d{4}$\\\""));
+
+        assertEquals("Expected violation report Messages", expectedMessages, violationMessages);
     }
 }
