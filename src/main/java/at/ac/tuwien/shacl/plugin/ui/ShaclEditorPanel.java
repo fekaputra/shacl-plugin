@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import javax.swing.JButton;
@@ -16,15 +15,16 @@ import org.apache.jena.query.QueryException;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.riot.RiotException;
 import org.apache.jena.util.FileUtils;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.topbraid.jenax.util.JenaUtil;
 
 import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
 import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
 import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
 import at.ac.tuwien.shacl.plugin.util.InferredOntologyLoader;
+import at.ac.tuwien.shacl.plugin.util.RdfModelReader;
 
 public class ShaclEditorPanel extends JPanel {
     private static final long serialVersionUID = -2739474730975140803L;
@@ -92,11 +92,10 @@ public class ShaclEditorPanel extends JPanel {
             JenaOwlConverter converter = new JenaOwlConverter();
 
             OWLOntology ont = InferredOntologyLoader.loadInferredOntology(this, modelManager);
-            Model dataModel = converter.ModelOwlToJenaConvert(ont, "TURTLE");
+            Model dataModel = converter.ModelOwlToJenaConvert(ont, FileUtils.langTurtle);
 
             // Load the main data model
-            Model shapesModel = JenaUtil.createDefaultModel();
-            shapesModel.read(new ByteArrayInputStream(editorPane.getText().getBytes()), null, FileUtils.langTurtle);
+            Model shapesModel = RdfModelReader.getModelFromString(editorPane.getText(), FileUtils.langTurtle);
             ShaclValidationRegistry.getValidator().runValidation2(shapesModel, dataModel);
 
         } catch (RiotException e) {

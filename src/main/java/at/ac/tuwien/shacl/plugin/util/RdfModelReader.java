@@ -1,17 +1,16 @@
 package at.ac.tuwien.shacl.plugin.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 
+import org.topbraid.jenax.util.JenaUtil;
+
 import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
 
 /**
- * Reads RDF models from files.
+ * Reads RDF models.
  */
 public class RdfModelReader {
     /**
@@ -38,6 +37,20 @@ public class RdfModelReader {
             model.read(in, "", language);
             return model;
         }
+    }
+
+    /**
+     * Get a Jena model from an RDF string in an RDF serialization language.
+     *
+     * @param text the RDF string
+     * @param language a string containing an RDF serialization language; see the Jena model.read method for a list of
+     *        supported languages
+     * @return Jena model containing the RDF data
+     */
+    public static Model getModelFromString(String text, String language) {
+        Model shapesModel = JenaUtil.createDefaultModel();
+        shapesModel.read(new ByteArrayInputStream(text.getBytes()), null, language);
+        return shapesModel;
     }
 
     /**
