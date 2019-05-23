@@ -3,6 +3,7 @@
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix ex:    <http://www.example.org/#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
 
 ex:PersonShape
     a sh:NodeShape ;
@@ -18,4 +19,5 @@ ex:PersonShape
         sh:severity sh:Warning ;
     ] ;
     sh:closed true ;
-    sh:ignoredProperties ( rdf:type ) .
+    sh:ignoredProperties ( rdf:type owl:topDataProperty owl:topObjectProperty ) ;
+    .
