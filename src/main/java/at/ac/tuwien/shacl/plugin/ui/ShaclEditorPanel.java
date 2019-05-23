@@ -99,7 +99,7 @@ public class ShaclEditorPanel extends JPanel {
             ShaclValidationRegistry.getValidator().runValidation2(shapesModel, dataModel);
 
         } catch (RiotException e) {
-            ErrorNotifier.notify(e.getLocalizedMessage());
+            ErrorNotifier.notify("Encountered parsing error: " + e.getLocalizedMessage());
         } catch (QueryException e) {
             ErrorNotifier.notify("Encountered query error: " + e.getLocalizedMessage());
         } catch (Exception e) {

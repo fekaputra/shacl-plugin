@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -69,7 +67,22 @@ public class ShaclConstraintViolationPanel extends JPanel {
     private final Observer errorObserver = new Observer() {
         @Override
         public void update(Observable o, Object arg) {
-            // textArea.setText(arg.toString());
+            String msg;
+
+            if (arg instanceof String) {
+                msg = (String) arg;
+            }
+            else if (arg == null) {
+                msg = "Unexpected error occurred.";
+            }
+            else {
+                msg = "Unexpected error occurred: " + arg.toString();
+            }
+
+            JOptionPane.showMessageDialog(owlWorkspace,
+                    msg,
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     };
 
