@@ -5,8 +5,6 @@ import java.io.*;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 
-import org.topbraid.jenax.util.JenaUtil;
-
 import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
 
 /**
@@ -41,14 +39,15 @@ public class RdfModelReader {
 
     /**
      * Get a Jena model from an RDF string in an RDF serialization language.
+     * Processes owl:imports statements.
      *
      * @param text the RDF string
      * @param language a string containing an RDF serialization language; see the Jena model.read method for a list of
      *        supported languages
-     * @return Jena model containing the RDF data
+     * @return Jena model containing the RDF data and imported statements
      */
     public static Model getModelFromString(String text, String language) {
-        Model shapesModel = JenaUtil.createDefaultModel();
+        Model shapesModel = ModelFactory.createOntologyModel();
         shapesModel.read(new ByteArrayInputStream(text.getBytes()), null, language);
         return shapesModel;
     }
