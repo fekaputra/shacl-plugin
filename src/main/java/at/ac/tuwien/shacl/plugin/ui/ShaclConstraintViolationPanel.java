@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
@@ -36,6 +37,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
     private static final long serialVersionUID = 1093799641840761261L;
 
     private final OWLWorkspace owlWorkspace;
+    private final View view;
 
     private ShaclValidationReport lastReport = null;
     private OWLEntity lastSelection = null;
@@ -98,10 +100,10 @@ public class ShaclConstraintViolationPanel extends JPanel {
         // clear table
         ((DefaultTableModel) table.getModel()).setRowCount(0);
 
-        // TODO: indicate whether it conforms or not
-
-        if (lastReport == null || lastReport.validationResults.isEmpty())
+        if (lastReport == null || lastReport.validationResults.isEmpty()) {
+            updateHeaderText(0, 0);
             return;
+        }
 
         List<ShaclValidationResult> validationResults = filterResults(lastReport, lastSelection);
 
@@ -113,6 +115,33 @@ public class ShaclConstraintViolationPanel extends JPanel {
 
             ((DefaultTableModel) table.getModel()).addRow(row);
         }
+
+        int numAllResults = lastReport.validationResults.size();
+        int numDisplayedResults = validationResults.size();
+
+        updateHeaderText(numAllResults, numDisplayedResults);
+    }
+
+    private void updateHeaderText(int numAllResults, int numDisplayedResults) {
+        if (view == null)
+            return;
+
+        String text;
+
+        if (lastReport == null) {
+            text = "unknown";
+        }
+        else if (lastReport.validationResults.isEmpty()) {
+            text = "none";
+        }
+        else {
+            if (numAllResults == numDisplayedResults)
+                text = Integer.toString(numAllResults);
+            else
+                text = numDisplayedResults + "/" + numAllResults;
+        }
+
+        view.setHeaderText(text);
     }
 
     private List<ShaclValidationResult> filterResults(ShaclValidationReport report, OWLEntity selection) {
@@ -194,8 +223,16 @@ public class ShaclConstraintViolationPanel extends JPanel {
         this(null);
     }
 
-    public ShaclConstraintViolationPanel(OWLWorkspace owlWorkspace) {
-        this.owlWorkspace = owlWorkspace;
+    public ShaclConstraintViolationPanel(ShaclConstraintViolationViewComponent parent) {
+        if (parent != null) {
+            this.owlWorkspace = parent.getOWLWorkspace();
+            this.view = parent.getView();
+        }
+        else {
+            this.owlWorkspace = null;
+            this.view = null;
+        }
+
         this.init();
     }
 
