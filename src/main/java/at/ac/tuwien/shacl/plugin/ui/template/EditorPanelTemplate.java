@@ -18,7 +18,7 @@ public abstract class EditorPanelTemplate extends PanelToolbarTemplate {
 
     private final EditorPanelTemplate self = this;
 
-    private JFileChooser fileChooser;
+    protected JFileChooser fileChooser;
 
     private JTextPane editorPane;
 

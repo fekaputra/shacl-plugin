@@ -1,6 +1,7 @@
 package at.ac.tuwien.shacl.plugin.ui;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,8 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.riot.RiotException;
 import org.apache.jena.util.FileUtils;
 
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLOntology;
 
@@ -25,6 +28,8 @@ import at.ac.tuwien.shacl.plugin.util.RdfModelReader;
 
 public class ShaclEditorPanel extends EditorPanelTemplate {
     private static final long serialVersionUID = -2739474730975140803L;
+
+    private final Preferences preferences = PreferencesManager.getInstance().getPreferencesForSet("at.ac.tuwien.shacl.plugin", "shaclEditorPanel");
 
     private final OWLModelManager modelManager;
 
@@ -73,6 +78,9 @@ public class ShaclEditorPanel extends EditorPanelTemplate {
         // this.thread = new Thread(new SHACLValidatorInitializer());
         // thread.start();
 
+        String currentDirectory = preferences.getString("currentDirectory", fileChooser.getFileSystemView().getDefaultDirectory().getAbsolutePath());
+        fileChooser.setCurrentDirectory(new File(currentDirectory));
+
         try {
             this.setEditorText(ShaclModelFactory.getExampleModelAsString() + "\n ###### add SHACL vocabulary ###### \n");
         } catch (IOException e) {
@@ -103,6 +111,7 @@ public class ShaclEditorPanel extends EditorPanelTemplate {
     }
 
     public void dispose() {
+        preferences.putString("currentDirectory", fileChooser.getCurrentDirectory().getAbsolutePath());
     }
 
     // private class SHACLValidatorInitializer implements Runnable {
