@@ -43,6 +43,8 @@ public class ShaclEditorPanel extends EditorPanelTemplate {
 
         editorActions.forEach(actions::add);
 
+        // TODO: add separator?
+
         actions.add(this.execButtonAction);
         return actions;
     }
