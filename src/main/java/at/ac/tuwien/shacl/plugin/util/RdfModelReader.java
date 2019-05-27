@@ -1,6 +1,7 @@
 package at.ac.tuwien.shacl.plugin.util;
 
 import java.io.*;
+import java.util.stream.Collectors;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -63,17 +64,8 @@ public class RdfModelReader {
              InputStreamReader is = new InputStreamReader(in);
              BufferedReader br = new BufferedReader(is);
         ) {
-            StringBuilder sb = new StringBuilder();
-            String read = br.readLine();
             String newLine = System.getProperty("line.separator");
-
-            while (read != null) {
-                sb.append(read);
-                sb.append(newLine);
-                read = br.readLine();
-            }
-
-            return sb.toString();
+            return br.lines().collect(Collectors.joining(newLine));
         }
     }
 }
