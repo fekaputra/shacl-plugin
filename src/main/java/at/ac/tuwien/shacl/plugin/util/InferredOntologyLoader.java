@@ -62,25 +62,25 @@ public class InferredOntologyLoader {
         switch (manager.getReasonerStatus()) {
             case NO_REASONER_FACTORY_CHOSEN:
                 JOptionPane.showMessageDialog(owner,
-                        "Since no reasoner is activated, the validation will now be conducted without inferred facts.  To include inferred facts, please select a reasoner from the Reasoner menu and then select Start reasoner.",
+                        "Since no reasoner is activated, the validation will now be conducted without inferred facts. \nTo include inferred facts, please select a reasoner from the Reasoner menu and then select Start reasoner.",
                         "Reasoner not initialized",
                         JOptionPane.INFORMATION_MESSAGE);
                 break;
             case REASONER_NOT_INITIALIZED:
                 JOptionPane.showMessageDialog(owner,
-                        "Since the reasoner is not activated, the validation will now be conducted without inferred facts.  To include inferred facts, please go to the Reasoner menu and select Start reasoner.",
+                        "Since the reasoner is not activated, the validation will now be conducted without inferred facts. \nTo include inferred facts, please go to the Reasoner menu and select Start reasoner.",
                         "Reasoner not initialized",
                         JOptionPane.INFORMATION_MESSAGE);
                 break;
             case OUT_OF_SYNC:
                 JOptionPane.showMessageDialog(owner,
-                        "The reasoner is not synchronized.  This may produce outdated and misleading validation results.  Please go to the Reasoner menu, select Synchronize reasoner and run the validation again.",
+                        "The reasoner is not synchronized. This may produce outdated and misleading validation results. \nPlease go to the Reasoner menu, select Synchronize reasoner and run the validation again.",
                         "Reasoner out of sync",
                         JOptionPane.WARNING_MESSAGE);
                 break;
             case INITIALIZATION_IN_PROGRESS:
                 JOptionPane.showMessageDialog(owner,
-                        "Reasoner still initializing.  The validation will now be conducted without inferred facts.  Please run the validation again when the reasoner is initialized.",
+                        "Reasoner still initializing. The validation will now be conducted without inferred facts. \nPlease run the validation again when the reasoner is initialized.",
                         "Reasoner initializing",
                         JOptionPane.WARNING_MESSAGE);
                 break;
