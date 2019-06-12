@@ -26,7 +26,7 @@ public class TestConstraintViolationPanel {
      */
     @Test
     public void testTableUpdateAfterValidation() throws IOException {
-        ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel(null);
+        ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel();
         assertEquals(0, panel.getTableModel().getRowCount());
 
         Model dataModel   = TestUtil.getDataModel();
@@ -61,7 +61,7 @@ public class TestConstraintViolationPanel {
 
     @Test
     public void testBehaviorAfterInit() throws IOException {
-        ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel(null);
+        ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel();
 
         Model dataModel   = TestUtil.getDataModel();
         Model shapesModel = TestUtil.getShapesModel();
@@ -73,7 +73,7 @@ public class TestConstraintViolationPanel {
 
     @Test
     public void testDispose() throws IOException {
-        ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel(null);
+        ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel();
 
         Model dataModel   = TestUtil.getDataModel();
         Model shapesModel = TestUtil.getShapesModel();

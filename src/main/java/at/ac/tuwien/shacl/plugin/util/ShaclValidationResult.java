@@ -3,25 +3,33 @@ package at.ac.tuwien.shacl.plugin.util;
 import org.apache.jena.rdf.model.*;
 import org.topbraid.shacl.vocabulary.SH;
 
+import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
+
 public class ShaclValidationResult implements Comparable<ShaclValidationResult> {
 
     public enum Severity {VIOLATION, WARNING, INFO, UNKNOWN};
 
+    public final Model model;
+
     public final Severity resultSeverity;
-    public final String sourceShape;
-    public final String resultMessage;
-    public final String focusNode;
-    public final String resultPath;
-    public final String value;
+
+    public final RDFNode sourceShape;
+    public final RDFNode resultMessage;
+    public final RDFNode focusNode;
+    public final RDFNode resultPath;
+    public final RDFNode value;
 
 
     public ShaclValidationResult(Model model, Resource subject) {
+        this.model = model;
+
         this.resultSeverity = getSeverity(subject.getProperty(SH.resultSeverity));
-        this.sourceShape    = getQName(model, subject.getProperty(SH.sourceShape));
-        this.resultMessage  = getQName(model, subject.getProperty(SH.resultMessage));
-        this.focusNode      = getQName(model, subject.getProperty(SH.focusNode));
-        this.resultPath     = getQName(model, subject.getProperty(SH.resultPath));
-        this.value          = getQName(model, subject.getProperty(SH.value));
+
+        this.sourceShape    = tryGetObject(subject.getProperty(SH.sourceShape));
+        this.resultMessage  = tryGetObject(subject.getProperty(SH.resultMessage));
+        this.focusNode      = tryGetObject(subject.getProperty(SH.focusNode));
+        this.resultPath     = tryGetObject(subject.getProperty(SH.resultPath));
+        this.value          = tryGetObject(subject.getProperty(SH.value));
     }
 
     @Override
@@ -30,39 +38,23 @@ public class ShaclValidationResult implements Comparable<ShaclValidationResult> 
         if (compareSeverity != 0)
             return compareSeverity;
 
-        int compareFocusNode = this.focusNode.compareTo(o.focusNode);
+        int compareFocusNode = JenaOwlConverter.compareRDFNode(this.focusNode, o.focusNode);
         if (compareFocusNode != 0)
             return compareFocusNode;
 
-        int compareResultPath = this.resultPath.compareTo(o.resultPath);
+        int compareResultPath = JenaOwlConverter.compareRDFNode(this.resultPath, o.resultPath);
         if (compareResultPath != 0)
             return compareResultPath;
 
-        int compareShape = this.sourceShape.compareTo(o.sourceShape);
+        int compareShape = JenaOwlConverter.compareRDFNode(this.sourceShape, o.sourceShape);
         if (compareShape != 0)
             return compareShape;
 
-        int compareResultMessage = this.resultMessage.compareTo(o.resultMessage);
+        int compareResultMessage = JenaOwlConverter.compareRDFNode(this.resultMessage, o.resultMessage);
         if (compareResultMessage != 0)
             return compareResultMessage;
 
-        return this.value.compareTo(o.value);
-    }
-
-    /**
-     * Get a qualified name for an URI, if it exists, otherwise just return the original string.
-     *
-     * @param model Model containing the prefixes
-     * @param stmt Statement to be checked for a qname
-     * @return qname if one exists, otherwise the original string of the object
-     */
-    private static String getQName(Model model, Statement stmt) {
-        if (stmt != null && stmt.getObject() != null) {
-            String string = stmt.getObject().toString();
-            return model.qnameFor(string) == null ? string : model.qnameFor(string);
-        } else {
-            return "";
-        }
+        return JenaOwlConverter.compareRDFNode(this.value, o.value);
     }
 
     private static Severity getSeverity(Statement stmt) {
@@ -79,5 +71,10 @@ public class ShaclValidationResult implements Comparable<ShaclValidationResult> 
         }
 
         return Severity.UNKNOWN;
+    }
+
+    private static RDFNode tryGetObject(Statement stmt) {
+        if (stmt != null) return stmt.getObject();
+        return null;
     }
 }

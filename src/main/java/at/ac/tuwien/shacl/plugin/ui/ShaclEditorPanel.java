@@ -1,43 +1,58 @@
 package at.ac.tuwien.shacl.plugin.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
+import javax.swing.*;
 
 import org.apache.jena.query.QueryException;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.riot.RiotException;
 import org.apache.jena.util.FileUtils;
+
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.topbraid.jenax.util.JenaUtil;
 
 import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
 import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
 import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
+import at.ac.tuwien.shacl.plugin.ui.template.EditorPanelTemplate;
+import at.ac.tuwien.shacl.plugin.util.InferredOntologyLoader;
+import at.ac.tuwien.shacl.plugin.util.RdfModelReader;
 
-public class ShaclEditorPanel extends JPanel {
+public class ShaclEditorPanel extends EditorPanelTemplate {
     private static final long serialVersionUID = -2739474730975140803L;
 
-    private JButton execButton = new JButton("Validate");
-    private JTextPane editorPane = new JTextPane();
-    private OWLModelManager modelManager;
+    private final Preferences preferences = PreferencesManager.getInstance().getPreferencesForSet("at.ac.tuwien.shacl.plugin", "shaclEditorPanel");
 
-    private ActionListener execButtonAction = new ActionListener() {
+    private final OWLModelManager modelManager;
+
+    private AbstractAction execButtonAction = new AbstractAction("Validate") {
         @Override
         public void actionPerformed(ActionEvent e) {
             validateGraph();
         }
     };
+
+    @Override
+    protected Iterable<Action> getActions() {
+        List<Action> actions = new ArrayList<>();
+
+        Iterable<Action> editorActions = super.getActions();
+
+        editorActions.forEach(actions::add);
+
+        // TODO: add separator?
+
+        actions.add(this.execButtonAction);
+        return actions;
+    }
 
     // private OWLModelManagerListener modelListener = new OWLModelManagerListener() {
     // public void handleChange(OWLModelManagerChangeEvent event) {
@@ -48,58 +63,45 @@ public class ShaclEditorPanel extends JPanel {
     // };
 
     public ShaclEditorPanel(OWLModelManager modelManager) {
-        this.init(modelManager);
+        super();
+
+        this.modelManager = modelManager;
+
+        this.init();
     }
 
-    private void init(OWLModelManager modelManager) {
+    @Override
+    protected void init() {
+        super.init();
+
         // init shacl validator in its own thread, because it takes a while
         // this.thread = new Thread(new SHACLValidatorInitializer());
         // thread.start();
 
-        this.setLayout(new BorderLayout());
+        String currentDirectory = preferences.getString("currentDirectory", fileChooser.getFileSystemView().getDefaultDirectory().getAbsolutePath());
+        fileChooser.setCurrentDirectory(new File(currentDirectory));
 
-        Font font = new Font(Font.MONOSPACED, getFont().getStyle(), getFont().getSize());
-
-        // set model manager
-        this.modelManager = modelManager;
-
-        // add text editor related functionality
-        JScrollPane scroll = new JScrollPane(editorPane);
-        add(scroll, BorderLayout.CENTER);
-
-        editorPane.setFont(font);
         try {
-            editorPane.setText(ShaclModelFactory.getExampleModelAsString() + "\n ###### add SHACL vocabulary ###### \n");
+            this.setEditorText(ShaclModelFactory.getExampleModelAsString() + "\n ###### add SHACL vocabulary ###### \n");
         } catch (IOException e) {
             e.printStackTrace();
-            editorPane.setText("error loading Example Model");
+            this.setEditorText("error loading Example Model");
         }
-
-        // TODO: add undo/redo functionality, maybe like https://stackoverflow.com/a/12030993/2565743
-
-        // add "Execute" button related functionality
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BorderLayout());
-        buttonPanel.add(execButton, BorderLayout.WEST);
-        add(buttonPanel, BorderLayout.SOUTH);
-
-        execButton.addActionListener(this.execButtonAction);
     }
 
     private void validateGraph() {
         try {
             JenaOwlConverter converter = new JenaOwlConverter();
 
-            OWLOntology ont = modelManager.getActiveOntology();
-            Model dataModel = converter.ModelOwlToJenaConvert(ont, "TURTLE");
+            OWLOntology ont = InferredOntologyLoader.loadInferredOntology(this, modelManager);
+            Model dataModel = converter.ModelOwlToJenaConvert(ont, FileUtils.langTurtle);
 
             // Load the main data model
-            Model shapesModel = JenaUtil.createDefaultModel();
-            shapesModel.read(new ByteArrayInputStream(editorPane.getText().getBytes()), null, FileUtils.langTurtle);
+            Model shapesModel = RdfModelReader.getModelFromString(this.getEditorText(), FileUtils.langTurtle);
             ShaclValidationRegistry.getValidator().runValidation2(shapesModel, dataModel);
 
         } catch (RiotException e) {
-            ErrorNotifier.notify(e.getLocalizedMessage());
+            ErrorNotifier.notify("Encountered parsing error: " + e.getLocalizedMessage());
         } catch (QueryException e) {
             ErrorNotifier.notify("Encountered query error: " + e.getLocalizedMessage());
         } catch (Exception e) {
@@ -109,6 +111,7 @@ public class ShaclEditorPanel extends JPanel {
     }
 
     public void dispose() {
+        preferences.putString("currentDirectory", fileChooser.getCurrentDirectory().getAbsolutePath());
     }
 
     // private class SHACLValidatorInitializer implements Runnable {

@@ -32,16 +32,38 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- -->
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>pellet-owlapi-ignazio1977</artifactId>
+			<version>2.4.0-ignazio1977</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>pellet-core-ignazio1977</artifactId>
+			<version>2.4.0-ignazio1977</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>pellet-modularity-ignazio1977</artifactId>
+			<version>2.4.0-ignazio1977</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- -->
+
+
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
             <artifactId>protege-editor-owl</artifactId>
-			<version>5.5.0</version>
+			<version>5.0.0</version>
 			<scope>provided</scope>
         </dependency>
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
 			<artifactId>owlapi-osgidistribution</artifactId>
-			<version>4.5.10</version>
+			<version>4.2.5</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -150,9 +172,9 @@
 							org.apache.log4j.*;version="[1.2,2)",
 							org.slf4j.*,
 
-							org.protege.editor.owl.*;version="[5.5.0,6)",
+							org.protege.editor.owl.*;version="[5.0.0,6)",
 
-							org.semanticweb.owlapi.*;version="[4.5,5)",
+							org.semanticweb.owlapi.*;version="[4.2,5)",
 							org.apache.jena.*;version="[3.10.0,4)",
 
 							<!-- transitive -->

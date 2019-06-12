@@ -3,20 +3,21 @@
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix ex:    <http://www.example.org/#> .
-@prefix shema: <http://schema.org/> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
 
 ex:PersonShape
-	a sh:NodeShape ;
-	sh:targetClass shema:Person ;    # Applies to all persons
-	sh:property [                 # _:b0
-		sh:path ex:ssn ;           # constrains the values of ex:ssn
-		sh:maxCount 1 ;
-	] ;
-	sh:property [                 # _:b1
-		sh:path ex:ssn ;           # constrains the values of ex:ssn
-		sh:datatype xsd:string ;
-		sh:pattern "^\\d{3}-\\d{2}-\\d{4}$" ;
-		sh:severity sh:Warning ;
-	] ;
-	sh:closed true ;
-	sh:ignoredProperties ( rdf:type ) .
+    a sh:NodeShape ;
+    sh:targetClass ex:Person ; # Applies to all persons
+    sh:property [              # _:b0
+        sh:path ex:ssn ;       # constrains the values of ex:ssn
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [              # _:b1
+        sh:path ex:ssn ;       # constrains the values of ex:ssn
+        sh:datatype xsd:string ;
+        sh:pattern "^\\d{3}-\\d{2}-\\d{4}$" ;
+        sh:severity sh:Warning ;
+    ] ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type owl:topDataProperty owl:topObjectProperty ) ;
+    .

@@ -1,9 +1,7 @@
 package at.ac.tuwien.shacl.plugin.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.stream.Collectors;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -11,7 +9,7 @@ import org.apache.jena.rdf.model.ModelFactory;
 import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
 
 /**
- * Reads RDF models from files.
+ * Reads RDF models.
  */
 public class RdfModelReader {
     /**
@@ -41,6 +39,21 @@ public class RdfModelReader {
     }
 
     /**
+     * Get a Jena model from an RDF string in an RDF serialization language.
+     * Processes owl:imports statements.
+     *
+     * @param text the RDF string
+     * @param language a string containing an RDF serialization language; see the Jena model.read method for a list of
+     *        supported languages
+     * @return Jena model containing the RDF data and imported statements
+     */
+    public static Model getModelFromString(String text, String language) {
+        Model shapesModel = ModelFactory.createOntologyModel();
+        shapesModel.read(new ByteArrayInputStream(text.getBytes()), null, language);
+        return shapesModel;
+    }
+
+    /**
      * Get a model as string by reading it line by line. This is an alternative to Jena model.read, allowing comments to
      * be kept intact.
      *
@@ -51,17 +64,8 @@ public class RdfModelReader {
              InputStreamReader is = new InputStreamReader(in);
              BufferedReader br = new BufferedReader(is);
         ) {
-            StringBuilder sb = new StringBuilder();
-            String read = br.readLine();
             String newLine = System.getProperty("line.separator");
-
-            while (read != null) {
-                sb.append(read);
-                sb.append(newLine);
-                read = br.readLine();
-            }
-
-            return sb.toString();
+            return br.lines().collect(Collectors.joining(newLine));
         }
     }
 }
