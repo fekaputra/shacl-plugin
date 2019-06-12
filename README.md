@@ -13,7 +13,7 @@ Special thanks to André Wolski (@locke) for his efforts on cleaning up the old 
 1. Download the jar file from [the latest release](https://github.com/fekaputra/shacl-plugin/releases)
     * Copy it into the /plugins folder of your Protégé Desktop installation
 1. Open Protégé Desktop
-1. (optional) Download the owl file from the latest release
+1. (optional) Download the example file [example3-data.owl](https://raw.githubusercontent.com/fekaputra/shacl-plugin/master/src/main/resources/example3-data.owl)
     * open it in Protégé Desktop
 1. Open Window -> Tabs -> SHACL Editor
     * Click the "Validate" button below the SHACL editor to validate the loaded ontology against the shapes defined in the SHACL editor
