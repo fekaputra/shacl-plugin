@@ -186,7 +186,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
         OWLReasoner reasoner = modelManager.getReasoner();
 
         /*
-        ReasonerUtilities.warnUserIfReasonerIsNotConfigured should not be called again,
+        InferredOntologyLoader.warnUserIfReasonerIsNotConfigured should not be called again,
         the user should already be aware that no reasoner is active
         after the message from the "Validate" button.
         */
