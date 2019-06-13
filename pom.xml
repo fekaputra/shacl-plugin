@@ -4,7 +4,7 @@
 	
 	<groupId>at.ac.tuwien</groupId>
 	<artifactId>at.ac.tuwien.shacl.plugin</artifactId>
-	<version>0.4.0</version>
+	<version>0.4.0-SNAPSHOTS</version>
 	<packaging>bundle</packaging>
 
 	<name>SHACL Protege Plugin</name>
