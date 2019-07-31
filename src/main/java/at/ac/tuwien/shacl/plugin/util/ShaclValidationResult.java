@@ -3,9 +3,7 @@ package at.ac.tuwien.shacl.plugin.util;
 import org.apache.jena.rdf.model.*;
 import org.topbraid.shacl.vocabulary.SH;
 
-import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
-
-public class ShaclValidationResult implements Comparable<ShaclValidationResult> {
+public class ShaclValidationResult {
 
     public enum Severity {VIOLATION, WARNING, INFO, UNKNOWN};
 
@@ -30,31 +28,6 @@ public class ShaclValidationResult implements Comparable<ShaclValidationResult> 
         this.focusNode      = tryGetObject(subject.getProperty(SH.focusNode));
         this.resultPath     = tryGetObject(subject.getProperty(SH.resultPath));
         this.value          = tryGetObject(subject.getProperty(SH.value));
-    }
-
-    @Override
-    public int compareTo(ShaclValidationResult o) {
-        int compareSeverity = this.resultSeverity.compareTo(o.resultSeverity);
-        if (compareSeverity != 0)
-            return compareSeverity;
-
-        int compareFocusNode = JenaOwlConverter.compareRDFNode(this.focusNode, o.focusNode);
-        if (compareFocusNode != 0)
-            return compareFocusNode;
-
-        int compareResultPath = JenaOwlConverter.compareRDFNode(this.resultPath, o.resultPath);
-        if (compareResultPath != 0)
-            return compareResultPath;
-
-        int compareShape = JenaOwlConverter.compareRDFNode(this.sourceShape, o.sourceShape);
-        if (compareShape != 0)
-            return compareShape;
-
-        int compareResultMessage = JenaOwlConverter.compareRDFNode(this.resultMessage, o.resultMessage);
-        if (compareResultMessage != 0)
-            return compareResultMessage;
-
-        return JenaOwlConverter.compareRDFNode(this.value, o.value);
     }
 
     private static Severity getSeverity(Statement stmt) {

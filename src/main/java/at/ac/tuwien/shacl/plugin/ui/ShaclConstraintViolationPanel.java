@@ -26,6 +26,7 @@ import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
 import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
 import at.ac.tuwien.shacl.plugin.util.ShaclValidationReport;
 import at.ac.tuwien.shacl.plugin.util.ShaclValidationResult;
+import at.ac.tuwien.shacl.plugin.util.ShaclValidationResultComparator;
 
 /**
  * Panel for the constraint violations.
@@ -107,7 +108,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
 
         List<ShaclValidationResult> validationResults = filterResults(lastReport, lastSelection);
 
-        validationResults.sort(null); // NOTE: null -> uses ShaclValidationResult.compareTo
+        validationResults.sort(ShaclValidationResultComparator.INSTANCE);
 
         // update table with result data
         for (ShaclValidationResult res : validationResults) {
