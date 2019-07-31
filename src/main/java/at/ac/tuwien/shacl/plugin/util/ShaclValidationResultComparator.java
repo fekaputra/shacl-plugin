@@ -1,5 +1,8 @@
 package at.ac.tuwien.shacl.plugin.util;
 
+import org.apache.jena.rdf.model.RDFNode;
+import org.topbraid.shacl.vocabulary.SH;
+
 import java.util.Comparator;
 
 import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
@@ -10,7 +13,7 @@ public class ShaclValidationResultComparator implements Comparator<ShaclValidati
 
     @Override
     public int compare(ShaclValidationResult r1, ShaclValidationResult r2) {
-        int compareSeverity = r1.resultSeverity.compareTo(r2.resultSeverity);
+        int compareSeverity = compareSeverity(r1.resultSeverity, r2.resultSeverity);
         if (compareSeverity != 0)
             return compareSeverity;
 
@@ -31,6 +34,33 @@ public class ShaclValidationResultComparator implements Comparator<ShaclValidati
             return compareResultMessage;
 
         return JenaOwlConverter.compareRDFNode(r1.value, r2.value);
+    }
+
+    private static int compareSeverity(RDFNode n1, RDFNode n2) {
+        int s1 = getSeverityNumber(n1);
+        int s2 = getSeverityNumber(n2);
+
+        // Violation first, then Warning, then Info, then alphabetical from A to Z for custom severities
+        if (s1 == 0 && s2 == 0) {
+            return JenaOwlConverter.compareRDFNode(n1, n2);
+        }
+        else {
+            return Integer.compare(s1, s2);
+        }
+    }
+
+    private static int getSeverityNumber(RDFNode n) {
+        if (n != null) {
+            if (n.equals(SH.Violation)) {
+                return 1;
+            } else if (n.equals(SH.Warning)) {
+                return 2;
+            } else if (n.equals(SH.Info)) {
+                return 3;
+            }
+        }
+
+        return 0;
     }
 
 }

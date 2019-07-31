@@ -210,7 +210,7 @@ public class ShaclConstraintViolationPanel extends JPanel {
     private static Vector<String> toRow(ShaclValidationResult res) {
         Vector<String> row = new Vector<>();
 
-        row.add(res.resultSeverity.toString());
+        row.add(JenaOwlConverter.getQName(res.model, res.resultSeverity));
         row.add(JenaOwlConverter.getQName(res.model, res.sourceShape));
         row.add(res.resultMessage == null ? null : res.resultMessage.toString());
         row.add(JenaOwlConverter.getQName(res.model, res.focusNode));
