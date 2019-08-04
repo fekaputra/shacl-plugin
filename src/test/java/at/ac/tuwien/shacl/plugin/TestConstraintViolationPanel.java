@@ -38,21 +38,21 @@ public class TestConstraintViolationPanel {
         assertEquals(3, panel.getTableModel().getRowCount());
 
         // Bob is not allowed to have two values for ssn
-        assertEquals("VIOLATION", panel.getTableModel().getValueAt(0, 0));
+        assertEquals("sh:Violation", panel.getTableModel().getValueAt(0, 0));
         assertNotNull(panel.getTableModel().getValueAt(0, 2));
         assertThat(panel.getTableModel().getValueAt(0, 2).toString(), containsString("More than"));
         assertEquals("ex:Bob", panel.getTableModel().getValueAt(0, 3));
         assertEquals("ex:ssn", panel.getTableModel().getValueAt(0, 4));
 
         // Calvin is not allowed to have a birth date, as the shape is closed
-        assertEquals("VIOLATION", panel.getTableModel().getValueAt(1, 0));
+        assertEquals("sh:Violation", panel.getTableModel().getValueAt(1, 0));
         assertNotNull(panel.getTableModel().getValueAt(1, 2));
         assertThat(panel.getTableModel().getValueAt(1, 2).toString(), containsString("closed shape"));
         assertEquals("ex:Calvin", panel.getTableModel().getValueAt(1, 3));
         assertEquals("ex:birthDate", panel.getTableModel().getValueAt(1, 4));
 
         // Alice has an invalid ssn
-        assertEquals("WARNING", panel.getTableModel().getValueAt(2, 0));
+        assertEquals("sh:Warning", panel.getTableModel().getValueAt(2, 0));
         assertNotNull(panel.getTableModel().getValueAt(2, 2));
         assertThat(panel.getTableModel().getValueAt(2, 2).toString(), containsString("match pattern"));
         assertEquals("ex:Alice", panel.getTableModel().getValueAt(2, 3));
