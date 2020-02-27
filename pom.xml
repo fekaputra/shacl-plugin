@@ -5,11 +5,11 @@
 
     <groupId>at.ac.tuwien</groupId>
     <artifactId>at.ac.tuwien.shacl.plugin</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>bundle</packaging>
 
-    <name>SHACL Protege Plugin</name>
-    <description>SHACL Plugin for the Protege Desktop ontology editor</description>
+    <name>SHACL4Protege</name>
+    <description>SHACL plugin for Protégé Desktop</description>
 
     <url>https://github.com/fekaputra/shacl-plugin/</url>
 
