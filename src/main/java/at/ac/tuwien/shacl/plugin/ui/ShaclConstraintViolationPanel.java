@@ -1,54 +1,66 @@
 package at.ac.tuwien.shacl.plugin.ui;
 
-import java.awt.BorderLayout;
-import java.util.*;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
-import org.protege.editor.core.ui.view.View;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.OWLWorkspace;
-import org.protege.editor.owl.model.inference.OWLReasonerManager;
-import org.protege.editor.owl.model.inference.ReasonerStatus;
-import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.reasoner.NodeSet;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
-
 import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
 import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
 import at.ac.tuwien.shacl.plugin.util.ShaclValidationReport;
 import at.ac.tuwien.shacl.plugin.util.ShaclValidationResult;
 import at.ac.tuwien.shacl.plugin.util.ShaclValidationResultComparator;
+import org.protege.editor.core.ui.view.View;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.OWLWorkspace;
+import org.protege.editor.owl.model.inference.OWLReasonerManager;
+import org.protege.editor.owl.model.inference.ReasonerStatus;
+import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.reasoner.NodeSet;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Panel for the constraint violations.
  */
 public class ShaclConstraintViolationPanel extends JPanel {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1093799641840761261L;
 
     private final OWLWorkspace owlWorkspace;
     private final View view;
+    private final Observer errorObserver = new Observer() {
+        @Override public void update(Observable o, Object arg) {
+            String msg;
 
+            if (arg instanceof String) {
+                msg = (String) arg;
+            } else if (arg == null) {
+                msg = "Unexpected error occurred.";
+            } else {
+                msg = "Unexpected error occurred: " + arg.toString();
+            }
+
+            JOptionPane.showMessageDialog(owlWorkspace, msg, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    };
     private ShaclValidationReport lastReport = null;
     private OWLEntity lastSelection = null;
 
+    // TODO link table selection with events
     /**
      * Table view showing the constraint violations.
      */
     private JTable table;
-
-    // TODO link table selection with events
     /**
      * Defines behavior when object gets notified about a SHACL validation result. Shows the constraint violations of
      * the result Jena model in the table view.
@@ -60,42 +72,46 @@ public class ShaclConstraintViolationPanel extends JPanel {
          * @param o observable notifying the observer
          * @param arg result model fetched from Jena
          */
-        @Override
-        public void update(Observable o, Object arg) {
+        @Override public void update(Observable o, Object arg) {
             lastReport = (ShaclValidationReport) arg;
             updateTable();
         }
     };
-
-    private final Observer errorObserver = new Observer() {
-        @Override
-        public void update(Observable o, Object arg) {
-            String msg;
-
-            if (arg instanceof String) {
-                msg = (String) arg;
-            }
-            else if (arg == null) {
-                msg = "Unexpected error occurred.";
-            }
-            else {
-                msg = "Unexpected error occurred: " + arg.toString();
-            }
-
-            JOptionPane.showMessageDialog(owlWorkspace,
-                    msg,
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-    };
-
     private final OWLSelectionModelListener selectionObserver = new OWLSelectionModelListener() {
-        @Override
-        public void selectionChanged() throws Exception {
+        @Override public void selectionChanged() throws Exception {
             lastSelection = owlWorkspace.getOWLSelectionModel().getSelectedEntity();
             updateTable();
         }
     };
+
+    public ShaclConstraintViolationPanel() {
+        this(null);
+    }
+
+    public ShaclConstraintViolationPanel(ShaclConstraintViolationViewComponent parent) {
+        if (parent != null) {
+            this.owlWorkspace = parent.getOWLWorkspace();
+            this.view = parent.getView();
+        } else {
+            this.owlWorkspace = null;
+            this.view = null;
+        }
+
+        this.init();
+    }
+
+    private static Vector<String> toRow(ShaclValidationResult res) {
+        Vector<String> row = new Vector<>();
+
+        row.add(JenaOwlConverter.getQName(res.model, res.resultSeverity));
+        row.add(JenaOwlConverter.getQName(res.model, res.sourceShape));
+        row.add(res.resultMessage == null ? null : res.resultMessage.toString());
+        row.add(JenaOwlConverter.getQName(res.model, res.focusNode));
+        row.add(JenaOwlConverter.getQName(res.model, res.resultPath));
+        row.add(JenaOwlConverter.getQName(res.model, res.value));
+
+        return row;
+    }
 
     private void updateTable() {
         // clear table
@@ -131,11 +147,9 @@ public class ShaclConstraintViolationPanel extends JPanel {
 
         if (lastReport == null) {
             text = "unknown";
-        }
-        else if (lastReport.validationResults.isEmpty()) {
+        } else if (lastReport.validationResults.isEmpty()) {
             text = "none";
-        }
-        else {
+        } else {
             if (numAllResults == numDisplayedResults)
                 text = Integer.toString(numAllResults);
             else
@@ -148,31 +162,26 @@ public class ShaclConstraintViolationPanel extends JPanel {
     private List<ShaclValidationResult> filterResults(ShaclValidationReport report, OWLEntity selection) {
         if (selection == null) {
             return new ArrayList<>(report.validationResults);
-        }
-        else {
+        } else {
             Stream<ShaclValidationResult> results = report.validationResults.stream();
 
             if (selection.isOWLNamedIndividual()) {
                 OWLNamedIndividual selectedIndividual = selection.asOWLNamedIndividual();
                 String selectedIndividualIRI = selectedIndividual.getIRI().toString();
 
-                results = results
-                        .filter(row -> row.focusNode != null && row.focusNode.isURIResource())
+                results = results.filter(row -> row.focusNode != null && row.focusNode.isURIResource())
                         .filter(row -> row.focusNode.asResource().getURI().equals(selectedIndividualIRI));
-            }
-            else if (selection.isOWLClass()) {
+            } else if (selection.isOWLClass()) {
                 OWLClass selectedClass = selection.asOWLClass();
 
                 // don't filter if owl:Thing is selected
                 if (!selectedClass.isTopEntity()) {
                     Set<String> instanceIRIs = getInstanceIRIs(selectedClass);
 
-                    results = results
-                            .filter(row -> row.focusNode != null && row.focusNode.isURIResource())
+                    results = results.filter(row -> row.focusNode != null && row.focusNode.isURIResource())
                             .filter(row -> instanceIRIs.contains(row.focusNode.asResource().getURI()));
                 }
-            }
-            else {
+            } else {
                 // TODO: filter on row.resultPath for object / data properties
                 // NOTE: (currently) not needed, as those can not be selected in the current tab layout
             }
@@ -192,49 +201,15 @@ public class ShaclConstraintViolationPanel extends JPanel {
         after the message from the "Validate" button.
         */
 
-        if (reasoner != null &&
-            (reasonerManager.getReasonerStatus() == ReasonerStatus.INITIALIZED ||
-             reasonerManager.getReasonerStatus() == ReasonerStatus.OUT_OF_SYNC)) {
+        if (reasoner != null && (reasonerManager.getReasonerStatus() == ReasonerStatus.INITIALIZED
+                || reasonerManager.getReasonerStatus() == ReasonerStatus.OUT_OF_SYNC)) {
             // direct = false -> retrieve all instances, not only direct instances
             NodeSet<OWLNamedIndividual> instances = reasoner.getInstances(selectedClass, false);
 
-            return instances.getFlattened().stream()
-                    .map(i -> i.getIRI().toString())
-                    .collect(Collectors.toSet());
-        }
-        else {
+            return instances.getFlattened().stream().map(i -> i.getIRI().toString()).collect(Collectors.toSet());
+        } else {
             return Collections.emptySet();
         }
-    }
-
-    private static Vector<String> toRow(ShaclValidationResult res) {
-        Vector<String> row = new Vector<>();
-
-        row.add(JenaOwlConverter.getQName(res.model, res.resultSeverity));
-        row.add(JenaOwlConverter.getQName(res.model, res.sourceShape));
-        row.add(res.resultMessage == null ? null : res.resultMessage.toString());
-        row.add(JenaOwlConverter.getQName(res.model, res.focusNode));
-        row.add(JenaOwlConverter.getQName(res.model, res.resultPath));
-        row.add(JenaOwlConverter.getQName(res.model, res.value));
-
-        return row;
-    }
-
-    public ShaclConstraintViolationPanel() {
-        this(null);
-    }
-
-    public ShaclConstraintViolationPanel(ShaclConstraintViolationViewComponent parent) {
-        if (parent != null) {
-            this.owlWorkspace = parent.getOWLWorkspace();
-            this.view = parent.getView();
-        }
-        else {
-            this.owlWorkspace = null;
-            this.view = null;
-        }
-
-        this.init();
     }
 
     protected void init() {
@@ -244,12 +219,11 @@ public class ShaclConstraintViolationPanel extends JPanel {
         TableModel tableModel = new DefaultTableModel(data, headers);
         table = new JTable(tableModel) {
             /**
-             * 
+             *
              */
             private static final long serialVersionUID = 1L;
 
-            @Override
-            public boolean isCellEditable(int row, int column) {
+            @Override public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };

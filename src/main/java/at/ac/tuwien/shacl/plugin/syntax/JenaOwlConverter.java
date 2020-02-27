@@ -1,19 +1,17 @@
 package at.ac.tuwien.shacl.plugin.syntax;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-
-import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
-import org.semanticweb.owlapi.formats.TurtleDocumentFormat;
-import org.semanticweb.owlapi.model.*;
-
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
+import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
+import org.semanticweb.owlapi.formats.TurtleDocumentFormat;
+import org.semanticweb.owlapi.model.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 /**
- *
  * @author elvio
  * @author andrea.nuzzolese
  */
@@ -27,10 +25,52 @@ public class JenaOwlConverter {
     ////////////////////////////////////////////////////////////////////////////////
 
     /**
+     * Get a qualified name for an URI, if it exists, otherwise just return the original string.
+     *
+     * @param model Model containing the prefixes
+     * @param node  Statement to be checked for a qname
+     * @return qname if one exists, otherwise the original string of the object
+     */
+    public static String getQName(Model model, RDFNode node) {
+        if (node != null) {
+            String string = node.toString();
+            String qName = model.qnameFor(string);
+            return qName == null ? string : qName;
+        } else {
+            return "";
+        }
+    }
+
+    public static int compareRDFNode(RDFNode a, RDFNode b) {
+        if (a == b)
+            return 0;
+        if (a == null)
+            return 1;
+        if (b == null)
+            return -1;
+        if (a.equals(b))
+            return 0;
+        if (a.isURIResource() && b.isURIResource())
+            return (a.asResource().getURI().compareTo(b.asResource().getURI()));
+        return a.toString().compareTo(b.toString());
+
+        /*
+        // TODO: compare (numeric) literals by their value instead of their string representations...
+        // NOTE: (currently) not needed in this project, only in general.
+        if (a.isLiteral() && b.isLiteral()) {
+            Literal aLit = a.asLiteral();
+            Literal bLit = b.asLiteral();
+            if (aLit.sameValueAs(bLit)) return 0;
+            if (aLit.getDatatype() == bLit.getDatatype()) // TODO..
+        }
+        */
+    }
+
+    /**
      * This function converts an ontology object from OWLapi to Jena
      *
      * @param owlmodel {An OWLOntology object}
-     * @param format {RDF/XML or TURTLE}
+     * @param format   {RDF/XML or TURTLE}
      * @return {An OntModel that is a Jena object}
      */
     public synchronized OntModel ModelOwlToJenaConvert(OWLOntology owlmodel, String format) {
@@ -84,43 +124,5 @@ public class JenaOwlConverter {
             eos.printStackTrace();
             return null;
         }
-    }
-
-
-    /**
-     * Get a qualified name for an URI, if it exists, otherwise just return the original string.
-     *
-     * @param model Model containing the prefixes
-     * @param node Statement to be checked for a qname
-     * @return qname if one exists, otherwise the original string of the object
-     */
-    public static String getQName(Model model, RDFNode node) {
-        if (node != null) {
-            String string = node.toString();
-            String qName = model.qnameFor(string);
-            return qName == null ? string : qName;
-        } else {
-            return "";
-        }
-    }
-
-    public static int compareRDFNode(RDFNode a, RDFNode b) {
-        if (a == b) return 0;
-        if (a == null) return 1;
-        if (b == null) return -1;
-        if (a.equals(b)) return 0;
-        if (a.isURIResource() && b.isURIResource()) return (a.asResource().getURI().compareTo(b.asResource().getURI()));
-        return a.toString().compareTo(b.toString());
-
-        /*
-        // TODO: compare (numeric) literals by their value instead of their string representations...
-        // NOTE: (currently) not needed in this project, only in general.
-        if (a.isLiteral() && b.isLiteral()) {
-            Literal aLit = a.asLiteral();
-            Literal bLit = b.asLiteral();
-            if (aLit.sameValueAs(bLit)) return 0;
-            if (aLit.getDatatype() == bLit.getDatatype()) // TODO..
-        }
-        */
     }
 }

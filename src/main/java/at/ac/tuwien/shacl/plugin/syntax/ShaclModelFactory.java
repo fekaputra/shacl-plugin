@@ -1,9 +1,8 @@
 package at.ac.tuwien.shacl.plugin.syntax;
 
+import at.ac.tuwien.shacl.plugin.util.RdfModelReader;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-
-import at.ac.tuwien.shacl.plugin.util.RdfModelReader;
 
 import java.io.IOException;
 

@@ -1,6 +1,6 @@
 package at.ac.tuwien.shacl.plugin.util;
 
-import java.util.*;
+import java.util.Collections;
 
 /**
  * Checks objects for types.

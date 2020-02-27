@@ -1,23 +1,5 @@
 package at.ac.tuwien.shacl.plugin.ui;
 
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.*;
-
-import org.apache.jena.query.QueryException;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.riot.RiotException;
-import org.apache.jena.util.FileUtils;
-
-import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.core.prefs.PreferencesManager;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.OWLOntology;
-
 import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
 import at.ac.tuwien.shacl.plugin.syntax.JenaOwlConverter;
@@ -25,23 +7,53 @@ import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
 import at.ac.tuwien.shacl.plugin.ui.template.EditorPanelTemplate;
 import at.ac.tuwien.shacl.plugin.util.InferredOntologyLoader;
 import at.ac.tuwien.shacl.plugin.util.RdfModelReader;
+import org.apache.jena.query.QueryException;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.riot.RiotException;
+import org.apache.jena.util.FileUtils;
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.OWLOntology;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShaclEditorPanel extends EditorPanelTemplate {
     private static final long serialVersionUID = -2739474730975140803L;
 
-    private final Preferences preferences = PreferencesManager.getInstance().getPreferencesForSet("at.ac.tuwien.shacl.plugin", "shaclEditorPanel");
+    private final Preferences preferences =
+            PreferencesManager.getInstance().getPreferencesForSet("at.ac.tuwien.shacl.plugin", "shaclEditorPanel");
 
     private final OWLModelManager modelManager;
 
     private AbstractAction execButtonAction = new AbstractAction("Validate") {
-        @Override
-        public void actionPerformed(ActionEvent e) {
+        @Override public void actionPerformed(ActionEvent e) {
             validateGraph();
         }
     };
 
-    @Override
-    protected Iterable<Action> getActions() {
+    public ShaclEditorPanel(OWLModelManager modelManager) {
+        super();
+
+        this.modelManager = modelManager;
+
+        this.init();
+    }
+
+    // private OWLModelManagerListener modelListener = new OWLModelManagerListener() {
+    // public void handleChange(OWLModelManagerChangeEvent event) {
+    // if (event.getType() == EventType.ACTIVE_ONTOLOGY_CHANGED) {
+    // // recalculate();
+    // }
+    // }
+    // };
+
+    @Override protected Iterable<Action> getActions() {
         List<Action> actions = new ArrayList<>();
 
         Iterable<Action> editorActions = super.getActions();
@@ -54,35 +66,20 @@ public class ShaclEditorPanel extends EditorPanelTemplate {
         return actions;
     }
 
-    // private OWLModelManagerListener modelListener = new OWLModelManagerListener() {
-    // public void handleChange(OWLModelManagerChangeEvent event) {
-    // if (event.getType() == EventType.ACTIVE_ONTOLOGY_CHANGED) {
-    // // recalculate();
-    // }
-    // }
-    // };
-
-    public ShaclEditorPanel(OWLModelManager modelManager) {
-        super();
-
-        this.modelManager = modelManager;
-
-        this.init();
-    }
-
-    @Override
-    protected void init() {
+    @Override protected void init() {
         super.init();
 
         // init shacl validator in its own thread, because it takes a while
         // this.thread = new Thread(new SHACLValidatorInitializer());
         // thread.start();
 
-        String currentDirectory = preferences.getString("currentDirectory", fileChooser.getFileSystemView().getDefaultDirectory().getAbsolutePath());
+        String currentDirectory = preferences.getString("currentDirectory",
+                fileChooser.getFileSystemView().getDefaultDirectory().getAbsolutePath());
         fileChooser.setCurrentDirectory(new File(currentDirectory));
 
         try {
-            this.setEditorText(ShaclModelFactory.getExampleModelAsString() + "\n ###### add SHACL vocabulary ###### \n");
+            this.setEditorText(
+                    ShaclModelFactory.getExampleModelAsString() + "\n ###### add SHACL vocabulary ###### \n");
         } catch (IOException e) {
             e.printStackTrace();
             this.setEditorText("error loading Example Model");

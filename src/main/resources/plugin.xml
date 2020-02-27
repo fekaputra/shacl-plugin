@@ -3,55 +3,55 @@
 
 <plugin>
 
-	<!-- Tabs -->
-	
-	<extension id="SHACLOntologyTab" point="org.protege.editor.core.application.WorkspaceTab">
-		<label value="SHACL Editor"/>
-		<class value="at.ac.tuwien.shacl.plugin.ui.ShaclWorkspaceTab"/>
-		<index value="X"/>
-		<editorKitId value="OWLEditorKit"/>
-		<defaultViewConfigFileName value="viewconfig-SHACLonttab.xml"/>
-   </extension>
-   
-   <extension id="SHACLTab" point="org.protege.editor.core.application.WorkspaceTab">
-		<label value="Minimal SHACL Editor"/>
-		<class value="at.ac.tuwien.shacl.plugin.ui.ShaclMinimalWorkspaceTab"/>
-		<index value="Y"/>
-		<editorKitId value="OWLEditorKit"/>
-		<defaultViewConfigFileName value="viewconfig-SHACLtab.xml"/>
-   </extension>
+    <!-- Tabs -->
 
-	<!-- ******ADDED ViEW******** -->
-	
-	<extension id="ShaclConstraintViolationViewComponent" point="org.protege.editor.core.application.ViewComponent">
-		<label value="SHACL constraint violations" />
-		<class value="at.ac.tuwien.shacl.plugin.ui.ShaclConstraintViolationViewComponent" />
-		<headerColor value="@org.protege.ontologycolor"/>
-	</extension>
+    <extension id="SHACLOntologyTab" point="org.protege.editor.core.application.WorkspaceTab">
+        <label value="SHACL Editor"/>
+        <class value="at.ac.tuwien.shacl.plugin.ui.ShaclWorkspaceTab"/>
+        <index value="X"/>
+        <editorKitId value="OWLEditorKit"/>
+        <defaultViewConfigFileName value="viewconfig-SHACLonttab.xml"/>
+    </extension>
 
-	<extension id="TurtleRenderingViewComponent" point="org.protege.editor.core.application.ViewComponent">
-		<label value="Turtle rendering" />
-		<class value="at.ac.tuwien.shacl.plugin.ui.TurtleRenderingViewComponent" />
-		<headerColor value="@org.protege.ontologycolor"/>
-		<category value="@org.protege.ontologycategory" />
-	</extension>
+    <extension id="SHACLTab" point="org.protege.editor.core.application.WorkspaceTab">
+        <label value="Minimal SHACL Editor"/>
+        <class value="at.ac.tuwien.shacl.plugin.ui.ShaclMinimalWorkspaceTab"/>
+        <index value="Y"/>
+        <editorKitId value="OWLEditorKit"/>
+        <defaultViewConfigFileName value="viewconfig-SHACLtab.xml"/>
+    </extension>
 
-	<extension id="ShaclEditorViewComponent" point="org.protege.editor.core.application.ViewComponent">
-		<label value="SHACL editor" />
-		<class value="at.ac.tuwien.shacl.plugin.ui.ShaclEditorViewComponent" />
-		<headerColor value="@org.protege.ontologycolor"/>
-	</extension>
+    <!-- ******ADDED ViEW******** -->
 
-	<extension id="ShaclConstraintPickerViewComponent" point="org.protege.editor.core.application.ViewComponent">
-		<label value="Constraints" />
-		<class value="at.ac.tuwien.shacl.plugin.ui.ShaclConstraintPickerViewComponent" />
-		<headerColor value="@org.protege.ontologycolor"/>
-	</extension>
+    <extension id="ShaclConstraintViolationViewComponent" point="org.protege.editor.core.application.ViewComponent">
+        <label value="SHACL constraint violations"/>
+        <class value="at.ac.tuwien.shacl.plugin.ui.ShaclConstraintViolationViewComponent"/>
+        <headerColor value="@org.protege.ontologycolor"/>
+    </extension>
 
-	<!-- extension id="ShaclConstraintTreeViewComponent" point="org.protege.editor.core.application.ViewComponent">
-		<label value="Constraint Tree" />
-		<class value="at.ac.tuwien.shacl.plugin.ui.ShaclConstraintTreeViewComponent" />
-		<headerColor value="@org.protege.ontologycolor"/>
-	</extension -->
-    
+    <extension id="TurtleRenderingViewComponent" point="org.protege.editor.core.application.ViewComponent">
+        <label value="Turtle rendering"/>
+        <class value="at.ac.tuwien.shacl.plugin.ui.TurtleRenderingViewComponent"/>
+        <headerColor value="@org.protege.ontologycolor"/>
+        <category value="@org.protege.ontologycategory"/>
+    </extension>
+
+    <extension id="ShaclEditorViewComponent" point="org.protege.editor.core.application.ViewComponent">
+        <label value="SHACL editor"/>
+        <class value="at.ac.tuwien.shacl.plugin.ui.ShaclEditorViewComponent"/>
+        <headerColor value="@org.protege.ontologycolor"/>
+    </extension>
+
+    <extension id="ShaclConstraintPickerViewComponent" point="org.protege.editor.core.application.ViewComponent">
+        <label value="Constraints"/>
+        <class value="at.ac.tuwien.shacl.plugin.ui.ShaclConstraintPickerViewComponent"/>
+        <headerColor value="@org.protege.ontologycolor"/>
+    </extension>
+
+    <!-- extension id="ShaclConstraintTreeViewComponent" point="org.protege.editor.core.application.ViewComponent">
+        <label value="Constraint Tree" />
+        <class value="at.ac.tuwien.shacl.plugin.ui.ShaclConstraintTreeViewComponent" />
+        <headerColor value="@org.protege.ontologycolor"/>
+    </extension -->
+
 </plugin>

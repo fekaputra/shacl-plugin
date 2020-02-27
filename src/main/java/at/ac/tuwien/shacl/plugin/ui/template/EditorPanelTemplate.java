@@ -1,5 +1,8 @@
 package at.ac.tuwien.shacl.plugin.ui.template;
 
+import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
+import at.ac.tuwien.shacl.plugin.ui.editor.UndoAbleJTextPane;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,9 +10,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import at.ac.tuwien.shacl.plugin.events.ErrorNotifier;
-import at.ac.tuwien.shacl.plugin.ui.editor.UndoAbleJTextPane;
 
 /**
  * Creates a view, with a toolbar at the upper part and an text editor as the main part.
@@ -23,8 +23,7 @@ public abstract class EditorPanelTemplate extends PanelToolbarTemplate {
     private JTextPane editorPane;
 
     private AbstractAction openButtonAction = new AbstractAction("Open") {
-        @Override
-        public void actionPerformed(ActionEvent e) {
+        @Override public void actionPerformed(ActionEvent e) {
             try {
                 int returnVal = fileChooser.showOpenDialog(self);
 
@@ -32,27 +31,14 @@ public abstract class EditorPanelTemplate extends PanelToolbarTemplate {
                     File file = fileChooser.getSelectedFile();
                     self.openFile(file);
                 }
-            }
-            catch (IOException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
                 ErrorNotifier.notify("Unable to open file: " + ex.getLocalizedMessage());
             }
         }
     };
-
-    private void openFile(File file) throws IOException {
-        // TODO: read files with encoding different to the default one
-        try(BufferedReader in = new BufferedReader(new FileReader(file))) {
-            String newLine = System.getProperty("line.separator");
-            String content = in.lines().collect(Collectors.joining(newLine));
-
-            self.setEditorText(content);
-        }
-    }
-
     private AbstractAction saveButtonAction = new AbstractAction("Save") {
-        @Override
-        public void actionPerformed(ActionEvent e) {
+        @Override public void actionPerformed(ActionEvent e) {
             try {
                 int returnVal = fileChooser.showSaveDialog(self);
 
@@ -60,23 +46,32 @@ public abstract class EditorPanelTemplate extends PanelToolbarTemplate {
                     File file = fileChooser.getSelectedFile();
                     self.writeFile(file);
                 }
-            }
-            catch (IOException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
                 ErrorNotifier.notify("Unable to write file: " + ex.getLocalizedMessage());
             }
         }
     };
 
-    private void writeFile(File file) throws IOException {
-        try(BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
-            String content = self.getEditorText();
-            out.write(content);
+    public EditorPanelTemplate() {
+        super();
+    }
+
+    private void openFile(File file) throws IOException {
+        // TODO: read files with encoding different to the default one
+        try (BufferedReader in = new BufferedReader(new FileReader(file))) {
+            String newLine = System.getProperty("line.separator");
+            String content = in.lines().collect(Collectors.joining(newLine));
+
+            self.setEditorText(content);
         }
     }
 
-    public EditorPanelTemplate() {
-        super();
+    private void writeFile(File file) throws IOException {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
+            String content = self.getEditorText();
+            out.write(content);
+        }
     }
 
     protected void init() {
@@ -96,8 +91,7 @@ public abstract class EditorPanelTemplate extends PanelToolbarTemplate {
         editorPane.setFont(font);
     }
 
-    @Override
-    protected Iterable<Action> getActions() {
+    @Override protected Iterable<Action> getActions() {
         List<Action> actions = new ArrayList<>(2);
         actions.add(this.openButtonAction);
         actions.add(this.saveButtonAction);

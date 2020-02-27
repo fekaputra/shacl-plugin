@@ -1,19 +1,15 @@
 package at.ac.tuwien.shacl.plugin;
 
-import java.io.IOException;
-
-import org.apache.jena.rdf.model.Model;
-
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.CoreMatchers.containsString;
-
 import at.ac.tuwien.shacl.plugin.events.ShaclValidationRegistry;
 import at.ac.tuwien.shacl.plugin.ui.ShaclConstraintViolationPanel;
 import at.ac.tuwien.shacl.plugin.util.TestUtil;
+import org.apache.jena.rdf.model.Model;
+import org.junit.Test;
+
+import java.io.IOException;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.*;
 
 /**
  * Tests the constraint violation panel.
@@ -24,12 +20,11 @@ public class TestConstraintViolationPanel {
      *
      * @throws IOException
      */
-    @Test
-    public void testTableUpdateAfterValidation() throws IOException {
+    @Test public void testTableUpdateAfterValidation() throws IOException {
         ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel();
         assertEquals(0, panel.getTableModel().getRowCount());
 
-        Model dataModel   = TestUtil.getDataModel();
+        Model dataModel = TestUtil.getDataModel();
         Model shapesModel = TestUtil.getShapesModel();
 
         ShaclValidationRegistry.getValidator().runValidation2(shapesModel, dataModel);
@@ -40,7 +35,7 @@ public class TestConstraintViolationPanel {
         // Bob is not allowed to have two values for ssn
         assertEquals("sh:Violation", panel.getTableModel().getValueAt(0, 0));
         assertNotNull(panel.getTableModel().getValueAt(0, 2));
-        assertThat(panel.getTableModel().getValueAt(0, 2).toString(), containsString("More than"));
+        assertThat(panel.getTableModel().getValueAt(0, 2).toString(), containsString("may only have"));
         assertEquals("ex:Bob", panel.getTableModel().getValueAt(0, 3));
         assertEquals("ex:ssn", panel.getTableModel().getValueAt(0, 4));
 
@@ -59,11 +54,10 @@ public class TestConstraintViolationPanel {
         assertEquals("ex:ssn", panel.getTableModel().getValueAt(2, 4));
     }
 
-    @Test
-    public void testBehaviorAfterInit() throws IOException {
+    @Test public void testBehaviorAfterInit() throws IOException {
         ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel();
 
-        Model dataModel   = TestUtil.getDataModel();
+        Model dataModel = TestUtil.getDataModel();
         Model shapesModel = TestUtil.getShapesModel();
 
         ShaclValidationRegistry.getValidator().runValidation2(shapesModel, dataModel);
@@ -71,11 +65,10 @@ public class TestConstraintViolationPanel {
         assertFalse(panel.getTable().isCellEditable(0, 0));
     }
 
-    @Test
-    public void testDispose() throws IOException {
+    @Test public void testDispose() throws IOException {
         ShaclConstraintViolationPanel panel = new ShaclConstraintViolationPanel();
 
-        Model dataModel   = TestUtil.getDataModel();
+        Model dataModel = TestUtil.getDataModel();
         Model shapesModel = TestUtil.getShapesModel();
 
         ShaclValidationRegistry.getValidator().runValidation2(shapesModel, dataModel);
@@ -85,7 +78,7 @@ public class TestConstraintViolationPanel {
         panel.getTableModel().setRowCount(0);
         panel.dispose();
 
-        Model dataModel2   = TestUtil.getDataModel();
+        Model dataModel2 = TestUtil.getDataModel();
         Model shapesModel2 = TestUtil.getShapesModel();
 
         ShaclValidationRegistry.getValidator().runValidation2(shapesModel2, dataModel2);

@@ -1,12 +1,11 @@
 package at.ac.tuwien.shacl.plugin.util;
 
-import java.io.*;
-import java.util.stream.Collectors;
-
+import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 
-import at.ac.tuwien.shacl.plugin.syntax.ShaclModelFactory;
+import java.io.*;
+import java.util.stream.Collectors;
 
 /**
  * Reads RDF models.
@@ -25,9 +24,9 @@ public class RdfModelReader {
     /**
      * Get a Jena model from an RDF file in an RDF serialization language.
      *
-     * @param path path to the RDF file
+     * @param path     path to the RDF file
      * @param language a string containing an RDF serialization language; see the Jena model.read method for a list of
-     *        supported languages
+     *                 supported languages
      * @return Jena model containing the RDF data
      */
     public static Model getModelFromFile(String path, String language) throws IOException {
@@ -42,9 +41,9 @@ public class RdfModelReader {
      * Get a Jena model from an RDF string in an RDF serialization language.
      * Processes owl:imports statements.
      *
-     * @param text the RDF string
+     * @param text     the RDF string
      * @param language a string containing an RDF serialization language; see the Jena model.read method for a list of
-     *        supported languages
+     *                 supported languages
      * @return Jena model containing the RDF data and imported statements
      */
     public static Model getModelFromString(String text, String language) {
@@ -61,9 +60,8 @@ public class RdfModelReader {
      */
     public static String getModelFromFileAsString(String path) throws IOException {
         try (InputStream in = ShaclModelFactory.class.getResourceAsStream(path);
-             InputStreamReader is = new InputStreamReader(in);
-             BufferedReader br = new BufferedReader(is);
-        ) {
+                InputStreamReader is = new InputStreamReader(in);
+                BufferedReader br = new BufferedReader(is);) {
             String newLine = System.getProperty("line.separator");
             return br.lines().collect(Collectors.joining(newLine));
         }

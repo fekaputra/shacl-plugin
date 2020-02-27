@@ -6,11 +6,14 @@ import org.protege.editor.owl.ui.OWLIcons;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Prototype implementation of the constraint picker view.
- *
+ * <p>
  * //TODO use class with real data.
  */
 public class ShaclConstraintPickerPanel extends ListPanelTemplate {
@@ -23,8 +26,7 @@ public class ShaclConstraintPickerPanel extends ListPanelTemplate {
         fileChooser.setMultiSelectionEnabled(true);
     }
 
-    @Override
-    protected Iterable<Action> getActions() {
+    @Override protected Iterable<Action> getActions() {
         List<Action> actions = new ArrayList<>();
 
         actions.add(new AddConstraintAction("Add constraint", OWLIcons.getIcon("individual.add.png")));
@@ -43,11 +45,11 @@ public class ShaclConstraintPickerPanel extends ListPanelTemplate {
             putValue(AbstractAction.SHORT_DESCRIPTION, "Add constraint definition");
         }
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
+        @Override public void actionPerformed(ActionEvent e) {
             //generate random value and add them to list
-            String[] data = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven"};
-            String selected = data[(int) (Math.random()*10)];
+            String[] data =
+                    { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven" };
+            String selected = data[(int) (Math.random() * 10)];
             getListPublisher().addElement(selected);
         }
     }
@@ -62,22 +64,20 @@ public class ShaclConstraintPickerPanel extends ListPanelTemplate {
             super(name, icon);
             putValue(AbstractAction.SHORT_DESCRIPTION, "Delete constraint definition");
             getListPublisher().addObserver(this);
-            if(getListPublisher().getSize() == 0) {
+            if (getListPublisher().getSize() == 0) {
                 this.setEnabled(false);
             }
         }
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
+        @Override public void actionPerformed(ActionEvent e) {
             int index = getList().getSelectedIndex();
-            if(index != -1) {
+            if (index != -1) {
                 getListPublisher().remove(index);
             }
         }
 
-        @Override
-        public void update(Observable o, Object arg) {
-            if((int) arg == 0) {
+        @Override public void update(Observable o, Object arg) {
+            if ((int) arg == 0) {
                 this.setEnabled(false);
             } else {
                 this.setEnabled(true);
@@ -87,7 +87,7 @@ public class ShaclConstraintPickerPanel extends ListPanelTemplate {
 
     /**
      * Defines the import constraint action and its behavior, when user clicks on it.
-     *
+     * <p>
      * //TODO move import functionality to add constraint dialog
      */
     private class ImportConstraintFileAction extends AbstractAction {
@@ -96,14 +96,13 @@ public class ShaclConstraintPickerPanel extends ListPanelTemplate {
             putValue(AbstractAction.SHORT_DESCRIPTION, "Import constraint definition");
         }
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
+        @Override public void actionPerformed(ActionEvent e) {
             int returnVal = fileChooser.showOpenDialog(getList());
 
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File[] files = fileChooser.getSelectedFiles();
 
-                for(File file : files) {
+                for (File file : files) {
                     getListPublisher().addElement(file.getName());
                 }
             }

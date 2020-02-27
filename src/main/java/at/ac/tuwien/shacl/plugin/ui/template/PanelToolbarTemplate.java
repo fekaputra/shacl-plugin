@@ -11,14 +11,15 @@ import java.awt.*;
 public abstract class PanelToolbarTemplate extends JPanel {
     private JToolBar toolbar;
 
-    public PanelToolbarTemplate() {}
+    public PanelToolbarTemplate() {
+    }
 
     protected void init() {
         toolbar = new JToolBar();
 
         this.setLayout(new BorderLayout());
 
-        for(Action action : TypeChecker.safe(this.getActions())) {
+        for (Action action : TypeChecker.safe(this.getActions())) {
             toolbar.add(action);
         }
 

@@ -17,9 +17,9 @@ public class ShaclValidationReport {
     public ShaclValidationReport(Resource report) {
         Model model = report.getModel();
 
-        Resource validationReport = model.listStatements(null, RDF.type, SH.ValidationReport).toList().get(0).getSubject();
+        Resource validationReport =
+                model.listStatements(null, RDF.type, SH.ValidationReport).toList().get(0).getSubject();
         this.conforms = validationReport.getProperty(SH.conforms).getObject().asLiteral().getBoolean();
-
 
         List<Statement> validationResults = model.listStatements(null, RDF.type, SH.ValidationResult).toList();
 

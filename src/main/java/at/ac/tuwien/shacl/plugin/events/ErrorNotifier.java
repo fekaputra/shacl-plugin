@@ -9,9 +9,8 @@ import java.util.Observer;
  * Notifier for passing error events. Implementing the observable part of the observer pattern.
  */
 public class ErrorNotifier extends Observable {
-    private static ErrorNotifier notifier = new ErrorNotifier();
     private static final Logger log = Logger.getLogger(ErrorNotifier.class);
-
+    private static ErrorNotifier notifier = new ErrorNotifier();
 
     public static void notify(String message) {
         log.error(message);
