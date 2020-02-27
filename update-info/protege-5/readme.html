@@ -1,39 +1,39 @@
 <html>
 <body>
-	<h3 id="shacl4p-plugin-v1.0.0">SHACL4P Plugin v1.0.0</h3>
-	<hr>
+<h3 id="SHACL4Protege-v1.0.0">SHACL4Protege v1.0.0</h3>
+<hr>
 
-	<p>SHACL constraint validation plugin for <a href="https://protege.stanford.edu/">Protégé Desktop</a></p>
-	<p>
-		The plugin is tried and tested using Protege 5.5.0 on 
-		<ul>
-			<li> Debian 10 (Buster) with OpenJDK 11, </li>
-			<li> Windows 10 (1809) with the bundled JRE 8, </li> 
-			<li> and Mac OSX Catalina with JDK 8. </li>
-		</ul>
-	<p>
-		The plugin is using existing libraries, such as <a href="https://github.com/TopQuadrant/shacl">SHACL engine</a> and <a href="https://github.com/apache/jena">Apache Jena</a>.
-		For further dependency information, please take a look on the pom.xml
-	</p>
-	<p>
-		The plugin was originally developed by Xiashuo Lin (<code>@xlin</code>) and Fajar Ekaputra (<code>@fekaputra</code>) at TU Wien. Later on, André Wolski (<code>@locke</code>) contributed to cleaned up the old code and added several features to make sure that the plugin works again.
-	</p>
+<p>A SHACL constraint validation plugin for <a href="https://protege.stanford.edu/">Protégé Desktop</a></p>
+<p>
+	The plugin is tried and tested using Protege 5.5.0 on
+<ul>
+	<li> Debian 10 (Buster) with OpenJDK 11, </li>
+	<li> Windows 10 (1809) with the bundled JRE 8, </li>
+	<li> and Mac OSX Catalina with JDK 8. </li>
+</ul>
+<p>
+	The plugin reuses existing libraries, such as <a href="https://github.com/TopQuadrant/shacl">SHACL engine</a> and <a href="https://github.com/apache/jena">Apache Jena</a>.
+	For further dependency information, please take a look on the pom.xml
+</p>
+<p>
+	The plugin was developed by Xiashuo Lin (<code>@xlin</code>) and Fajar Ekaputra (<code>@fekaputra</code>) at TU Wien. Later on, André Wolski (<code>@locke</code>) contributed significantly to clean up the old code and added several features.
+</p>
 
-	<h4 id="how-to-use">How to install & use</h4>
-	
-	<ol style="list-style-type: decimal">
-		<li>Download the jar file from <a href="https://github.com/fekaputra/shacl-plugin/releases">the latest release</a>
-			<ul><li>Copy it into the /plugins folder of your Protégé Desktop installation</li></ul>
-		</li>
-		<li>Open Protégé Desktop</li>
-		<li>
-			(optional) Download the example file <a href="https://raw.githubusercontent.com/fekaputra/shacl-plugin/master/src/main/resources/example3-data.owl">example3-data.owl</a>
-			<ul><li>open it in Protégé Desktop</li></ul>
-		</li>
-		<li>
-			Open Window -&gt; Tabs -&gt; SHACL Editor (alternative: Window -&gt; Tabs -&gt; Minimal SHACL Editor)
-			<ul><li>Click the &quot;Validate&quot; button below the SHACL editor to validate the loaded ontology against the shapes defined in the SHACL editor</li></ul>
-		</li>
-	</ol>
+<h4 id="how-to-use">How to install & use</h4>
+
+<ol style="list-style-type: decimal">
+	<li>Download the jar file from <a href="https://github.com/fekaputra/shacl-plugin/releases">the latest release</a>
+		<ul><li>Copy it into the /plugins folder of your Protégé Desktop installation</li></ul>
+	</li>
+	<li>Open Protégé Desktop</li>
+	<li>
+		(optional) Download the example file <a href="https://raw.githubusercontent.com/fekaputra/shacl-plugin/master/src/main/resources/example3-data.owl">example3-data.owl</a>
+		<ul><li>open it in Protégé Desktop</li></ul>
+	</li>
+	<li>
+		Open Window -&gt; Tabs -&gt; SHACL Editor (alternative: Window -&gt; Tabs -&gt; Minimal SHACL Editor)
+		<ul><li>Click the &quot;Validate&quot; button below the SHACL editor to validate the loaded ontology against the shapes defined in the SHACL editor</li></ul>
+	</li>
+</ol>
 <body>
 </html>
