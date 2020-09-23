@@ -14,9 +14,10 @@ Later on, André Wolski (`@locke`) contributed significantly to clean up the old
 
 #### How to use
 
-1. Download the jar file from [the latest release](https://github.com/fekaputra/shacl-plugin/releases)
-    * Copy it into the /plugins folder of your Protégé Desktop installation
-2. Open Protégé Desktop
+1. Open Protégé Desktop
+    * Select File -> Check for plugins... to get the list of available plugins. Select "SHACL4Protege Constraint Validator" and "Install" it
+    * Alternatively: Download the latest jar file from [the latest release](https://github.com/fekaputra/shacl-plugin/releases) and copy it into the /plugins folder of your Protégé Desktop installation
+2. Restart Protégé Desktop
 3. (optional) Download the example file [example3-data.owl](https://raw.githubusercontent.com/fekaputra/shacl-plugin/master/src/main/resources/example3-data.owl)
     * open it in Protégé Desktop
 4. Open Window -> Tabs -> SHACL Editor
