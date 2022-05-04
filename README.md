@@ -1,4 +1,4 @@
-### SHACL4Protege v1.0.0 
+### SHACL4Protege v1.1.0 
 
 A SHACL constraint validation plugin for Protégé Desktop [1].
 
@@ -10,12 +10,9 @@ Further, you can filter the result table by the classes and individuals of the o
 
 ### About
 
-The plugin is tried and tested using Protege 5.5.0 on 
-* Debian 10 (Buster) with OpenJDK 11, 
-* Windows 10 (1809) with the bundled JRE 8, 
-* and Mac OSX Catalina with JDK 8.
+The plugin is tried and tested using Protege 5.5.0 on and Mac OSX Monterey with OpenJDK Temurin 8.
 
-The plugin developed using TopBraid SHACL Engine 1.3.1 [2] and Apache Jena 3.14.0 [3].   
+The plugin developed using TopBraid SHACL Engine 1.3.2 [2] and Apache Jena 3.17.0 [3].   
 
 The plugin was developed by Xiashuo Lin (`@xlin`) and Fajar Ekaputra (`@fekaputra`) at TU Wien.
 Later on, André Wolski (`@locke`) contributed significantly to clean up the old code and added several features. 
