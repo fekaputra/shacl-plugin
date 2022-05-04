@@ -15,45 +15,16 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jena.version>3.17.0</jena.version>
+        <shacl.version>1.3.2</shacl.version>
+        <jackson.core.version>2.13.2</jackson.core.version>
+        <log4j-core.version>2.17.2</log4j-core.version>
+        <owl-api.version>2.4.0-ignazio1977</owl-api.version>
     </properties>
 
     <dependencies>
 
-        <!-- directly used dependencies -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.17.1</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.1</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- -->
-        <dependency>
-            <groupId>net.sourceforge.owlapi</groupId>
-            <artifactId>pellet-owlapi-ignazio1977</artifactId>
-            <version>2.4.0-ignazio1977</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.owlapi</groupId>
-            <artifactId>pellet-core-ignazio1977</artifactId>
-            <version>2.4.0-ignazio1977</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.owlapi</groupId>
-            <artifactId>pellet-modularity-ignazio1977</artifactId>
-            <version>2.4.0-ignazio1977</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- -->
-
-
+        <!-- protege plugin core dependencies -->
         <dependency>
             <groupId>edu.stanford.protege</groupId>
             <artifactId>protege-editor-owl</artifactId>
@@ -67,25 +38,60 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>net.sourceforge.owlapi</groupId>
+            <artifactId>pellet-owlapi-ignazio1977</artifactId>
+            <version>${owl-api.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.owlapi</groupId>
+            <artifactId>pellet-core-ignazio1977</artifactId>
+            <version>${owl-api.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.owlapi</groupId>
+            <artifactId>pellet-modularity-ignazio1977</artifactId>
+            <version>${owl-api.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- directly used dependencies -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j-core.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.topbraid</groupId>
             <artifactId>shacl</artifactId>
-            <version>1.3.1</version>
+            <version>${shacl.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.jena</groupId>
             <artifactId>jena-arq</artifactId>
-            <version>3.14.0</version>
+            <version>${jena.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.jena</groupId>
-            <artifactId>jena-core</artifactId>
-            <version>4.2.0</version>
+            <artifactId>jena-shaded-guava</artifactId>
+            <version>${jena.version}</version>
         </dependency>
 
-
         <!-- transitive dependencies, that need to be included in bundle -->
-
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
+        </dependency>
         <!-- required for owlapi-osgidistribution -->
         <dependency>
             <groupId>commons-logging</groupId>
@@ -106,17 +112,17 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.9.9</version>
+            <version>${jackson.core.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.9.9</version>
+            <version>${jackson.core.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.10.0.pr1</version>
+            <version>${jackson.core.version}</version>
         </dependency>
 
         <dependency>
@@ -150,7 +156,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>4.1.0</version>
+                <version>4.2.1</version>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
@@ -158,7 +164,6 @@
                         <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
                         <Export-Package>
                             at.ac.tuwien.shacl.plugin.*
-
                         </Export-Package>
                         <Import-Package>
                             <!-- JDK provided packages from java.desktop module -->
@@ -171,13 +176,14 @@
 
                             <!-- directly used packages from dependencies -->
                             org.apache.log4j.*;version="[1.2,2)",
-                            org.slf4j.*,
+                            !org.slf4j.*,
                             org.protege.editor.owl.*;version="[5.0.0,6)",
                             org.semanticweb.owlapi.*;version="[4.2,5)",
-                            org.apache.jena.*;version="[3.10.0,4)",
+                            !org.apache.jena.ext.*, org.apache.jena.*;version="[3.17.0,4)",
 
                             <!-- transitive -->
                             org.apache.commons.io.*,
+                            <!--                            com.google.guava.*,-->
 
                             <!-- possibly not used -->
                             *;resolution:=optional
@@ -191,6 +197,7 @@
                             jena-arq,
 
                             <!-- transitive dependencies from provided dependencies that are not provided by them -->
+                            <!--                            guava,-->
                             httpclient-osgi,
                             httpcore-osgi,
                             jackson-annotations,
